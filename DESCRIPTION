@@ -1,0 +1,11 @@
+Package: activeMonitr
+Title: Evaluating public health active monitoring 
+Version: 0.0.1
+Authors@R: c(
+    person(c("Nicholas", "G."), "Reich", , "nick@umass.edu", role = c("aut", "cre")), 
+    person("Xuelian", "Li", , , role = c("aut"))
+    )
+Description: Data and code for evaluating public health active monitoring and estimating incubation periods
+Depends: R (>= 3.0.2)
+License: GPLv3
+LazyData: true
