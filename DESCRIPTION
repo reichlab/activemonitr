@@ -6,6 +6,6 @@ Authors@R: c(
     person("Xuelian", "Li", , , role = c("aut"))
     )
 Description: Data and code for evaluating public health active monitoring and estimating incubation periods
-Depends: R (>= 3.0.2)
+Depends: ggplot2, grid, dplyr, R (>= 3.0.2)
 License: GPLv3
 LazyData: true
