@@ -87,7 +87,7 @@ plot_risk_uncertainty <- function(pstr_data,
     p <- ggplot(dat_sim_pst_param_sum, aes(x=d, color=phi_lab, fill=phi_lab)) + 
         #facet_grid(.~phi_lab, labeller=label_parsed) +
         facet_grid(.~phi_lab) +
-        geom_line(aes(y=p50), se=FALSE) + 
+        geom_line(aes(y=p50)) + 
         geom_ribbon(aes(ymin=p05, ymax=p95), alpha=.2, color=NA) + 
         scale_y_log10() +
         ylab("Pr(symptoms after AM)") + 
