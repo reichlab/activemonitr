@@ -7,20 +7,11 @@
 #######################################
 shinyUI(fluidPage(
   title = "Demo of App for ebola_gamma_pstr monitoring time",
-  tags$head(includeCSS(file.path('www', 'style.css'))),   
+  tags$head(includeCSS(file.path('www', 'style.css'))),
+  tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css?family=Slabo+27px")
+  ),
   titlePanel("App for ebola_gamma_pstr monitoring time"),
-  ##fluidRow(id = "title-row",
-           ##column(12,
-                 ## h1("Demo of",
-                     ##em(a("App for ebola_gamma_pstr monitoring time", href = "https://github.com/reichlab/activemonitr"))
-                  ##),
-                  ##h4(em("ebola_gamma_pstr monitoring time"), "lets you estimate the monitoring time needed for three infection diseases"),
-                  ##div("Created by", a("Xuelian Li and Nicholas G Reich ", href = "https://github.com/nickreich"),
-                     ## HTML("&bull;"),
-                     ## "Code", a("on GitHub", href = "https://github.com/reichlab/activemonitr/tree/master/inst/shiny/active-monitoring")
-                 ## )
-          ## )
- ## ),
   
   sidebarLayout(
     sidebarPanel(width=4,
@@ -49,17 +40,13 @@ shinyUI(fluidPage(
          ## create tabs
      tabsetPanel(
        tabPanel("plot1",
-                ## strong=bold, p=paragraph, em=emboss/italicised or bold italicized,
                 ##plot1_main_text, 
                 value="plot1"),
        
-       ## summary tab
+       ## graph2
        tabPanel("plot2",
-                ##dataTableOutput("summary"), value="summary",
-                tags$style(type="text/css", '#summary tfoot {display:none;}'),
                 value="plot2"),
        
-       ## plot tab with google chart options
        
        tabPanel("More Infor"
                 
