@@ -8,9 +8,14 @@
 require(shiny)
 require(dplyr)
 require(googleCharts)
+require(activeMonitr)
+require(ggplot2)
+require(grid)
 
-active_moni_data<-load(file="ebola_gamma_pstr.rda")
-
+load(file="ebola_gamma_pstr.rda")
+ebola<-ebola_gamma_pstr
+source("plot_risk.R", echo=TRUE)
+source("prob_of_missing_case.R", echo=TRUE)
 plot1_side_text <- conditionalPanel(
   condition="input.tabs == 'plot1'",
   h4("How to use this app:"),

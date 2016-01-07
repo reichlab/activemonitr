@@ -36,8 +36,8 @@ shinyUI(fluidPage(
                                  min=0, max=30, value=c(5),
                                  sep="")
                    ),
-                   sliderInput("plot1_mdtime", "Monitoring Duration",
-                               min=0, max=30, value=c(5, 21),
+                   sliderInput("plot1_mdtime", "Monitoring Duration (days)",
+                               min=0, max=30, value=c(5, 25),
                                sep=""),
                    checkboxGroupInput("plot1_prob", "Probability of Symptoms",
                                c("1/10" = "1/10", "1/100" = "1/100",
@@ -51,7 +51,7 @@ shinyUI(fluidPage(
          ## create tabs
      tabsetPanel(
        tabPanel("plot1",
-                ##plot1_main_text, 
+                plotOutput("plotEbo"), 
                 value="plot1"),
        
        ## graph2
