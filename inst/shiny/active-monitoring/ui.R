@@ -24,14 +24,25 @@ shinyUI(fluidPage(
                  conditionalPanel(
                    condition="input.tabs == 'plot1'",
                    radioButtons("plot1_radio", "Type of Infection Diseases",
-                                c("Ebola" = "Ebola", "Mers" = "Mers",
-                                  "Pstr" = "Pstr","Gamma" ="Gamma"),
+                                c("Ebola" = "Ebola", "MERS-CoV" = "Mers",
+                                  "Smallpox" = "Smallpox","Custom(gama distribution)" ="Gamma"),
                                 selected="Ebola"),
-                   selectInput("plot1_prob", "Select Probability",
-                               c("Ebola" = "Ebola", "Mers" = "Mers",
-                                 "Pstr" = "Pstr","Gamma" ="Gamma"),
-                               ## Multiple allows for multi-selection
-                               multiple=TRUE)
+                   conditionalPanel(
+                     condition="input.plot1_radio=='Gamma'",
+                     sliderInput("plot1_shape", "Shape",
+                                 min=0, max=30, value=c(5),
+                                 sep=""),
+                     sliderInput("plot1_scale", "Scale",
+                                 min=0, max=30, value=c(5),
+                                 sep="")
+                   ),
+                   sliderInput("plot1_mdtime", "Monitoring Duration",
+                               min=0, max=30, value=c(5, 21),
+                               sep=""),
+                   checkboxGroupInput("plot1_prob", "Probability of Symptoms",
+                               c("1/10" = "1/10", "1/100" = "1/100",
+                                 "1/1000" = "1/1000","1/10000" ="1/10000"),
+                               selected="1/10")
                    
                  )
                  ),
