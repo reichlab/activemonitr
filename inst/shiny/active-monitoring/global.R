@@ -8,7 +8,6 @@
 require(shiny)
 require(dplyr)
 require(googleCharts)
-require(activeMonitr)
 require(ggplot2)
 require(grid)
 

@@ -20,9 +20,9 @@ shinyServer(function(input, output, session) {
   })
   
   ## create the plot1 of the ebola data
-    output$plotEbo<-reactive({
+    output$plotEbo<-renderPlot({
     plot_df<-data_df()
-    phi1 <- input$plot1_prob
+    phi1 <- as.numeric(input$plot1_prob)
     durations1<-input$plot1_mdtime
     a<-as.numeric(durations1[1])
     b<-as.numeric(durations1[2])

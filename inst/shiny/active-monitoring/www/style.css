@@ -16,3 +16,8 @@ h2 {
 .active {
   font-weight: bold;
 }
+
+.scaledImage {
+  max-height: 100%;
+  max-width: 100%;
+}

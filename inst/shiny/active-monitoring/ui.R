@@ -40,9 +40,9 @@ shinyUI(fluidPage(
                                min=0, max=30, value=c(5, 25),
                                sep=""),
                    checkboxGroupInput("plot1_prob", "Probability of Symptoms",
-                               c("1/10" = "1/10", "1/100" = "1/100",
-                                 "1/1000" = "1/1000","1/10000" ="1/10000"),
-                               selected="1/10")
+                               c("1/10" = "0.1", "1/100" = "0.01",
+                                 "1/1000" = "0.001","1/10000" ="0.0001"),
+                               selected="0.1")
                    
                  )
                  ),
@@ -56,6 +56,7 @@ shinyUI(fluidPage(
        
        ## graph2
        tabPanel("plot2",
+                img(src ="plot2.png"),
                 value="plot2"),
        
        
