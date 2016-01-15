@@ -6,12 +6,12 @@
 ## Date Modified: 01/04/2016 XL      ##
 #######################################
 shinyUI(fluidPage(
-  title = "Demo of App for ebola_gamma_pstr monitoring time",
+  title = "Duration of Active Monitoring",
   tags$head(includeCSS(file.path('www', 'style.css'))),
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css?family=Slabo+27px")
   ),
-  titlePanel("App for ebola_gamma_pstr monitoring time"),
+  titlePanel("Determining Durations for Active Monitoring"),
   
   sidebarLayout(
     sidebarPanel(width=4,
@@ -39,7 +39,7 @@ shinyUI(fluidPage(
                    sliderInput("plot1_mdtime", "Monitoring Duration (days)",
                                min=0, max=30, value=c(5, 25),
                                sep=""),
-                   checkboxGroupInput("plot1_prob", "Probability of Symptoms",
+                   checkboxGroupInput("plot1_prob", "Probability a monitored individual develops symptoms",
                                c("1/10" = "0.1", "1/100" = "0.01",
                                  "1/1000" = "0.001","1/10000" ="0.0001"),
                                selected="0.1")
@@ -50,17 +50,17 @@ shinyUI(fluidPage(
    mainPanel(
          ## create tabs
      tabsetPanel(
-       tabPanel("plot1",
+       tabPanel("Risk Assessment",
                 plotOutput("plotEbo"), 
                 value="plot1"),
        
        ## graph2
-       tabPanel("plot2",
+       tabPanel("Incubation Periods",
                 img(src ="plot2.png"),
                 value="plot2"),
        
        
-       tabPanel("More Infor"
+       tabPanel("More Information"
                 
                 ## add text about the variables
                 #                  infor_main_text,
