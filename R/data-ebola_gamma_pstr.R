@@ -33,8 +33,8 @@ NULL
 #'   }
 #' @docType data
 #' @references Virlogeux, V., Park, M., Wu, J. T. & Cowling, B. J. Association between Severity of MERS-CoV Infection and Incubation Period. Emerging Infectious Diseases 22, (2016).
-#' @name mers_gamma_pstr
-#' @usage data(mers_gamma_pstr)
+#' @name mers_gamma_posterior
+#' @usage data(mers_gamma_posterior)
 NULL
 
 
@@ -60,6 +60,6 @@ NULL
 #'   \item Mack, T. M. Smallpox in Europe, 1950-1971. Journal of Infectious Diseases 125, 161–169 (1972).
 #'   \item Nishiura, H. Determination of the appropriate quarantine period following smallpox exposure: an objective approach using the incubation period distribution. Int J Hyg Environ Health 212, 97–104 (2009).
 #' }
-#' @name smallpox_gamma_pstr
-#' @usage data(smallpox_gamma_pstr)
+#' @name smallpox_gamma_posterior
+#' @usage data(smallpox_gamma_posterior)
 NULL
