@@ -25,17 +25,19 @@ shinyUI(fluidPage(
                    condition="input.tabs == 'plot1'",
                    radioButtons("plot1_radio", "Type of Infection Diseases",
                                 c("Ebola" = "Ebola", "MERS-CoV" = "Mers",
-                                  "Smallpox" = "Smallpox","Custom(gama distribution)" ="Gamma"),
+                                  "Smallpox" = "Smallpox"
+                                  ##"Custom(gama distribution)" ="Gamma"
+                                  ),
                                 selected="Ebola"),
-                   conditionalPanel(
-                     condition="input.plot1_radio=='Gamma'",
-                     sliderInput("plot1_shape", "Shape",
-                                 min=0, max=30, value=c(5),
-                                 sep=""),
-                     sliderInput("plot1_scale", "Scale",
-                                 min=0, max=30, value=c(5),
-                                 sep="")
-                   ),
+                   ##conditionalPanel(
+                     ##condition="input.plot1_radio=='Gamma'",
+                     ##sliderInput("plot1_shape", "Shape",
+                                ## min=0, max=30, value=c(5),
+                                 ##sep=""),
+                     ##sliderInput("plot1_scale", "Scale",
+                                ## min=0, max=30, value=c(5),
+                                 ##sep="")
+                   ##),
                    sliderInput("plot1_mdtime", "Monitoring Duration (days)",
                                min=0, max=30, value=c(5, 25),
                                sep=""),

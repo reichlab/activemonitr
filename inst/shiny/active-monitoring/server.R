@@ -9,10 +9,13 @@ shinyServer(function(input, output, session) {
   data_df <- reactive({
     ## choose data based on the type of disease
     if (input$plot1_radio=="Ebola"){
-    data_df <- ebola 
+    data_df <- ebola_gamma_pstr 
+    }
+    else if (input$plot1_radio=="Mers") {
+    data_df<-mers_gamma_posterior  
     }
     else {
-    data_df<-ebola  
+    data_df<-smallpox_gamma_posterior  
     }
     
     ## Output reactive dataframe
@@ -24,8 +27,8 @@ shinyServer(function(input, output, session) {
     plot_df<-data_df()
     phi1 <- as.numeric(input$plot1_prob)
     durations1<-input$plot1_mdtime
-    a<-as.numeric(durations1[1])
-    b<-as.numeric(durations1[2])
+    a<-durations1[1]
+    b<-durations1[2]
     plot_risk_uncertainty(plot_df, phi=phi1, durations=a:b)
   })
 })

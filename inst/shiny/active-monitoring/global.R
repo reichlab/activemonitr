@@ -12,7 +12,8 @@ require(ggplot2)
 require(grid)
 
 load(file="ebola_gamma_pstr.rda")
-ebola<-ebola_gamma_pstr
+load(file="smallpox_gamma_posterior.rda")
+load(file="mers_gamma_posterior.rda")
 source("plot_risk.R", echo=TRUE)
 source("prob_of_missing_case.R", echo=TRUE)
 plot1_side_text <- conditionalPanel(
