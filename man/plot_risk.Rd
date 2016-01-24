@@ -5,7 +5,7 @@
 \title{Function for plotting risk of case escaping active monitoring}
 \usage{
 plot_risk(pstr_data, u = 7, phi = c(1e-04, 0.001, 0.01), durations = 5:25,
-  return_data = FALSE)
+  return_plot = FALSE)
 }
 \arguments{
 \item{pstr_data}{a data object with posterior distributions of gamma parameters (must have shape and scale column)}
@@ -19,7 +19,7 @@ plot_risk(pstr_data, u = 7, phi = c(1e-04, 0.001, 0.01), durations = 5:25,
 \item{return_data}{logical, whether or not to return the data used for plotting}
 }
 \value{
-if return_data is specified, it returns the data.frame used to create the plot
+if return_plot is specified, it returns the grob
 }
 \description{
 Function for plotting risk of case escaping active monitoring
