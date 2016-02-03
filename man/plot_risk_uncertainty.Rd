@@ -5,7 +5,8 @@
 \title{Function for plotting risk and uncertainty of case escaping active monitoring}
 \usage{
 plot_risk_uncertainty(pstr_data, max_u = 14, phi = c(1e-04, 0.001, 0.01),
-  durations = 5:25, return_data = FALSE)
+  durations = 5:25, yrange = NULL, include_xlab = TRUE,
+  include_legend = TRUE, return_plot = FALSE)
 }
 \arguments{
 \item{pstr_data}{a data object with posterior distributions of gamma parameters (must have shape and scale column)}
@@ -14,12 +15,18 @@ plot_risk_uncertainty(pstr_data, max_u = 14, phi = c(1e-04, 0.001, 0.01),
 
 \item{durations}{durations of active monitoring to plot}
 
-\item{return_data}{logical, whether or not to return the data used for plotting}
+\item{yrange}{if not NULL, a vector of the ylim to plot}
+
+\item{include_xlab}{logical, whether to include an x-axis label}
+
+\item{include_legend}{logical, whether to include a legend}
 
 \item{u}{numeric value or vector of assumed duration(s) of time between exposure and monitoring}
+
+\item{return_data}{logical, whether or not to return the data used for plotting}
 }
 \value{
-if return_data is specified, it returns the data.frame used to create the plot
+if return_plot is specified, it returns the grob
 }
 \description{
 Function for plotting risk and uncertainty of case escaping active monitoring
