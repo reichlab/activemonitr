@@ -7,15 +7,13 @@
 #######################################
 require(shiny)
 require(dplyr)
-require(googleCharts)
 require(ggplot2)
 require(grid)
+require(activeMonitr)
 
 load(file="ebola_gamma_pstr.rda")
 load(file="smallpox_gamma_posterior.rda")
 load(file="mers_gamma_posterior.rda")
-source("plot_risk.R", echo=TRUE)
-source("prob_of_missing_case.R", echo=TRUE)
 plot1_side_text <- conditionalPanel(
   condition="input.tabs == 'plot1'",
   p("During potential pandemic scenarios, the US CDC has implemented active monitoring programs to track international travelers to minimize risk of disease transmission. You can use this web applet to explore the risks associated with different durations of active monitoring periods for Ebola, MERS-CoV, and Smallpox.")#,
