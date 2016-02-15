@@ -47,6 +47,7 @@ plot_risk <- function(pstr_data,
 #' @param include_xlab logical, whether to include an x-axis label
 #' @param include_legend logical, whether to include a legend
 #' @param return_data logical, whether or not to return the data used for plotting
+#' @param return_plot logical, whether or not to return the plotted grob
 #'
 #' @return if return_plot is specified, it returns the grob
 #' @export
@@ -59,6 +60,7 @@ plot_risk_uncertainty <- function(pstr_data,
                                   yrange=NULL,
                                   include_xlab=TRUE,
                                   include_legend=TRUE,
+                                  return_data=FALSE,
                                   return_plot=FALSE) {
     require(ggplot2)
     require(grid)
@@ -122,7 +124,15 @@ plot_risk_uncertainty <- function(pstr_data,
     }
     
     print(p)
-    if(return_plot) return(p)
+    out <- vector("list", 2)
+    names(out) <- c("data", "plot")
+    if(return_plot) {
+        out[["plot"]] <- p
+    }
+    if(return_data) {
+        out[["data"]] <- dat_sim_pst_param_sum
+    }
+    return(out)
 }
 
 
