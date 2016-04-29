@@ -2,8 +2,7 @@
 ## Nicholas Reich
 ## started: January 2015
 
-setwd("~/Dropbox/work/research/ebola-inc-per/")
-source('R/inc-per-mcmc.R')
+source('inst/analysis-code/inc-per-mcmc.R')
 library(dplyr)
 library(foreach)
 library(doParallel)
@@ -11,17 +10,17 @@ library(doParallel)
 todays_date <- format(Sys.Date(), "%Y%m%d")
 
 ## read in data
-d <- read.csv('data/smallpox/nishiura_2009_data.csv')
+d <- read.csv('inst/raw-data/smallpox-data.csv')
 
 ## inc per min and max calculated assuming that 6 means [6,7)
 d$ip_min <- d$reported_incper
 d$ip_max <- d$reported_incper + 1
 
 ## MCMC setup
-nsamp <- 1100000
-burnin <- 100000
-nthin <- 100
-registerDoParallel(cores=20)
+nsamp <- 320000 ## 110,000 samples
+burnin <- 20000 ## remove 10,000 for burn-in
+nthin <- 6      ## thin to leave 50,000 samples per chain
+registerDoParallel(cores=20) ## 20 chains so 1,000,000 samples total
 
 ## run the MCMC fits
 nfits <- 20 ## a reasonable number of parallel chains
@@ -39,11 +38,12 @@ pstr_gamma_params_smallpox <- tbl_df(data.frame(pstr_gamma_params_smallpox)) %>%
            scale = exp(scale), 
            median = qgamma(.5, shape=shape, scale=scale),
            p95 = qgamma(.95, shape=shape, scale=scale),
-           idx = 1:nrow(pstr_gamma_params_smallpox))
+           idx = 1:nrow(pstr_gamma_params_smallpox),
+           chain = rep(1:nfits, each=(nsamp-burnin)/nthin))
 
 ## save posterior
 save(pstr_gamma_params_smallpox, 
-     file=paste0('data/smallpox/', todays_date, '-pstr-gamma-distr-params-smallpox.rda'))
+     file=paste0('inst/analysis-output/', todays_date, '-pstr-gamma-distr-params-smallpox.rda'))
 
 ## calculate bandwidths for plotting
 sampled_params <- pstr_gamma_params_smallpox[sample(nrow(pstr_gamma_params_smallpox), size=2000),]
@@ -52,7 +52,7 @@ hscv_smallpox_p50 <- get_robust_bandwidths(sampled_params, cols=c("median", "p95
 
 ## calculate KDE for confidence region
 kde_smallpox <- fit_kde(pstr_gamma_params_smallpox, H=hscv_smallpox_p50, max_size=10000)
-save(kde_smallpox, file=paste0('data/smallpox/', todays_date, '-kde-smallpox.rda'))
+save(kde_smallpox, file=paste0('inst/analysis-output/', todays_date, '-kde-smallpox.rda'))
 
 
 

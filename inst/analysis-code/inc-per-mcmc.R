@@ -191,6 +191,29 @@ siclik_two_val <- function(pars, tmin, tmax, dist, log_scale=FALSE){
 }
 
 
+##' calculate Rhat for each parameter
+##' 
+##' @param chain the output from inc_per_mcmc
+get_Rhat <- function(chains) {
+    n <- nrow(chains[chains$chain==1,])
+    m <- max(chains$chain)
+    ## for shape
+    mean_shape <- mean(chains$shape)
+    wcv_shp <- mean(tapply(chains$shape, INDEX = list(chain=chains$chain), FUN=var))
+    bcv_shp <- n / (m-1) * sum(tapply(chains$shape, INDEX = list(chain=chains$chain), 
+                                  FUN = function(x) (mean(x)-mean_shape)^2))
+    var_shp <- (1-1/n)*wcv_shp + 1/n*bcv_shp
+    Rhat_shp <- sqrt(var_shp/wcv_shp)
+    ## for scale
+    mean_scl <- mean(chains$scale)
+    wcv_scl <- mean(tapply(chains$scale, INDEX = list(chain=chains$chain), FUN=var))
+    bcv_scl <- n / (m-1) * sum(tapply(chains$scale, INDEX = list(chain=chains$chain), 
+                                      FUN = function(x) (mean(x)-mean_scl)^2))
+    var_scl <- (1-1/n)*wcv_scl + 1/n*bcv_scl
+    Rhat_scl <- sqrt(var_scl/wcv_scl)
+    return(c(Rhat_scl=Rhat_scl, Rhat_shp=Rhat_shp))
+}
+
 
 ##' make posterior likelihood plot
 ##' 
@@ -406,7 +429,7 @@ fit_kde <- function(mcmc_df, H, max_size) {
 
 ## plot densities
 plot_gamma_densities <- function(mcmc_df, kde, n_to_plot, to=30, 
-                                 plotcolor, label_txt, xaxs_lab=TRUE) {
+                                 plotcolor, plotcolor_light, label_txt, xaxs_lab=TRUE) {
     median_shape <- median(mcmc_df$shape)
     median_scale <- median(mcmc_df$scale)
     
@@ -440,7 +463,7 @@ plot_gamma_densities <- function(mcmc_df, kde, n_to_plot, to=30,
                               Fgam=dgamma(xgam, shape=shp,
                                           scale=scl))
         p <- p + geom_line(data=gam_dat, aes(x=xgam, y=Fgam), 
-                           color=plotcolor, alpha=I(5/n_to_plot))
+                           color=plotcolor_light, alpha=I(100/n_to_plot))
     }
     # reimprint median
     gam_dat <- data_frame(xgam, 
