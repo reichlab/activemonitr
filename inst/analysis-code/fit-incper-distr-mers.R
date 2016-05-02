@@ -19,8 +19,8 @@ d <- read.csv('inst/raw-data/data_mers.csv')
 d$IncP_max <- d$IncP_max+1
 
 ## MCMC setup
-nsamp <- 110000 ## 110,000 samples
-burnin <- 10000 ## remove 10,000 for burn-in
+nsamp <- 120000 ## 110,000 samples
+burnin <- 20000 ## remove 10,000 for burn-in
 nthin <- 2      ## thin to leave 50,000 samples per chain
 registerDoParallel(cores=20) ## 20 chains so 1,000,000 samples total
 

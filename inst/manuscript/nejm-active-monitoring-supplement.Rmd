@@ -14,7 +14,7 @@ output:
     fig_caption: yes
     fig_height: 5
     fig_width: 5
-    md_extensions: +implicit_figures
+    md_extensions: +implicit_figures+grid_tables
 csl: the-new-england-journal-of-medicine.csl
 bibliography: active-monitoring.bib
 ---
@@ -28,9 +28,19 @@ knitr::opts_chunk$set(fig.width=7.5, fig.height=5, fig.path='figs/',
 
 # Estimation of incubation period
 
-All incubation period observations were treated as single interval-censored data, which means that intervals of possible incubation periods were observed rather than exact values [@Reich:2009jq]. The data used for these analyses are publicly available at [[LINK TO COME]]. 
+All incubation period observations were treated as single interval-censored data, which means that intervals of possible incubation periods were observed rather than exact values [@Reich:2009jq]. The data used for these analyses are publicly available at [[repository to be made public upon acceptance]]. 
 
-We fitted the observed data for each disease to a gamma probability distribution using Markov Chain Monte Carlo (MCMC) methods with the Metropolis-Hastings algorithm [[add citation]]. The gamma distribution is one of several "heavy-tailed" distributions often used to describe incubation periods, and aligns with assumptions made by previous researchers. [@Virlogeux:2016ty] We assumed uninformative, flat priors on the shape and scale parameters of the gamma distribution. We ran multiple MCMC chains, thinning each to remove autocorrelation within chains and evaluating between-chain agreement with [[TEST NAME]], to achieve final empirical posterior distributions with 1 million samples. Two-dimensional credible regions were estimated using kernel density estimation on the joint posterior distribution of gamma parameters with flexible bandwidth matrices estimated by multivariate smooth cross-validation.[@Duong:2005fk;@Duong:2015wn] 
+We fitted the observed data for each disease to a gamma probability distribution using Markov Chain Monte Carlo (MCMC) methods with the Metropolis-Hastings algorithm. The gamma distribution is one of several "heavy-tailed" distributions often used to describe incubation periods, and aligns with assumptions made by previous researchers. [@Virlogeux:2016ty] We assumed uninformative, flat priors on the shape and scale parameters of the gamma distribution. 
+
+We used a standard procedure to evaluate MCMC convergence for each of the pathogens. First, we adjusted the size of the proposal distributions to obtain acceptance rates between 30% and 40%. Second, we visually inspected the resulting chains to assess convergence. Third, we thinned the posterior samples to reduce auto-correlation between observations. Fourth, we computed the Gelman and Rubin $\hat R$ multiple sequence diagnostic to assess convergence across chains [@Gelman:1992ts]. Fifth, we specified the appropriate number of samples, burn-in, and thinning rates to obtain 1 million posterior samples for smallpox and MERS-CoV and 3 million for Ebola. 
+
+For smallpox, we ran 20 parallel MCMC chains each with 320,000 samples. We discarded the first 20,000 iterations as burn-in and removed every sixth sample. This procedure yielded 1 million samples from the posterior distribution.
+
+For MERS-CoV, we ran 20 parallel MCMC chains each with 120,000 samples, discarding the first 20,000 iterations as burn-in and thinned every other sample. This procedure yielded 1 million samples from the posterior distribution.
+
+For Ebola, the data structure was different. Rather than having a unique single interval censored observation for every case, we had 300 draws from the posterior distribtion of incubation periods for each individual in the transmission tree. We ran a single parallel MCMC chain for each of the 300 posterior samples. Each chain had 110,000 samples, we discarded the first 100,000 as burn-in and did not thin. This procedure yielded 3 million samples from the posterior distribution. We chose to retain more samples for this analysis to account for the greater number of chains being run.
+
+Two-dimensional credible regions were estimated using kernel density estimation on the joint posterior distribution of gamma parameters with flexible bandwidth matrices estimated by multivariate smooth cross-validation.[@Duong:2005fk;@Duong:2015wn] 
 
 # Estimates of probabilities of infection
 
@@ -65,11 +75,24 @@ Stehling-Ariza et al.[@StehlingAriza:2015vd] reported `r format(9512 + 527)` mon
 
 From these numbers, we extrapolate that `r format(9512 + 527)`/  `r round(case_fraction,2)` or roughly `r format(round((9512 + 527)/case_fraction, -3))` individuals at low (but not zero) risk could have been eligible for monitoring over the course of the entire outbreak.  Similarly, we extrapolate that `r round(315/case_fraction, -3)` some or high risk individuals could have been eligible for monitoring in the United States over the entire course of the outbreak. Both extrapolations have been rounded to the nearest thousand.
 
++---------------------------+---------------------+-------------------------+----------------------------+
+|CDC risk level             | Number of cases\    | Estimated denominator\  | Estimated probability of\  |
+|                           | reported in the US  | for whole outbreak      |  developing Ebola ($\phi$) |
++===========================+=====================+=========================+============================+
+| "Low (but not zero) risk" | 3                   | 26,000                  |  1/10,000                  | 
++---------------------------+---------------------+-------------------------+----------------------------+
+|"Some risk or high risk"   | 1                   | 1,000                   |  1/1,000                   |
++---------------------------+---------------------+-------------------------+----------------------------+
 
+
+
+<!--
 CDC risk level | Number of cases reported in the United States | Estimated denominator for whole outbreak | Estimated probability of developing Ebola ($\phi$)
----------------|---------|-------------|-------------------------
+---------|---------|---------|---------
 "Low (but not zero) risk" | 3 | `r format(round((9512 + 527)/case_fraction, -3))` | 1/10,000
 "Some risk or high risk" | 1 | `r round(315/case_fraction, -3)` |  1/1,000
+-->
+
 
 # Estimates of probability of developing an unrelated infection
 
@@ -94,13 +117,21 @@ We developed a probabilistic model for evaluating the likelihood that a monitore
 
 The model-based probabilities for the disease of concern (see Figure 1, main text) are calculated as:
 
-outcome  | probability
-----------------------|----------------------------------------
-does not develop disease of concern | $\pi_1 = 1-\phi$
-does not develop disease of concern & not hospitalized for other symptoms | $\pi_1 (1-\theta_d)$
-does not develop disease of concern & hospitalized for other symptoms | $\pi_1 \theta_d$
-develops disease of concern during active monitoring | $\pi_2 = \phi\cdot Pr(T\leq d+u)$
-develops disease of concern after active monitoring | $\pi_3 = \phi\cdot Pr(T > d+u)$
++------------------------------------------------------+----------------------+
+| outcome                                              | probability          |
++======================================================+======================+
+| does not develop disease of concern                  | $\pi_1 = 1-\phi$     |
++------------------------------------------------------+----------------------+
+| does not develop disease of concern &\               | $\pi_1 (1-\theta_d)$ |
+| not hospitalized for other symptoms                  |                      |
++------------------------------------------------------+----------------------+
+| does not develop disease of concern &\               | $\pi_1 \theta_d$     |
+| hospitalized for other symptoms                      |                      |
++------------------------------------------------------+----------------------+
+| develops disease of concern during active monitoring | $\pi_2 = \phi\cdot Pr(T\leq d+u)$ |
++------------------------------------------------------+----------------------+
+| develops disease of concern after active monitoring  | $\pi_3 = \phi\cdot Pr(T > d+u)$ |
++------------------------------------------------------+----------------------+
 
 We quantified the uncertainty about the probability for each outcome scenario attributable to parameter uncertainty (in our estimates of the incubation period distribution) and to uncertainty associated with not knowing the time between infection and the beginning of active monitoring. For parameter uncertainty, we computed each outcome scenario probability from a sample of the posterior distribution of gamma parameters for a fixed $u$. For uncertainty in the infection time, we assumed that $u$ was distributed uniformly, and calculated outcome probabilities for a set of random samples from this distribution while holding the gamma parameters fixed at their posterior median values. To account for both uncertainties, we sampled simultaneously from both distributions.
 

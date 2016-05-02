@@ -21,9 +21,9 @@ if(RUN_SENSITIVITY_ANALYSIS) {
     sens_label <- ""
 }
 
-nsamp <- 1100000
+nsamp  <- 110000
 burnin <- 100000
-nthin <- 100
+nthin <- 1
 
 nfits <- ncol(dcc)
 registerDoParallel(cores=20)
