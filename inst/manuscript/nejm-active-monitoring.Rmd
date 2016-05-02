@@ -40,8 +40,19 @@ data("smallpox_gamma_posterior")
 
 [NEJM Original Article specs: 2700 words, abstract, a max of 5 tables and figures, up to 40 references.]
 
-# Abstract 
-(250 words)
+# Abstract(250 words)
+
+### Background
+Ebola, Middle East Respiratory Syndrome Coronavirus (MERS-CoV), and smallpox are prime examples of pathogens for which active monitoring could play a pivotal role in preventing a large-scale outbreak.
+
+### Methods
+We used a probabilistic model to evaluate whether a monitored individual will become symptomatic with the disease of interest during a period of active monitoring. Our model estimates the risks and costs associated with active monitoring programs. Data on the number of individuals actively monitored by New York City during the west African Ebola outbreak and costs associated with the city's overall Ebola response were used as a case-study of active monitoring.
+
+### Results 
+During the west African Ebola outbreak, CDC recommended active monitoring for 21 days. This corresponds to about XX times the estimated median incubation period for Ebola of XX days. To tolerate the same level of absolute risk in a future outbreak of either MERS-CoV or Smallpox, our model suggests that a duration of active monitoring could be set at less than 2 times the median incubation period for each pathogen. New York City spent over $1.9 million on their active monitoring program, which monitored 5,321 individuals over XX months. 
+
+### Conclusions
+Minimizing unneccessary monitoring could provide valuable savings to public health agencies. Some cost-efficiency may be achieved through simple targeted strategies. As CDC already recommends, it may be appropriate to use exposure risk categories to modify the duration or intensity of active monitoring. Additionally, stronger public health messaging could encourage travelers to take necessary health precautions to avoid common travel-associated illnesses, which would reduce false alarms.
 
 
 # Introduction
