@@ -17,8 +17,8 @@ d$ip_min <- d$reported_incper
 d$ip_max <- d$reported_incper + 1
 
 ## MCMC setup
-nsamp <- 320000 ## 110,000 samples
-burnin <- 20000 ## remove 10,000 for burn-in
+nsamp <- 320000 ## 1320,000 samples
+burnin <- 20000 ## remove 20,000 for burn-in
 nthin <- 6      ## thin to leave 50,000 samples per chain
 registerDoParallel(cores=20) ## 20 chains so 1,000,000 samples total
 
