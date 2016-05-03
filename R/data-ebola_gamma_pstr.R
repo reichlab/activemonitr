@@ -68,3 +68,15 @@ NULL
 #' @name pstr_gamma_params_smallpox
 #' @usage data(pstr_gamma_params_smallpox)
 NULL
+
+
+#' 
+#' Kernel Density Estimates for posterior distributions
+#'
+#' @format Output from fit_kde() function in inst/analysis-code/inc-per-mcmc.R. Data used in plotting credible regions of posterior estimates.
+#' @docType data
+#' @name kde_smallpox
+#' @name kde_ebola
+#' @name kde_mers
+#' @usage data(kde_ebola)
+NULL
