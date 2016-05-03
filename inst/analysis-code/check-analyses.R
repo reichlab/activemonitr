@@ -9,7 +9,6 @@ source('inst/analysis-code/inc-per-mcmc.R')
 load("inst/analysis-output/20160503-pstr-gamma-distr-params-mers.rda")
 load("inst/analysis-output/20160503-kde-mers.rda")
 
-
 qplot(idx, shape, data=pstr_gamma_params_mers[1:50000,], geom="line")
 qplot(idx, shape, data=pstr_gamma_params_mers[50000:100000,], geom="line")
 
@@ -29,19 +28,6 @@ qplot(idx, shape, data=pstr_gamma_params_ebola[50000:500000,], geom="line")
 
 qplot(idx, scale, data=pstr_gamma_params_ebola[1:50000,], geom="line")
 qplot(idx, scale, data=pstr_gamma_params_ebola[50000:500000,], geom="line")
-
-
-##########################################################
-## load ebola SENS fits: object pstr_gamma_params_ebola      ##
-load("inst/analysis-output/20160427-pstr-gamma-distr-params-ebolasens.rda")
-load("inst/analysis-output/20160427-kde-ebola.rda")
-
-qplot(idx, shape, data=pstr_gamma_params_ebola[1:50000,], geom="line")
-qplot(idx, shape, data=pstr_gamma_params_ebola[50000:100000,], geom="line")
-
-qplot(idx, scale, data=pstr_gamma_params_ebola[1:50000,], geom="line")
-qplot(idx, scale, data=pstr_gamma_params_ebola[50000:100000,], geom="line")
-
 
 ###########################################################
 ## load smallpox fits: object pstr_gamma_params_smallpox ##
@@ -75,17 +61,8 @@ get_Rhat(pstr_gamma_params_smallpox)
 #####################
 
 library(gridExtra)
-# p_ebola <- plot_gamma_posterior(pstr_gamma_params_ebola, H=hscv_ebola)
-# p_smallpox <- plot_gamma_posterior(pstr_gamma_params_smallpox, H=hscv_smallpox)
-# p_mers <- plot_gamma_posterior(pstr_gamma_params_mers, H=hscv_mers)
-# grid.arrange(p_ebola, p_smallpox, p_mers, ncol=1)
-# 
-# plot_all_regions <- plot_credible_regions(list(pstr_gamma_params_ebola,
-#                                                pstr_gamma_params_mers,
-#                                                pstr_gamma_params_smallpox), 
-#                                           Hs=list(hscv_ebola, 
-#                                                   hscv_mers,
-#                                                   hscv_smallpox))
+colors <- c("#1b9e77", "#d95f02", "#7570b3")
+lighter_colors <- c("#8ecfbc", "#fdb174", "#b8b6d6")
 
 plot_all_regions <- plot_modified_credible_regions(list(pstr_gamma_params_ebola,
                                                         pstr_gamma_params_mers,
@@ -93,10 +70,9 @@ plot_all_regions <- plot_modified_credible_regions(list(pstr_gamma_params_ebola,
                                                    kdes=list(kde_ebola, 
                                                              kde_mers,
                                                              kde_smallpox),
-                                                   label_txt=c("Ebola", "MERS-CoV", "Smallpox"))
+                                                   label_txt=c("Ebola", "MERS-CoV", "Smallpox"),
+                                                   colors=colors)
 
-colors <- c("#1b9e77", "#d95f02", "#7570b3")
-lighter_colors <- c("#8ecfbc", "#fdb174", "#b8b6d6")
 nplots <- 500
 ebola_densities <- plot_gamma_densities(pstr_gamma_params_ebola, kde=kde_ebola,
                                         n_to_plot = nplots, 
@@ -120,4 +96,37 @@ smallpox_densities <- plot_gamma_densities(pstr_gamma_params_smallpox, kde=kde_s
 grid.arrange(plot_all_regions,
              arrangeGrob(ebola_densities, mers_densities, smallpox_densities,
                          heights=c(.32, .32, .36)),
+             ncol=2)
+
+####################################
+## plot posteriors w/ SENSITIVITY ##
+####################################
+
+pstr_gamma_params_ebola_orig <- pstr_gamma_params_ebola
+kde_ebola_orig <- kde_ebola
+
+load("inst/analysis-output/20160503-pstr-gamma-distr-params-ebolasens.rda")
+load("inst/analysis-output/20160503-kde-ebolasens.rda")
+
+plot_all_regions <- plot_modified_credible_regions(list(pstr_gamma_params_ebola_orig,
+                                                        pstr_gamma_params_ebola,
+                                                        pstr_gamma_params_mers,
+                                                        pstr_gamma_params_smallpox), 
+                                                   kdes=list(kde_ebola_orig,
+                                                             kde_ebola,
+                                                             kde_mers,
+                                                             kde_smallpox),
+                                                   label_txt=c("Ebola", "Ebola_sens", "MERS-CoV", "Smallpox"),
+                                                   colors=c("#1b9e77", "#1b9e77", "#d95f02", "#7570b3"))
+
+ebola_sens_densities <- plot_gamma_densities(pstr_gamma_params_ebola, kde=kde_ebola,
+                                        n_to_plot = nplots, 
+                                        plotcolor=colors[1], 
+                                        plotcolor_light = lighter_colors[1],
+                                        label_txt="Ebola (sens.)",
+                                        xaxs_lab=FALSE)
+
+grid.arrange(plot_all_regions,
+             arrangeGrob(ebola_densities, ebola_sens_densities, mers_densities, smallpox_densities,
+                         heights=c(.24, .24, .24, .28)),
              ncol=2)

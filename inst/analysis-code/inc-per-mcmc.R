@@ -374,14 +374,12 @@ plot_credible_regions <- function(mcmc_dfs, Hs, p95.breaks=c(10, 15, 21), n_poin
 ##' @param mcmc_dfs the rbound outputs from inc_per_mcmc
 ##' @param kdes list of results from call to fit_kde
 ##' @param label_txt labels for points
-plot_modified_credible_regions <- function(mcmc_dfs, kdes, label_txt) {
+##' @param colors colors for each region
+plot_modified_credible_regions <- function(mcmc_dfs, kdes, label_txt, colors) {
     require(ggplot2)
     require(ks)
     require(reshape2)
     require(dplyr)
-
-    ## colors
-    colors <- c("#1b9e77", "#d95f02", "#7570b3")
     
     ## set credible region data for KDE percentiles
     pstr_median <- data.frame(median=rep(NA, length(mcmc_dfs)), 

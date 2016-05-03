@@ -32,9 +32,10 @@ library(tidyr)
 library(scales)
 library(knitr)
 theme_set(theme_bw())
-data("ebola_gamma_pstr")
-data("mers_gamma_posterior")
-data("smallpox_gamma_posterior")
+data("pstr_gamma_params_ebola")
+data("pstr_gamma_params_mers")
+data("pstr_gamma_params_smallpox")
+source('../analysis-code/inc-per-mcmc.R')
 ```
 
 
@@ -49,7 +50,7 @@ Ebola, Middle East Respiratory Syndrome Coronavirus (MERS-CoV), and smallpox are
 We used a probabilistic model to evaluate whether a monitored individual will become symptomatic with the disease of interest during a period of active monitoring. Our model estimates the risks and costs associated with active monitoring programs. Data on the number of individuals actively monitored by New York City during the west African Ebola outbreak and costs associated with the city's overall Ebola response were used as a case-study of active monitoring.
 
 ### Results 
-During the west African Ebola outbreak, CDC recommended active monitoring for 21 days. This corresponds to about XX times the estimated median incubation period for Ebola of XX days. To tolerate the same level of absolute risk in a future outbreak of either MERS-CoV or Smallpox, our model suggests that a duration of active monitoring could be set at less than 2 times the median incubation period for each pathogen. New York City spent over $1.9 million on their active monitoring program, which monitored 5,321 individuals over XX months. 
+During the west African Ebola outbreak, CDC recommended active monitoring for 21 days. This corresponds to about `r my_round(21/mean(pstr_gamma_params_ebola$median),1)` times the estimated median incubation period for Ebola of `r my_round(mean(pstr_gamma_params_ebola$median),1)` days. To tolerate the same level of absolute risk in a future outbreak of either MERS-CoV or Smallpox, our model suggests that a duration of active monitoring could be set at less than 2 times the median incubation period for each pathogen. New York City spent over $1.9 million on their active monitoring program, which monitored 5,321 individuals over XX months. 
 
 ### Conclusions
 Minimizing unneccessary monitoring could provide valuable savings to public health agencies. Some cost-efficiency may be achieved through simple targeted strategies. As CDC already recommends, it may be appropriate to use exposure risk categories to modify the duration or intensity of active monitoring. Additionally, stronger public health messaging could encourage travelers to take necessary health precautions to avoid common travel-associated illnesses, which would reduce false alarms.
@@ -98,23 +99,17 @@ For the CDC Ebola risk strata, we estimated probabilities of a monitored individ
 
 # Results
 
-```{r}
-ebola_gamma_pstr$median <- qgamma(.5, 
-                                  shape=ebola_gamma_pstr$shape,
-                                  scale=ebola_gamma_pstr$scale)
-ebola_gamma_pstr$p95 <- qgamma(.95, 
-                                  shape=ebola_gamma_pstr$shape,
-                                  scale=ebola_gamma_pstr$scale)
-```
-
 ### Incubation period estimates
 
-Estimates and credible regions for incubation period distribution parameters for Ebola, MERS-CoV, and smallpox are shown in Figure 2. Consistent with other studies that used the same data,[@Faye:2015jc;@Virlogeux:2016ty;@Nishiura:2009dh] we estimate that half of all cases of Ebola will have incubation periods of less than `r my_round(mean(ebola_gamma_pstr$median),1)` days (95% CI: `r my_round(quantile(ebola_gamma_pstr$median, .025),1)`--`r my_round(quantile(ebola_gamma_pstr$median, .975),1)`), of MERS-CoV less than `r my_round(mean(mers_gamma_posterior$median),1)` days (95% CI: `r my_round(quantile(mers_gamma_posterior$median, .025),1)`--`r my_round(quantile(mers_gamma_posterior$median, .975),1)`) and of smallpox less than `r my_round(mean(smallpox_gamma_posterior$median),1)` days (95% CI: `r my_round(quantile(smallpox_gamma_posterior$median, .025),1)`--`r my_round(quantile(smallpox_gamma_posterior$median, .975),1)`). Additionally, the data suggest that 95% cases of Ebola will have incubation periods of less than `r my_round(mean(ebola_gamma_pstr$p95),1)` days (95% CI: `r my_round(quantile(ebola_gamma_pstr$p95, .025),1)`--`r my_round(quantile(ebola_gamma_pstr$p95, .975),1)`), of MERS-CoV `r my_round(mean(mers_gamma_posterior$p95),1)` days (95% CI: `r my_round(quantile(mers_gamma_posterior$p95, .025),1)`--`r my_round(quantile(mers_gamma_posterior$p95, .975),1)`), and of smallpox `r my_round(mean(smallpox_gamma_posterior$p95),1)` days (95% CI: `r my_round(quantile(smallpox_gamma_posterior$p95, .025),1)`--`r my_round(quantile(smallpox_gamma_posterior$p95, .975),1)`).
+Estimates and credible regions for incubation period distribution parameters for Ebola, MERS-CoV, and smallpox are shown in Figure 2. Consistent with other studies that used the same data,[@Faye:2015jc;@Virlogeux:2016ty;@Nishiura:2009dh] we estimate that half of all cases of Ebola will have incubation periods of less than `r my_round(mean(pstr_gamma_params_ebola$median),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_ebola$median, .025),1)`--`r my_round(quantile(pstr_gamma_params_ebola$median, .975),1)`), of MERS-CoV less than `r my_round(mean(pstr_gamma_params_mers$median),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_mers$median, .025),1)`--`r my_round(quantile(pstr_gamma_params_mers$median, .975),1)`) and of smallpox less than `r my_round(mean(pstr_gamma_params_smallpox$median),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_smallpox$median, .025),1)`--`r my_round(quantile(pstr_gamma_params_smallpox$median, .975),1)`). Additionally, the data suggest that 95% cases of Ebola will have incubation periods of less than `r my_round(mean(pstr_gamma_params_ebola$p95),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_ebola$p95, .025),1)`--`r my_round(quantile(pstr_gamma_params_ebola$p95, .975),1)`), of MERS-CoV `r my_round(mean(pstr_gamma_params_mers$p95),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_mers$p95, .025),1)`--`r my_round(quantile(pstr_gamma_params_mers$p95, .975),1)`), and of smallpox `r my_round(mean(pstr_gamma_params_smallpox$p95),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_smallpox$p95, .025),1)`--`r my_round(quantile(pstr_gamma_params_smallpox$p95, .975),1)`).
 
 Smallpox is estimated to have the longest median incubation period of the three pathogens considered, although its distribution also showed the least overall variance. We estimate that MERS-CoV incubation periods are the shortest of the three, with the upper limit of the 95th percentile being just above 15 days (Figure 2). 
 
 
-```{r figure2-estimated-distribution-dynamic, fig.path='static-figures/', fig.show='hide'}
+```{r figure2-estimated-distribution-dynamic, fig.path='static-figures/', fig.show='hide', fig.height=5, cache=TRUE}
+data(kde_smallpox) 
+data(kde_ebola)
+data(kde_mers)
 plot_all_regions <- plot_modified_credible_regions(list(pstr_gamma_params_ebola,
                                                         pstr_gamma_params_mers,
                                                         pstr_gamma_params_smallpox), 
@@ -122,9 +117,36 @@ plot_all_regions <- plot_modified_credible_regions(list(pstr_gamma_params_ebola,
                                                              kde_mers,
                                                              kde_smallpox),
                                                    label_txt=c("Ebola", "MERS-CoV", "Smallpox"))
+
+colors <- c("#1b9e77", "#d95f02", "#7570b3")
+lighter_colors <- c("#8ecfbc", "#fdb174", "#b8b6d6")
+nplots <- 500
+ebola_densities <- plot_gamma_densities(pstr_gamma_params_ebola, kde=kde_ebola,
+                                        n_to_plot = nplots, 
+                                        plotcolor=colors[1], 
+                                        plotcolor_light = lighter_colors[1],
+                                        label_txt="Ebola",
+                                        xaxs_lab=FALSE)
+mers_densities <- plot_gamma_densities(pstr_gamma_params_mers, kde=kde_mers,
+                                       n_to_plot = nplots, 
+                                       plotcolor=colors[2], 
+                                       plotcolor_light = lighter_colors[2],
+                                       label_txt="MERS-CoV",
+                                       xaxs_lab=FALSE)
+smallpox_densities <- plot_gamma_densities(pstr_gamma_params_smallpox, kde=kde_smallpox,
+                                           n_to_plot = nplots, 
+                                           plotcolor=colors[3], 
+                                           plotcolor_light = lighter_colors[3],
+                                           label_txt="Smallpox",
+                                           xaxs_lab=TRUE)
+
+grid.arrange(plot_all_regions,
+             arrangeGrob(ebola_densities, mers_densities, smallpox_densities,
+                         heights=c(.32, .32, .36)),
+             ncol=2)
 ```
 
-![Figure 2. Estimates and credible regions for incubation period distributions for Ebola, MERS-CoV and smallpox. The shaded elliptical areas represent regions that contain 95% of the estimated posterior distributions for each of the three diseases. The disease-specific curves plotted on the right show the estimated distribution for the incubation period for each disease (dark line). To show some of the uncertainty associated with these estimates, a random selection of density functions sampled from the joint posterior are represented by colored transparent lines around the heavy lines. Shaded vertical bands indicate the marginal credible regions for the median and 95th percentile.](static-figures/figure2-estimated-distributions.png)
+![Figure 2. Estimates and credible regions for incubation period distributions for Ebola, MERS-CoV and smallpox. The shaded elliptical areas represent regions that contain 95% of the estimated posterior distributions for each of the three diseases. The disease-specific curves plotted on the right show the estimated distribution for the incubation period for each disease (dark line). To show some of the uncertainty associated with these estimates, a random selection of density functions sampled from the joint posterior are represented by colored transparent lines around the heavy lines. Shaded vertical bands indicate the marginal credible regions for the median and 95th percentile.](static-figures/figure2-estimated-distribution-dynamic-5.pdf)
 
 
 ### Modeling the risk of symptomatic illness: Ebola case study
@@ -136,7 +158,7 @@ Incorporating these probabilities into our model, we calculated for each pathoge
 
 The model showed that an increase in the duration of the active monitoring period is associated with a decline in the probability that an individual develops symptoms due to the disease of concern after the active monitoring period ends. The rate at which that risk declines depends on the estimated variability of the incubation period distribution. Since the estimated incubation period distribution for Ebola showed the highest variability, the probability of symptoms occuring after active monitoring ends decreased more slowly when compared with the other pathogens. 
 
-During the west African Ebola outbreak, CDC recommended active monitoring for 21 days. This corresponds to about `r my_round(21/mean(ebola_gamma_pstr$median),1)` times the estimated median incubation period for Ebola  of `r my_round(mean(ebola_gamma_pstr$median),1)` days (vertical dashed line, Figure 3). To tolerate the same level of absolute risk for either MERS-CoV or Smallpox, our model suggests that a duration of active monitoring could be set at less than 2 times the median incubation period. 
+During the west African Ebola outbreak, CDC recommended active monitoring for 21 days. This corresponds to about `r my_round(21/mean(pstr_gamma_params_ebola$median),1)` times the estimated median incubation period for Ebola  of `r my_round(mean(pstr_gamma_params_ebola$median),1)` days (vertical dashed line, Figure 3). To tolerate the same level of absolute risk for either MERS-CoV or Smallpox, our model suggests that a duration of active monitoring could be set at less than 2 times the median incubation period. 
 
 ```{r risk-plots, fig.show='hide', cache=TRUE}
 phis <- c(1/1000, 1/10000)
@@ -144,17 +166,17 @@ durs <- 5:40
 yrange <- c(1e-18, 1e-2)
 
 ## determine max u for each disease such that max(u)/2 + m = 90th percentile of T
-tmp <- mean(qgamma(.90, shape=ebola_gamma_pstr$shape, scale=ebola_gamma_pstr$scale))
-maxu_ebola <- 2*(tmp - mean(ebola_gamma_pstr$median))
+tmp <- mean(qgamma(.90, shape=pstr_gamma_params_ebola$shape, scale=pstr_gamma_params_ebola$scale))
+maxu_ebola <- 2*(tmp - mean(pstr_gamma_params_ebola$median))
 
-tmp <- mean(qgamma(.90, shape=mers_gamma_posterior$shape, scale=mers_gamma_posterior$scale))
-maxu_mers <- 2*(tmp - mean(mers_gamma_posterior$median))
+tmp <- mean(qgamma(.90, shape=pstr_gamma_params_mers$shape, scale=pstr_gamma_params_mers$scale))
+maxu_mers <- 2*(tmp - mean(pstr_gamma_params_mers$median))
 
-tmp <- mean(qgamma(.90, shape=smallpox_gamma_posterior$shape, scale=smallpox_gamma_posterior$scale))
-maxu_smallpox <- 2*(tmp - mean(smallpox_gamma_posterior$median))
+tmp <- mean(qgamma(.90, shape=pstr_gamma_params_smallpox$shape, scale=pstr_gamma_params_smallpox$scale))
+maxu_smallpox <- 2*(tmp - mean(pstr_gamma_params_smallpox$median))
 
 ## make plots/data
-p_ebola <- plot_risk_uncertainty(ebola_gamma_pstr, phi=phis, 
+p_ebola <- plot_risk_uncertainty(pstr_gamma_params_ebola, phi=phis, 
                                  max_u = maxu_ebola,
                                  durations=durs, 
                                  return_plot=TRUE,
@@ -163,7 +185,7 @@ p_ebola <- plot_risk_uncertainty(ebola_gamma_pstr, phi=phis,
                                  include_legend = FALSE)
 p_ebola_text <- arrangeGrob(p_ebola[["plot"]], 
                                left=textGrob("Ebola",gp=gpar(fontface="bold"), rot=90, vjust=1))
-p_mers <- plot_risk_uncertainty(mers_gamma_posterior, phi=phis, 
+p_mers <- plot_risk_uncertainty(pstr_gamma_params_mers, phi=phis, 
                                 max_u = maxu_mers,
                                 durations=durs, return_plot=TRUE,
                                 return_data=TRUE,
@@ -171,7 +193,7 @@ p_mers <- plot_risk_uncertainty(mers_gamma_posterior, phi=phis,
                                 include_legend=FALSE)
 p_mers_text <- arrangeGrob(p_mers[["plot"]], 
                            left=textGrob("MERS-CoV",gp=gpar(fontface="bold"), rot=90, vjust=1))
-p_smallpox <- plot_risk_uncertainty(smallpox_gamma_posterior, phi=phis, 
+p_smallpox <- plot_risk_uncertainty(pstr_gamma_params_smallpox, phi=phis, 
                                     max_u = maxu_smallpox,
                                     durations=durs, return_plot=TRUE,
                                     return_data=TRUE,
@@ -183,9 +205,9 @@ p_smallpox_text <- arrangeGrob(p_smallpox[["plot"]],
 ```{r, fig.cap="Figure 3. Estimated probabilities of symptoms occuring after active monitoring (AM) ends across different active monitoring period durations, shown as multiples of the median incubation period. Figures are shown for some- or high-risk ($\\phi$=1/1,000) and low (but not zero) risk ($\\phi$=1/10,000) scenarios. The vertical dashed line indicates the 21 day duration recommended for Ebola active monitoring (i.e. approximately 2.4 times the median incubation period of Ebola).", fig.height=3}
 
 data_for_scaling <- data_frame(Disease=c("Ebola", "MERS-CoV", "Smallpox"),
-                               median_incper=c(mean(ebola_gamma_pstr$median),
-                                               mean(mers_gamma_posterior$median), 
-                                               mean(smallpox_gamma_posterior$median)))
+                               median_incper=c(mean(pstr_gamma_params_ebola$median),
+                                               mean(pstr_gamma_params_mers$median), 
+                                               mean(pstr_gamma_params_smallpox$median)))
 
 all_data <- rbind(mutate(p_ebola[["data"]], Disease="Ebola"),
                   mutate(p_mers[["data"]], Disease="MERS-CoV"),
@@ -205,7 +227,7 @@ ggplot(all_data, aes(x=d_scaled, y=p50)) +
     facet_grid(.~phi_lab) + #, labeller=label_parsed) + 
     scale_y_log10(breaks=c(1/10000, 1/100000, 1/1000000, 1/10000000, 1/100000000), labels=c("1/10,000", "1/100,000", "1/1,000,000", "1/10,000,000","1/100,000,000")) +
     scale_color_manual(values=colors) +
-    geom_vline(xintercept=21/mean(ebola_gamma_pstr$median),
+    geom_vline(xintercept=21/mean(pstr_gamma_params_ebola$median),
                linetype=2, color=colors[1]) +
     coord_cartesian(ylim=c(1e-9, 5e-04), xlim=c(1, 3)) +
     xlab("Duration of AM period (in multiples of median incubation period)") +
@@ -241,9 +263,9 @@ cost_falsepos <- c(10000,30000) ## cost of false positive testing
 
 cost_mat <- rbind(cost_m, cost_trt, cost_exp, cost_falsepos)
 
-gamma_params <- c(median = mean(ebola_gamma_pstr$median), 
-                shape = mean(ebola_gamma_pstr$shape),
-                scale = mean(ebola_gamma_pstr$scale))
+gamma_params <- c(median = mean(pstr_gamma_params_ebola$median), 
+                shape = mean(pstr_gamma_params_ebola$shape),
+                scale = mean(pstr_gamma_params_ebola$scale))
 durs <- c(1.5, 2, 3, 5)
 phis <- c(1/1000, 1/10000)
 
