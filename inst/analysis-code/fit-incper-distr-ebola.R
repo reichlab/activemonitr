@@ -12,7 +12,7 @@ todays_date <- format(Sys.Date(), "%Y%m%d")
 d <- read.table('inst/raw-data/DURATION.INCUB.txt')
 dcc <- d[complete.cases(d),]
 
-RUN_SENSITIVITY_ANALYSIS <- FALSE
+RUN_SENSITIVITY_ANALYSIS <- TRUE
 
 if(RUN_SENSITIVITY_ANALYSIS) {
     sens_label <- "sens"

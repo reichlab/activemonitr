@@ -6,31 +6,30 @@ source('inst/analysis-code/inc-per-mcmc.R')
 
 ########################################################
 ## load mers fits: object pstr_gamma_params_mers      ##
-load("inst/analysis-output/20160429-pstr-gamma-distr-params-mers.rda")
-load("inst/analysis-output/20160428-kde-mers.rda")
+load("inst/analysis-output/20160503-pstr-gamma-distr-params-mers.rda")
+load("inst/analysis-output/20160503-kde-mers.rda")
 
 
 qplot(idx, shape, data=pstr_gamma_params_mers[1:50000,], geom="line")
 qplot(idx, shape, data=pstr_gamma_params_mers[50000:100000,], geom="line")
 
 qplot(idx, scale, data=pstr_gamma_params_mers[1:50000,], geom="line")
-qplot(idx, scale, data=pstr_gamma_params_mers[50000:100000,], geom="line")
-
-plot_gamma_posterior(pstr_gamma_params_mers, H=kde_mers)
+qplot(idx, scale, data=pstr_gamma_params_mers[50000:500000,], geom="line")
 
 
 ##########################################################
 ## load ebola fits: object pstr_gamma_params_ebola      ##
-load("inst/analysis-output/20160427-pstr-gamma-distr-params-ebola.rda")
-load("inst/analysis-output/20160427-kde-ebola.rda")
+load("inst/analysis-output/20160502-pstr-gamma-distr-params-ebola.rda")
+load("inst/analysis-output/20160502-kde-ebola.rda")
 
+## these plots don't look stationary because each chain is not 
+##  estimating exactly the same distribution
 qplot(idx, shape, data=pstr_gamma_params_ebola[1:50000,], geom="line")
-qplot(idx, shape, data=pstr_gamma_params_ebola[50000:100000,], geom="line")
+qplot(idx, shape, data=pstr_gamma_params_ebola[50000:500000,], geom="line")
 
 qplot(idx, scale, data=pstr_gamma_params_ebola[1:50000,], geom="line")
-qplot(idx, scale, data=pstr_gamma_params_ebola[50000:100000,], geom="line")
+qplot(idx, scale, data=pstr_gamma_params_ebola[50000:500000,], geom="line")
 
-plot_gamma_posterior(pstr_gamma_params_ebola, H=hscv_ebola)
 
 ##########################################################
 ## load ebola SENS fits: object pstr_gamma_params_ebola      ##
@@ -43,23 +42,18 @@ qplot(idx, shape, data=pstr_gamma_params_ebola[50000:100000,], geom="line")
 qplot(idx, scale, data=pstr_gamma_params_ebola[1:50000,], geom="line")
 qplot(idx, scale, data=pstr_gamma_params_ebola[50000:100000,], geom="line")
 
-plot_gamma_posterior(pstr_gamma_params_ebola, H=hscv_ebola_p50)
-
-
 
 ###########################################################
 ## load smallpox fits: object pstr_gamma_params_smallpox ##
-load("inst/analysis-output/20160429-pstr-gamma-distr-params-smallpox.rda")
-load("inst/analysis-output/20160429-kde-smallpox.rda")
+load("inst/analysis-output/20160503-pstr-gamma-distr-params-smallpox.rda")
+load("inst/analysis-output/20160503-kde-smallpox.rda")
 
 qplot(idx, shape, data=pstr_gamma_params_smallpox[1:50000,], geom="line")
-qplot(idx, shape, data=pstr_gamma_params_smallpox[50000:100000,], geom="line")
+qplot(idx, shape, data=pstr_gamma_params_smallpox[50000:500000,], geom="line")
 
 qplot(idx, scale, data=pstr_gamma_params_smallpox[1:50000,], geom="line")
-qplot(idx, scale, data=pstr_gamma_params_smallpox[50000:100000,], geom="line")
+qplot(idx, scale, data=pstr_gamma_params_smallpox[50000:500000,], geom="line")
 
-
-plot_gamma_posterior(pstr_gamma_params_smallpox, H=hscv_smallpox)
 
 #######################
 ## check convergence ##
@@ -70,7 +64,6 @@ get_Rhat(pstr_gamma_params_mers)
 
 acf(pstr_gamma_params_ebola$shape)
 acf(pstr_gamma_params_ebola$scale)
-get_Rhat(pstr_gamma_params_ebola)
 
 acf(pstr_gamma_params_smallpox$shape)
 acf(pstr_gamma_params_smallpox$scale)

@@ -113,6 +113,17 @@ Estimates and credible regions for incubation period distribution parameters for
 
 Smallpox is estimated to have the longest median incubation period of the three pathogens considered, although its distribution also showed the least overall variance. We estimate that MERS-CoV incubation periods are the shortest of the three, with the upper limit of the 95th percentile being just above 15 days (Figure 2). 
 
+
+```{r figure2-estimated-distribution-dynamic, fig.path='static-figures/', fig.show='hide'}
+plot_all_regions <- plot_modified_credible_regions(list(pstr_gamma_params_ebola,
+                                                        pstr_gamma_params_mers,
+                                                        pstr_gamma_params_smallpox), 
+                                                   kdes=list(kde_ebola, 
+                                                             kde_mers,
+                                                             kde_smallpox),
+                                                   label_txt=c("Ebola", "MERS-CoV", "Smallpox"))
+```
+
 ![Figure 2. Estimates and credible regions for incubation period distributions for Ebola, MERS-CoV and smallpox. The shaded elliptical areas represent regions that contain 95% of the estimated posterior distributions for each of the three diseases. The disease-specific curves plotted on the right show the estimated distribution for the incubation period for each disease (dark line). To show some of the uncertainty associated with these estimates, a random selection of density functions sampled from the joint posterior are represented by colored transparent lines around the heavy lines. Shaded vertical bands indicate the marginal credible regions for the median and 95th percentile.](static-figures/figure2-estimated-distributions.png)
 
 
