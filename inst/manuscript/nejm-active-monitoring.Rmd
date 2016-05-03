@@ -3,12 +3,12 @@ title: "Reducing the threat of imported infectious disease outbreaks with active
 author: "Nicholas G Reich, Neil M Vora, Jay K Varma, Justin Lessler"
 date: "April, 2016"
 output:
-  pdf_document:
+  word_document:
     fig_caption: yes
     fig_height: 5
     fig_width: 5
     md_extensions: +implicit_figures
-  word_document:
+  pdf_document:
     fig_caption: yes
     fig_height: 5
     fig_width: 5
@@ -110,16 +110,16 @@ Smallpox is estimated to have the longest median incubation period of the three 
 data(kde_smallpox) 
 data(kde_ebola)
 data(kde_mers)
+colors <- c("#1b9e77", "#d95f02", "#7570b3")
+lighter_colors <- c("#8ecfbc", "#fdb174", "#b8b6d6")
 plot_all_regions <- plot_modified_credible_regions(list(pstr_gamma_params_ebola,
                                                         pstr_gamma_params_mers,
                                                         pstr_gamma_params_smallpox), 
                                                    kdes=list(kde_ebola, 
                                                              kde_mers,
                                                              kde_smallpox),
-                                                   label_txt=c("Ebola", "MERS-CoV", "Smallpox"))
-
-colors <- c("#1b9e77", "#d95f02", "#7570b3")
-lighter_colors <- c("#8ecfbc", "#fdb174", "#b8b6d6")
+                                                   label_txt=c("Ebola", "MERS-CoV", "Smallpox"),
+                                                   colors=colors)
 nplots <- 500
 ebola_densities <- plot_gamma_densities(pstr_gamma_params_ebola, kde=kde_ebola,
                                         n_to_plot = nplots, 
