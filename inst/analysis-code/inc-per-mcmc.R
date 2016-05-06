@@ -375,7 +375,9 @@ plot_credible_regions <- function(mcmc_dfs, Hs, p95.breaks=c(10, 15, 21), n_poin
 ##' @param kdes list of results from call to fit_kde
 ##' @param label_txt labels for points
 ##' @param colors colors for each region
-plot_modified_credible_regions <- function(mcmc_dfs, kdes, label_txt, colors) {
+##' @param show.legend logical, passed to geom_point
+##' @param base.size size for font, to be passed to theme_bw()
+plot_modified_credible_regions <- function(mcmc_dfs, kdes, label_txt, colors, show.legend=FALSE, base.size=12) {
     require(ggplot2)
     require(ks)
     require(reshape2)
@@ -398,9 +400,12 @@ plot_modified_credible_regions <- function(mcmc_dfs, kdes, label_txt, colors) {
                               geom="polygon", 
                               fill=colors[i], alpha=.6) 
     }
-    p <- p + geom_point(data=pstr_median, aes(x=median, y=p95, color=label_txt),
-                        show.legend = FALSE) +
-        scale_color_manual(values=colors)
+    p <- p + geom_point(data=pstr_median, aes(x=median, y=p95, color=disease),
+                        show.legend = show.legend) +
+        theme_bw(base_size = base.size) + 
+        theme(legend.title=element_blank(),
+              legend.position=c(1,1), legend.justification=c(1,1)) +
+        scale_color_manual(values=colors) 
     print(p)
     return(p)
 }

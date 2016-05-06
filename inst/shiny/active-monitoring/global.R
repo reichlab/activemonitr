@@ -8,15 +8,22 @@
 require(shiny)
 require(dplyr)
 require(ggplot2)
+require(scales)
 require(grid)
 require(activeMonitr)
 
-load(file="ebola_gamma_pstr.rda")
-load(file="smallpox_gamma_posterior.rda")
-load(file="mers_gamma_posterior.rda")
+source("../../analysis-code/inc-per-mcmc.R")
+theme_set(theme_bw(base_size = 18))
+
+data("pstr_gamma_params_ebola")
+data("pstr_gamma_params_mers")
+data("pstr_gamma_params_smallpox")
+
+
 plot1_side_text <- conditionalPanel(
   condition="input.tabs == 'plot1'",
-  p("During potential pandemic scenarios, the US CDC has implemented active monitoring programs to track international travelers to minimize risk of disease transmission. You can use this web applet to explore the risks associated with different durations of active monitoring periods for Ebola, MERS-CoV, and Smallpox.")#,
+  p("Our model provides a range of expected costs for an active monitoring program, based on a series of assumptions.")
+  #p("During potential pandemic scenarios, the US CDC has implemented active monitoring programs to track international travelers to minimize risk of disease transmission. You can use this web applet to explore the risks associated with different durations of active monitoring periods for Ebola, MERS-CoV, and Smallpox.")#,
 #  tags$br(),
 #   tags$ul(
 #     tags$li('Please select the type of disease for which you are interested in viewing.'),
