@@ -42,7 +42,7 @@ source('../analysis-code/inc-per-mcmc.R')
 # Abstract
 
 __Background__    
-During outbreaks of deadly emerging pathogens (e.g., Ebola, MERS-CoV) and bioterror threats (e.g., smallpox), actively monitoring potentially exposed individuals is a critical public health intervention. Balancing its cost and performance is critical in forming biosecurity policy.
+During outbreaks of deadly emerging pathogens (e.g., Ebola, MERS-CoV) and bioterror threats (e.g., smallpox), actively monitoring potentially exposed individuals plays an important role in public health response. Balancing its cost and performance is critical in forming biosecurity policy.
 
 __Methods__    
 We model the risk of individuals becoming symptomatic from a disease of interest and other causes using a probabilistic model, estimating the risks and costs associated with active monitoring programs. As a case-study, we analyze data from New York City's active monitoring program during the west African Ebola outbreak.
