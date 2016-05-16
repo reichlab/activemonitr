@@ -1,6 +1,6 @@
 ---
 title: "Reducing the threat of imported infectious disease outbreaks with active monitoring"
-author: "Nicholas G Reich, Neil M Vora, Jay K Varma, Justin Lessler"
+author: "Nicholas G Reich, Justin Lessler, Jay K Varma, Neil M Vora"
 date: "May, 2016"
 output:
   word_document:
@@ -245,7 +245,7 @@ ggplot(all_data, aes(x=d_scaled, y=p50)) +
 <!--### Provide esimated cost per individual of monitoring in NYC-->
 The total expense for Ebola response by DOHMH during the period from July 31, 2014–November 7, 2015 was $9.7 million. Of this, $4.3 million was in response to a single Ebola case [@Yacisin:2015wm] and $1.9 million was for active monitoring. The remaining balance of $3.5 million was used for other Ebola preparedness activities. DOHMH monitored 5,321 non-unique individuals during this period (active monitoring began in NYC on October 25, 2014). These data imply that the cost of monitoring per person-day in NYC was $10–$20.
 
-Of the 5,321 monitored individuals, around 30 (0.6%) developed symptoms within the 21 day monitoring period that were serious enough to necessitate hospitalization to rule-out Ebola. None of the monitored individuals developed Ebola. (The single Ebola case diagnosed in NYC occurred prior to active monitoring being implemented.) It cost between $10,000 and $30,000 per hospitalization to rule out Ebola in symptomatic, actively monitored individuals at Bellevue Hospital in NYC (John Maher, personal communication). This does not include the substantial infrastructural costs of creating and maintaining a special pathogens unit. 
+The number of serious infection events occuring in actively monitored individuals in NYC was small. None of the monitored individuals developed Ebola. (The single Ebola case diagnosed in NYC occurred prior to active monitoring being implemented.) We assumed that a small fraction of monitored individuals, 30 (or 0.6%), developed symptoms within the 21 day monitoring period that were serious enough to necessitate hospitalization to rule-out Ebola.  It cost between $10,000 and $30,000 per hospitalization to rule out Ebola in symptomatic, actively monitored individuals at Bellevue Hospital in NYC (John Maher, personal communication). This does not include the substantial infrastructural costs of creating and maintaining a special pathogens unit. 
 
 <!-- ### Compare costs of different categories -->
 
