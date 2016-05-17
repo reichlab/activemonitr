@@ -21,7 +21,7 @@ data("pstr_gamma_params_smallpox")
 
 
 plot1_side_text <- conditionalPanel(
-  condition="input.tabs == 'plot1'",
+  condition="input.tabs == 'cost.plot'",
   p("Our model provides a range of expected costs for an active monitoring program, based on a series of assumptions.")
   #p("During potential pandemic scenarios, the US CDC has implemented active monitoring programs to track international travelers to minimize risk of disease transmission. You can use this web applet to explore the risks associated with different durations of active monitoring periods for Ebola, MERS-CoV, and Smallpox.")#,
 #  tags$br(),
@@ -38,7 +38,7 @@ tags$hr()
 
 
 plot2_side_text <- conditionalPanel(
-  condition="input.tabs == 'plot2'",
+  condition="input.tabs == 'incper.plot'",
   h4("Overview"),
   p("The distribution of possible incubation periods is a key factor in determining the risk of developing symptoms after the active monitoring period ends. We have conducted detailed reanalysis of primary data on incubation periods of Ebola, MERS-CoV and Smallpox. The distributions of the incubation period best supported by the data are summarized in the figure to the right."),
   h4("Left panel"),
@@ -49,7 +49,7 @@ plot2_side_text <- conditionalPanel(
 tags$hr()
 
 info_side_text <- conditionalPanel(
-  condition="input.tabs == 'info'",
+  condition="input.tabs == 'overview'",
   h4("How to use this app:"),
   helpText(p(strong('This tab contains more detailed information regarding the variables of interest.')))
 )

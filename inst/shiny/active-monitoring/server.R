@@ -22,38 +22,6 @@ shinyServer(function(input, output, session) {
     data_df
   })
   
-  ## create the plot1 of the ebola data
-    output$plotEbo<-renderPlot({
-    # plot_df<-data_df()
-    # phi1 <- as.numeric(input$plot1_prob)
-    # durations1<-input$plot1_mdtime
-    # a<-durations1[1]
-    # b<-durations1[2]
-    # # Create a Progress object
-    # progress <- shiny::Progress$new()
-    # progress$set(message = "Creating plot", value = 0)
-    # # Close the progress when this reactive exits (even if there's an error)
-    # on.exit(progress$close())
-    # 
-    # # Create a closure to update progress.
-    # # Each time this is called:
-    # # - If `value` is NULL, it will move the progress bar 1/5 of the remaining
-    # #   distance. If non-NULL, it will set the progress to that value.
-    # # - It also accepts optional detail text.
-    # updateProgress <- function(value = NULL, detail = NULL) {
-    #   if (is.null(value)) {
-    #     value <- progress$getValue()
-    #     value <- value + (progress$getMax() - value) / 5
-    #   }
-    #   progress$set(value = value, detail = detail)
-    # }
-    # 
-    # # Compute the new data, and pass in the updateProgress function so
-    # # that it can update the progress indicator.
-    # compute_data(updateProgress)
-    # #plot_risk_uncertainty(plot_df, phi=phi1, durations=a:b)
-  })
-
     ## create plot of cost data
     output$plot_costs <-renderPlot({
         cost_m <- input$plot1_cost_per_day     ## per day cost of treatment
@@ -101,7 +69,7 @@ shinyServer(function(input, output, session) {
             geom_ribbon(aes(ymin=mincost, ymax=maxcost), alpha=.7) + 
             scale_y_log10(labels=dollar,
                                name='Cost range of monitoring 100 individuals') +
-            scale_x_continuous(name='Duration (in days)') +
+            scale_x_continuous(name='Duration (in days)', expand=c(0,0)) +
             coord_cartesian(xlim=c(5, 43)) +
             scale_fill_brewer(palette="Dark2") +
             scale_color_brewer(palette="Dark2") +
@@ -127,7 +95,9 @@ shinyServer(function(input, output, session) {
             # geom_segment(aes(x=min_costs[2, "min_cost_dur_days"], xend=min_costs[2, "min_cost_dur_days"], 
             #                  y=0, yend=min_costs[2, "min_cost"]), 
             #              linetype=2, color="#e41a1c") +
-            theme(legend.title=element_blank(), legend.position=c(1, 1), legend.justification=c(1, 1))
+            theme(legend.title=element_blank(), legend.position=c(1, 1), legend.justification=c(1, 1)) +
+          ggtitle("Model-based cost range for monitoring 100 individuals")
+        
     })
     
     ## create the plot2 of incubation period data
