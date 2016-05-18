@@ -66,9 +66,9 @@ shinyUI(fluidPage(
         column(4, 
                h4("Cost inputs"),
                sliderInput("plot1_cost_per_day", "Cost per monitored person-day ($)",
-                           min=0, max=100, value=c(10,20), sep=""),
+                           min=0, max=100, value=c(10,20)),
                sliderInput("plot1_cost_false_pos", "Cost of a false positive ($000s)",
-                           min=0, max=100, value=c(10,30), sep=""),
+                           min=0, max=100, value=c(10,30)),
                sliderInput("plot1_per_day_hazard_denom", "1/(per day rate of false positive)",
                            min=10, max=100000, value=10000)
         )
