@@ -11,6 +11,7 @@ Depends:
     ggplot2,
     grid,
     dplyr,
+    reshape2,
     R (>= 3.0.2)
 License: GPLv3
 LazyData: true
