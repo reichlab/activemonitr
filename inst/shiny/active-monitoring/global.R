@@ -9,6 +9,7 @@ require(shiny)
 require(dplyr)
 require(ggplot2)
 require(scales)
+require(ks)
 require(grid)
 require(activeMonitr)
 
