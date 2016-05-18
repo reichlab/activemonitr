@@ -11,7 +11,7 @@ require(ggplot2)
 require(scales)
 require(activeMonitr)
 
-source("../../analysis-code/inc-per-mcmc.R")
+source("plot_risk.R")
 theme_set(theme_bw(base_size = 18))
 
 data("pstr_gamma_params_ebola")
