@@ -25,7 +25,7 @@ shinyUI(fluidPage(
         tabPanel("Incubation Period Estimates",
                  plotOutput("plot_inc_per"),
                  value="incper.plot"),
-        id="tabs", position="left")
+        id="tabs")
     ),
 
     hr(), 
