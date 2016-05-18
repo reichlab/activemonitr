@@ -379,7 +379,6 @@ plot_credible_regions <- function(mcmc_dfs, Hs, p95.breaks=c(10, 15, 21), n_poin
 ##' @param base.size size for font, to be passed to theme_bw()
 plot_modified_credible_regions <- function(mcmc_dfs, kdes, label_txt, colors, show.legend=FALSE, base.size=12) {
     require(ggplot2)
-    require(ks)
     require(reshape2)
     require(dplyr)
     

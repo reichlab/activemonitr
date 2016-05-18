@@ -9,8 +9,6 @@ require(shiny)
 require(dplyr)
 require(ggplot2)
 require(scales)
-require(ks)
-require(grid)
 require(activeMonitr)
 
 source("../../analysis-code/inc-per-mcmc.R")
