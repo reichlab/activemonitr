@@ -1,20 +1,20 @@
 ---
 title: 'Methodological supplement for: Reducing the threat of imported infectious
   disease outbreaks with active monitoring'
-author: "Nicholas G Reich, Neil M Vora, Jay K Varma, Justin Lessler"
-date: "April, 2016"
+author: "Nicholas G Reich, Justin Lessler, Jay K Varma, Neil M Vora"
+date: "May, 2016"
 output:
+  word_document:
+    fig_caption: yes
+    fig_height: 5
+    fig_width: 5
+    md_extensions: +implicit_figures+grid_tables
   pdf_document:
     fig_caption: yes
     fig_height: 5
     fig_width: 5
     md_extensions: +implicit_figures
   html_document: default
-  word_document:
-    fig_caption: yes
-    fig_height: 5
-    fig_width: 5
-    md_extensions: +implicit_figures+grid_tables
 csl: the-new-england-journal-of-medicine.csl
 bibliography: active-monitoring.bib
 ---
