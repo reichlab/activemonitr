@@ -53,6 +53,7 @@ shinyServer(function(input, output, session) {
         
         costs$phi_lab <- factor(costs$phi, 
                                 levels=MASS::fractions(unique(costs$phi), max.denominator = 1000000))
+        costs$dur_median <- costs$dur*gamma_params['median']
         
         ## minimum costs 
         min_costs <- costs %>%
@@ -64,7 +65,7 @@ shinyServer(function(input, output, session) {
             mutate(phi_lab = factor(phi,
                                     levels=MASS::fractions(phi, max.denominator = 1000000)))
 
-        ggplot(costs, aes(x=dur*gamma_params['median'], 
+        ggplot(costs, aes(x=dur_median, 
                           color=phi_lab, fill=phi_lab)) + 
             geom_ribbon(aes(ymin=mincost, ymax=maxcost), alpha=.7) + 
             scale_y_log10(labels=dollar,
