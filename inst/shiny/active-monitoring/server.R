@@ -74,28 +74,20 @@ shinyServer(function(input, output, session) {
             coord_cartesian(xlim=c(5, 43)) +
             scale_fill_brewer(palette="Dark2") +
             scale_color_brewer(palette="Dark2") +
-            #scale_fill_manual(values=c("#e41a1c", "#377eb8")) +
-            #scale_color_manual(values=c("#e41a1c", "#377eb8")) +
+            ## horizontal dashed line segments
             geom_segment(data=min_costs,
                          aes(x=3, xend=min_cost_dur_days, 
                              y=min_cost, yend=min_cost, color=phi_lab), 
                          linetype=2) +
+            ## vertical dashed line segments
             geom_segment(data=min_costs,
                          aes(x=min_cost_dur_days, xend=min_cost_dur_days, 
                              y=0, yend=min_cost, color=phi_lab), 
                          linetype=2) +
-            # geom_segment(aes(x=3, xend=min_costs[1, "min_cost_dur_days"], 
-            #                  y=min_costs[1, "min_cost"], yend=min_costs[1, "min_cost"]), 
-            #              linetype=2, color="#377eb8") +
-            # geom_segment(aes(x=min_costs[1, "min_cost_dur_days"], xend=min_costs[1, "min_cost_dur_days"], 
-            #                  y=0, yend=min_costs[1, "min_cost"]), 
-            #              linetype=2, color="#377eb8") +
-            # geom_segment(aes(x=3, xend=min_costs[2, "min_cost_dur_days"], 
-            #                  y=min_costs[2, "min_cost"], yend=min_costs[2, "min_cost"]), 
-            #              linetype=2, color="#e41a1c") +
-            # geom_segment(aes(x=min_costs[2, "min_cost_dur_days"], xend=min_costs[2, "min_cost_dur_days"], 
-            #                  y=0, yend=min_costs[2, "min_cost"]), 
-            #              linetype=2, color="#e41a1c") +
+            ## labels for line segments
+            geom_text(data=min_costs, nudge_x = 1,
+                      aes(x=min_cost_dur_days, y=1000,
+                          label=paste(round(min_cost_dur_days),"d"))) +
             theme(legend.title=element_blank(), legend.position=c(1, 1), legend.justification=c(1, 1)) +
           ggtitle("Model-based cost range for monitoring 100 individuals")
         
