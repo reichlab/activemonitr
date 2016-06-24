@@ -58,20 +58,39 @@ shinyUI(fluidPage(
                             selected="Ebola")
         ),
         column(4, 
-               checkboxGroupInput("plot1_prob_symptoms", "Probability a monitored individual develops symptoms",
-                                  c("1/10" = "0.1", "1/100" = "0.01",
-                                    "1/1,000" = "0.001","1/10,000" ="0.0001"),
-                                  selected=c("0.001", "0.0001"))
+               checkboxGroupInput("plot1_prob_symptoms", 
+                                  "Probability a monitored individual develops symptoms",
+                                  c("1/10" = "0.1", 
+                                    "1/100" = "0.01",
+                                    "1/1,000" = "0.001",
+                                    "1/10,000" ="0.0001"),
+                                    #"custom" = "custom"),
+                                  selected=c("0.001", "0.0001"))#,
+               #conditionalPanel(
+                   #condition=" 'custom' %in% plot1_prob_symptoms",
+                   #numericInput("plot1_prob_symptoms_custom", "Custom probability",
+                #               min=0, max=1, value=0, step=.01)#)
         ),
         column(4, 
-               h4("Cost inputs"),
+               h4("Cost model inputs"),
                sliderInput("plot1_cost_per_day", "Cost per monitored person-day ($)",
                            min=0, max=100, value=c(10,20)),
                sliderInput("plot1_cost_false_pos", "Cost of a false positive ($000s)",
                            min=0, max=100, value=c(10,30)),
-               sliderInput("plot1_per_day_hazard_denom", "1/(per day rate of false positive)",
-                           min=10, max=100000, value=10000)
+               sliderInput("plot1_per_day_hazard_denom", "Expected number of monitored-person-days needed to have 1 hospitalized false positive",
+                           min=10, max=10000, value=1000, step = 10)
         )
+      ),
+      
+      ## text for incubation period panel
+      conditionalPanel(
+          condition="input.tabs == 'incper.plot'",
+          p("The above figure shows the estimated incubation period parameters (points) and confidence regions. These estimates are based on obtained previously published incubation period observations on",
+            a("152 cases of Ebola in Guinea", href="http://www.ncbi.nlm.nih.gov/pubmed/25619149"), 
+            a("170 laboratory-confirmed cases of MERS-CoV in South Korea", href="http://datadryad.org/resource/doi:10.5061/dryad.v3546"),
+            "and", 
+            a("362 cases of smallpox", href="http://www.ncbi.nlm.nih.gov/pubmed/18178524"), ".",
+            "We fitted the observed data for each disease to a gamma probability distribution using Markov Chain Monte Carlo (MCMC) methods with the Metropolis-Hastings algorithm. The gamma distribution is one of several 'heavy-tailed' distributions often used to describe incubation periods, and aligns with assumptions made by previous researchers.")
       )
     )
   )

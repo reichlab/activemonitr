@@ -40,10 +40,10 @@ shinyServer(function(input, output, session) {
                           shape = mean(pstr_params$shape),
                           scale = mean(pstr_params$scale))
         
-        durs <- seq(.5, 5, by=.1)
+        durs <- seq(.1, 10, by=.1)
         phis <- as.numeric(input$plot1_prob_symptoms)
-        
-        costs <- calc_monitoring_costs(durs = durs,
+
+                costs <- calc_monitoring_costs(durs = durs,
                                        probs_of_disease = phis,
                                        per_day_hazard = 1/input$plot1_per_day_hazard_denom,
                                        N = 100,
@@ -51,8 +51,7 @@ shinyServer(function(input, output, session) {
                                        gamma_params = gamma_params, 
                                        return_scalar=FALSE)
         
-        costs$phi_lab <- factor(costs$phi, 
-                                levels=MASS::fractions(unique(costs$phi), max.denominator = 1000000))
+        costs$phi_lab <- factor(as.character(MASS::fractions(costs$phi, max.denominator = 1e10)))
         costs$dur_median <- costs$dur*gamma_params['median']
         
         ## minimum costs 
@@ -62,15 +61,14 @@ shinyServer(function(input, output, session) {
                       min_cost_dur = dur[which.min(maxcost)],
                       min_cost_dur_days = min_cost_dur * gamma_params['median']) %>%
             ungroup() %>%
-            mutate(phi_lab = factor(phi,
-                                    levels=MASS::fractions(phi, max.denominator = 1000000)))
+            mutate(phi_lab = factor(as.character(MASS::fractions(phi, max.denominator = 1e10))))
 
         ggplot(costs, aes(x=dur_median, 
                           color=phi_lab, fill=phi_lab)) + 
             geom_ribbon(aes(ymin=mincost, ymax=maxcost), alpha=.7) + 
             scale_y_log10(labels=dollar,
                                name='Cost range of monitoring 100 individuals') +
-            scale_x_continuous(name='Duration (in days)', expand=c(0,0)) +
+            scale_x_continuous(name='Duration of active monitoring (in days)', expand=c(0,0)) +
             coord_cartesian(xlim=c(5, 43)) +
             scale_fill_brewer(palette="Dark2") +
             scale_color_brewer(palette="Dark2") +
@@ -89,7 +87,9 @@ shinyServer(function(input, output, session) {
                       aes(x=min_cost_dur_days, y=1000,
                           label=paste(round(min_cost_dur_days),"d"))) +
             theme(legend.title=element_blank(), legend.position=c(1, 1), legend.justification=c(1, 1)) +
-          ggtitle("Model-based cost range for monitoring 100 individuals")
+            ggtitle("Model-based cost range for monitoring 100 individuals") +
+            annotate("text", x=12, y=2000, 
+                     label="dashed lines indicate an optimal \n duration of active monitoring")
         
     })
     
