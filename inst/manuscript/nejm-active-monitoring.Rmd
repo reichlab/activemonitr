@@ -391,7 +391,7 @@ ggplot(costs, aes(x=dur*gamma_params['median'],
     geom_ribbon(aes(ymin=mincost, ymax=maxcost), alpha=.7) + 
     scale_y_continuous(breaks=c(1e5, 5e5, 10e5, 15e5, 20e5), labels=dollar,
                        name='Cost range of monitoring 100 individuals') +
-    scale_x_continuous(name='Duration (in days)', expand = c(0, 0)) +
+    scale_x_continuous(name='Duration of active monitoring (in days)', expand = c(0, 0)) +
     coord_cartesian(xlim=c(5, 43)) +
     scale_fill_manual(values=c("#e41a1c", "#377eb8")) +
     scale_color_manual(values=c("#e41a1c", "#377eb8")) +
