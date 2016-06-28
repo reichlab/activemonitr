@@ -1,6 +1,5 @@
 ---
-title: 'Methodological supplement for: Reducing the threat of imported infectious
-  disease outbreaks with active monitoring'
+title: 'Methodological supplement for: Quantifying the Risks and Costs of Airport-Based Entry Screening and Active Monitoring for Infectious Diseases'
 author: "Nicholas G Reich, Justin Lessler, Jay K Varma, Neil M Vora"
 date: "June, 2016"
 output:
