@@ -111,12 +111,12 @@ There were 5,379 non-unique persons who underwent active monitoring by DOHMH dur
 
 Our aim was to develop a simple model for the rate at which individuals were falling ill from causes other than Ebola. To do this, we performed a simple discrete-time survival analysis, assuming that the hazard of developing symptoms from other sources was constant over time. We observed a single aggregated datapoint, that after 21 days of monitoring, only a small fraction of individuals had reported symptoms that required hospitalization: `r n_symptomatic` x  0.3 / `r n_monitored` = `r round(n_symptomatic*0.3/n_monitored, 4)`. Assuming that every day during a monitoring period had the same risk of developing symptoms, we can write the survival function, the probability that an individual would be symptom free after $t$ days, as
 $$S(t) = (1-\lambda)^t$$
-By plugging in $S(21) =$ 1- `r round(n_symptomatic*0.3/n_monitored, 4)`, we solve for $\lambda$, the constant per-day hazard, and obtain the estimate $\hat\lambda$ = `r round(lam*1000, 2)`/1000. Therefore, for the model below we estimate the probability of a monitored individual developing Ebola-like symptoms during a $d$ day monitoring period as $\theta_d = 1 - (1-\hat\lambda)^d$. 
+By plugging in $S(21) =$ 1- `r round(n_symptomatic*0.3/n_monitored, 4)`, we solve for $\lambda$, the constant per-day hazard, and obtain the estimate $\hat\lambda$ = `r round(lam*1000, 2)`/1000. Therefore, for the model below we estimate the probability of a monitored individual developing Ebola-like symptoms during a $d$ day monitoring period as $r_d = 1 - (1-\hat\lambda)^d$. 
  
 
 # Probabilistic model
 
-We developed a probabilistic model for evaluating the likelihood that a monitored individual would develop symptoms at different stages of monitoring. This model is based on five key parameters: the probability of a monitored individual developing symptomatic infection ($\phi$), two parameters that define the distribution of incubation periods ($T$ denotes the random variable for incubation periods),  probability of a monitored individual developing symptoms like the disease of interest during a $d$ day monitoring period ($\theta_d$ from above), and either a fixed or random duration of time between the time of infecting exposure and the onset of active monitoring ($u$). 
+We developed a probabilistic model for evaluating the likelihood that a monitored individual would develop symptoms at different stages of monitoring. This model is based on five key parameters: the probability of a monitored individual developing symptomatic infection ($\phi$), two parameters that define the distribution of incubation periods ($T$ denotes the random variable for incubation periods),  probability of a monitored individual developing symptoms like the disease of interest during a $d$ day monitoring period ($r_d$ from above), and either a fixed or random duration of time between the time of infecting exposure and the onset of active monitoring ($u$). 
 
 The model-based probabilities for the disease of concern (see Figure 1, main text) are shown in Table 3.
 
@@ -125,17 +125,17 @@ _Supplemental Table 3: Outcomes and associated probabilities for model_
 +------------------------------------------------------+----------------------+
 | outcome                                              | probability          |
 +======================================================+======================+
-| does not develop disease of concern                  | $\pi_1 = 1-\phi$     |
+| does not develop disease of concern                  | $p_1 = 1-\phi$     |
 +------------------------------------------------------+----------------------+
-| does not develop disease of concern &\               | $\pi_1 (1-\theta_d)$ |
+| does not develop disease of concern &\               | $p_1 (1-r_d)$ |
 | not hospitalized for other symptoms                  |                      |
 +------------------------------------------------------+----------------------+
-| does not develop disease of concern &\               | $\pi_1 \theta_d$     |
+| does not develop disease of concern &\               | $p_1 r_d$     |
 | hospitalized for other symptoms                      |                      |
 +------------------------------------------------------+----------------------+
-| develops disease of concern during active monitoring | $\pi_2 = \phi\cdot Pr(T\leq d+u)$ |
+| develops disease of concern during active monitoring | $p_2 = \phi\cdot Pr(T\leq d+u)$ |
 +------------------------------------------------------+----------------------+
-| develops disease of concern after active monitoring  | $\pi_3 = \phi\cdot Pr(T > d+u)$ |
+| develops disease of concern after active monitoring  | $p_3 = \phi\cdot Pr(T > d+u)$ |
 +------------------------------------------------------+----------------------+
 
 We quantified the uncertainty about the probability for each outcome scenario attributable to parameter uncertainty (in our estimates of the incubation period distribution) and to uncertainty associated with not knowing the time between infection and the beginning of active monitoring. For parameter uncertainty, we computed each outcome scenario probability from a sample of the posterior distribution of gamma parameters for a fixed $u$. For uncertainty in the infection time, we assumed that $u$ was distributed uniformly, and calculated outcome probabilities for a set of random samples from this distribution while holding the gamma parameters fixed at their posterior median values. To account for both uncertainties, we sampled simultaneously from both distributions.
