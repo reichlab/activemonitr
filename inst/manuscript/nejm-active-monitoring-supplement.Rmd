@@ -116,7 +116,7 @@ By plugging in $S(21) =$ 1- `r round(n_symptomatic*0.3/n_monitored, 4)`, we solv
 
 # Probabilistic model
 
-We developed a probabilistic model for evaluating the likelihood that a monitored individual would develop symptoms at different stages of monitoring. This model is based on four key parameters: the probability of a monitored individual developing symptomatic infection ($\phi$), two parameters that define the distribution of incubation periods ($T$ denotes the random variable for incubation periods), and either a fixed or random duration of time between the time of infecting exposure and the onset of active monitoring ($u$). 
+We developed a probabilistic model for evaluating the likelihood that a monitored individual would develop symptoms at different stages of monitoring. This model is based on five key parameters: the probability of a monitored individual developing symptomatic infection ($\phi$), two parameters that define the distribution of incubation periods ($T$ denotes the random variable for incubation periods),  probability of a monitored individual developing symptoms like the disease of interest during a $d$ day monitoring period ($\theta_d$ from above), and either a fixed or random duration of time between the time of infecting exposure and the onset of active monitoring ($u$). 
 
 The model-based probabilities for the disease of concern (see Figure 1, main text) are shown in Table 3.
 
