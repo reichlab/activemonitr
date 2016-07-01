@@ -1,5 +1,5 @@
 ---
-title: "Reducing the Threat of Imported Infectious Disease Outbreaks with Active Monitoring"
+title: "Quantifying the Risk and Cost of Active Monitoring for Infectious Diseases"
 author: "Nicholas G Reich^1^, Justin Lessler^2^, Jay K Varma^3,4^, Neil M Vora^3,5^"
 date: "June, 2016"
 output:
@@ -82,8 +82,9 @@ source('../analysis-code/inc-per-mcmc.R')
   
 Corresponding author:  
 Nicholas G Reich  
-Division of Biostatistics and Epidemiology  
-UMass-Amherst, School of Public Health and Health Sciences  
+Department of Biostatistics and Epidemiology  
+University of Massachusetts-Amherst
+School of Public Health and Health Sciences  
 Amherst, MA 01003  
 Email: nick@schoolph.umass.edu  
 Telephone: 413.545.4534  
@@ -105,7 +106,7 @@ __Background__
 During outbreaks of deadly emerging pathogens (e.g., Ebola, MERS-CoV) and bioterror threats (e.g., smallpox), actively monitoring potentially infected individuals may help limit disease transmission and morbidity. There is limited data about how to balance the cost and performance of this important public health activity.
 
 __Methods__    
-We model the risk of individuals becoming symptomatic from the disease of interest and other causes using a probabilistic model, estimating the risks and costs associated with active monitoring programs. As a case-study, we analyze data from New York City's active monitoring program during the west African Ebola outbreak.
+We model the risk of individuals becoming symptomatic from the disease of interest and other causes, estimating the risks and costs associated with active monitoring programs. As a case-study, we analyze data from New York City's active monitoring program during the West Africa Ebola outbreak.
 
 __Results__    
 For three pathogens of significant public health concern, we quantified the risk and costs associated with specific durations of active monitoring. During the west African Ebola outbreak, CDC recommended active monitoring for 21 days after the last potential exposure. For monitored individuals in the CDC exposure-risk categories of "low (but not zero) risk" or "some or high risk" of Ebola, we estimated the probabilities of infection to be 1/10,000 and 1/1,000, respectively. Using these estimates, our model identified unique durations of active monitoring for Ebola that would minimize expected costs for each scenario: 21 and 31 days, respectively.
@@ -124,7 +125,7 @@ Thousands of individuals were monitored for Ebola in the United States between O
 Recommendations for active monitoring were discontinued in February 2016.[@CentersforDiseaseControlandPrevention:lyxYF_Hp] 
 Over 20% of all individuals actively monitored for Ebola in the United States were monitored in New York City (NYC), more than any other jurisdiction.[@StehlingAriza:2015vd]
 
-Active monitoring may help prevent and contain outbreaks of rapidly spreading emerging pathogens, occurring either naturally or via a bioterrorist attack, which pose a grave threat to public health. The decision to implement active monitoring depends on an assessment of the risk posed by a pathogen and the ability of active monitoring to reduce that risk. Key considerations include the transmissibility and pathogenicity of the pathogen, the potential size of an outbreak, and the relationship between the time of symptom onset and infectiousness.[@Fraser:2004ci] Ebola, Middle East Respiratory Syndrome Coronavirus (MERS-CoV), and smallpox are examples of viral pathogens for which active monitoring could play a pivotal role in preventing a large-scale outbreak.[@CentersforDiseaseControlandPrevention:2015tk]
+Active monitoring may help prevent and contain outbreaks of rapidly spreading emerging pathogens that pose a grave threat to public health. Such outbreaks may occur naturally, via a bioterrorist attack, or via unintended release from a laboratory. The decision to implement active monitoring depends on an assessment of the risk posed by a pathogen and the ability of active monitoring to reduce that risk. Key considerations include the transmissibility and pathogenicity of the pathogen, the potential size of an outbreak, and the relationship between the time of symptom onset and infectiousness.[@Fraser:2004ci] Ebola, Middle East Respiratory Syndrome Coronavirus (MERS-CoV), and smallpox are examples of viral pathogens for which active monitoring could play a pivotal role in preventing a large-scale outbreak.[@CentersforDiseaseControlandPrevention:2015tk]
 
 Active monitoring programs must balance conflicting priorities. The central goals of these programs are to identify, isolate, and treat infected individuals quickly. Setting an active monitoring period many times longer than any known incubation period of the pathogen of interest could virtually guarantee that all infected individuals would exhibit symptoms while being monitored. However, such a program would be unreasonably expensive, involve prolonged curtailing of a person’s individual freedom, and incur many financial and social costs through frequent responses to false positive cases. Evidence-based monitoring periods and appropriate tailoring of the monitoring intensity to disease risk should therefore be used to balance costs with biosecurity risks. 
 
@@ -137,33 +138,33 @@ Here we present an empirical framework for evaluating the risks and costs associ
 The incubation period of a disease is the duration of time between exposure to the pathogen and symptom onset.[@Brookmeyer:2005bc] This characteristic is imperfectly observed in most settings.[@Reich:2009jq;@Lessler:2009ub] We obtained previously published incubation period observations on 152 cases of Ebola in Guinea [@Faye:2015jc], 170 laboratory-confirmed cases of MERS-CoV in South Korea[@Virlogeux:2016ty] and 362 cases of smallpox[@Litvinjenko:1972vp;@Mack:1972jc;@Nishiura:2009dh]. We fit parametric distributions to the observed incubation period data using maximum likelihood techniques (see Supplement). We ran sensitivity analyses to evaluate the influence of several outlying observations in the Ebola dataset.
  
 ### A model for active monitoring outcomes
-We developed a probabilistic model for evaluating the likelihood that a monitored individual would become symptomatic with the disease of interest at different stages of monitoring. Figure 1 presents the model schema, which involves a monitored individual having one of four outcomes: 
+We developed a model that uses varying probabilities to alter the incubation period, and thus estimates whether active monitoring would identify an individual infected with the pathogen of interest. Figure 1 presents the model schema, which involves a monitored individual having one of four outcomes: 
 
 1. no symptoms warranting clinical follow-up, 
 2. no symptomatic infection with the disease of interest, but occurrence of symptoms that necessitate ruling out of the disease of interest, 
 3. symptomatic infection with the disease of interest occurring during the individual's period of active monitoring, and
 4. symptomatic infection with the disease of interest occurring outside the individual's period of active monitoring. 
 
-Scenario 4 represents the highest risk of widespread transmission and reduces the chance of a positive clinical outcome for the sick individual. 
+Scenario 4 represents the highest risk of secondary transmission and may also reduce the chance of a positive clinical outcome for the sick individual. 
+
+![Figure 1. Model schematic representing four outcome scenarios for a person under active monitoring. Estimated costs shown are based on published costs[@Yacisin:2015wm] as well as new data from DOHMH and Bellevue Hospital in NYC. Details on the model formulation are available in Supplemental Table 3. Our model uses probabilities to calculate the likelihood of each of the possible model outcomes. Additionally, we estimate the probability that an individual who does not develop the disease of interest develops symptomatic illness necessitating hospitalization to rule-out the disease of interest. (See Supplement for details.)](static-figures/figure1-model-schema-v9.jpg)
 
 Using this model, we calculate the probability of each of the four outcomes, with the associated expected costs, by combining the data on the probabilities of infection, the estimated incubation period distribution, and potential cost ranges for different outcomes. Additionally, it determines the uncertainty associated with these estimates due to not having precise incubation period observations and having an unknown time between exposure and the beginning of monitoring for a particular individual (see Supplement). For these pathogens, we assume that infectiousness coincides with the onset of symptoms.[@Velasquez:2015gv;@Cowling:2015vb;@Fenner:1988ux]
 
-![Figure 1. Model schematic representing four outcome scenarios for a person under active monitoring. Estimated costs shown are based on published costs[@Yacisin:2015wm] as well as new data from NYC DOHMH and Bellevue Hospital in NYC. Details on the model formulation are available in the Supplement. The model-based probabilities $\pi_1, \pi_2, \pi_3$ represent the probability of each outcome as estimated by the model. The probability $\theta_d$ represents the probability that an individual who does not develop the disease of interest develops symptomatic illness necessitating hospitalization to rule-out the disease of interest. (See Supplement for details.)](static-figures/figure1-model-schema-v9.jpg)
+Our model estimates the risks and costs associated with active monitoring programs for a range of active monitoring durations. To estimate the cost per person-day of monitoring, we used data on the number of individuals actively monitored by DOHMH and costs associated with the DOHMH Ebola response.  Additionally, for the purposes of hypothetical cost calculations, we assumed that an individual who becomes symptomatic with the disease of interest while under active monitoring gives rise to no secondary infections, while an individual who develops symptoms after his/her active monitoring period ends could give rise to as many as 4 new Ebola infections (an upper estimate based on prior research [@Althaus:2014cw;@Chowell:2004gh]).
 
-Our model estimates the risks and costs associated with active monitoring programs for a range of active monitoring durations. To estimate the cost per person-day of monitoring, we used data on the number of individuals actively monitored by DOHMH and costs associated with the DOHMH Ebola response.  Additionally, for the purposes of hypothetical cost calculations, we assumed that an individual who becomes symptomatic with the disease of interest while under active monitoring gives rise to no secondary infections, while an individual who develops symptoms after his/her active monitoring period ends could give rise to as many as 4 new Ebola infections (an upper estimate of $R_0$ based on prior research [@Althaus:2014cw;@Chowell:2004gh]).
-
-We developed open-source software, including a freely-available web application [[provide links]]. All analyses were run in `r R.version.string`.[@rcoreteam] These tools enable others to easily implement our model.
+We developed open-source software, including a freely-available web application at [http://iddynamics.jhsph.edu/apps/shiny/activemonitr/](http://iddynamics.jhsph.edu/apps/shiny/activemonitr/). All analyses were run in `r R.version.string`.[@rcoreteam] These tools enable others to easily implement our model.
 
 ### Stratifying by exposure risk
-Classifying individuals based on prior exposure risks enables targeted strategies in a range of public health response settings, including active monitoring. For example, in response to the west African Ebola outbreak, CDC issued recommendations on risk stratification of individuals for a potential Ebola virus exposure ("high risk", "some risk", "low (but not zero) risk", "no identifiable risk") and for how long and how intensively individuals in each of these categories should be monitored.[@CentersforDiseaseControlandPrevention:2015tc] DOHMH's active monitoring program, described previously[@Millman:2016cz], was implemented consistent with CDC recommendations.
+Classifying individuals based on prior exposure risks enables targeted strategies in a range of public health response settings, including active monitoring. For example, in response to the West Africa Ebola outbreak, CDC issued recommendations on risk stratification of individuals for a potential Ebola virus exposure ("high risk", "some risk", "low (but not zero) risk", "no identifiable risk") and for how long and how intensively individuals in each of these categories should be monitored.[@CentersforDiseaseControlandPrevention:2015tc] DOHMH's active monitoring program, described previously[@Millman:2016cz], was implemented consistent with CDC recommendations. However, creating, evaluating, and modifying such classifications in practice is a difficult task and requires situational awareness and data that would vary depending on the pathogen and outbreak setting.
 
-For the CDC Ebola risk strata, we estimated probabilities of a monitored individual developing Ebola. These estimates were based on extrapolated numbers of actively monitored individuals in the United States during 2014-2016[@StehlingAriza:2015vd] and public data on the four domestic cases of Ebola[@CentersforDiseaseControlandPrevention:VbDBWqNH] (see Supplement).
+For the CDC Ebola risk strata, we estimated probabilities of a monitored individual developing Ebola. These estimates were based on extrapolated numbers of actively monitored individuals in the United States during 2014-2016[@StehlingAriza:2015vd] and public data on the four domestic cases of Ebola[@CentersforDiseaseControlandPrevention:VbDBWqNH] (Supplemental Table 2).
 
 # Results
 
 ### Incubation period estimates
 
-Estimates and credible regions for incubation period distribution parameters for Ebola, MERS-CoV, and smallpox are shown in Figure 2. Consistent with other studies that used the same data,[@Faye:2015jc;@Virlogeux:2016ty;@Nishiura:2009dh] we estimate that half of all cases of Ebola will have an incubation period of less than `r my_round(mean(pstr_gamma_params_ebola$median),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_ebola$median, .025),1)`-`r my_round(quantile(pstr_gamma_params_ebola$median, .975),1)`), of MERS-CoV less than `r my_round(mean(pstr_gamma_params_mers$median),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_mers$median, .025),1)`-`r my_round(quantile(pstr_gamma_params_mers$median, .975),1)`) and of smallpox less than `r my_round(mean(pstr_gamma_params_smallpox$median),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_smallpox$median, .025),1)`-`r my_round(quantile(pstr_gamma_params_smallpox$median, .975),1)`). Additionally, the data suggest that 95% of cases of Ebola will have an incubation period of less than `r my_round(mean(pstr_gamma_params_ebola$p95),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_ebola$p95, .025),1)`-`r my_round(quantile(pstr_gamma_params_ebola$p95, .975),1)`), of MERS-CoV `r my_round(mean(pstr_gamma_params_mers$p95),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_mers$p95, .025),1)`-`r my_round(quantile(pstr_gamma_params_mers$p95, .975),1)`), and of smallpox `r my_round(mean(pstr_gamma_params_smallpox$p95),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_smallpox$p95, .025),1)`-`r my_round(quantile(pstr_gamma_params_smallpox$p95, .975),1)`).
+Estimates and credible regions for incubation period distribution parameters for Ebola, MERS-CoV, and smallpox are shown in Figure 2. Consistent with other studies that used the same data,[@Faye:2015jc;@Virlogeux:2016ty;@Nishiura:2009dh] we estimated that half of all cases of Ebola will have an incubation period of less than `r my_round(mean(pstr_gamma_params_ebola$median),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_ebola$median, .025),1)`-`r my_round(quantile(pstr_gamma_params_ebola$median, .975),1)`), of MERS-CoV less than `r my_round(mean(pstr_gamma_params_mers$median),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_mers$median, .025),1)`-`r my_round(quantile(pstr_gamma_params_mers$median, .975),1)`) and of Smallpox less than `r my_round(mean(pstr_gamma_params_smallpox$median),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_smallpox$median, .025),1)`-`r my_round(quantile(pstr_gamma_params_smallpox$median, .975),1)`). Additionally, the data suggest that 95% of cases of Ebola will have an incubation period of less than `r my_round(mean(pstr_gamma_params_ebola$p95),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_ebola$p95, .025),1)`-`r my_round(quantile(pstr_gamma_params_ebola$p95, .975),1)`), of MERS-CoV `r my_round(mean(pstr_gamma_params_mers$p95),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_mers$p95, .025),1)`-`r my_round(quantile(pstr_gamma_params_mers$p95, .975),1)`), and of Smallpox `r my_round(mean(pstr_gamma_params_smallpox$p95),1)` days (95% CI: `r my_round(quantile(pstr_gamma_params_smallpox$p95, .025),1)`-`r my_round(quantile(pstr_gamma_params_smallpox$p95, .975),1)`).
 
 We estimated smallpox to have the longest median incubation period of the three pathogens considered, although its distribution also showed the least overall variance. We estimate that MERS-CoV incubation periods are the shortest of the three, with the upper limit of the 95th percentile being just above 15 days (Figure 2). 
 
@@ -213,14 +214,14 @@ grid.arrange(plot_all_regions,
 
 ### Modeling the risk of symptomatic illness
 
-Using information on cases of Ebola diagnosed in the US, as well as extrapolated case information, we estimated the probability of a "some-risk" or "high-risk" individual developing a symptomatic infection with Ebola as 1 in 1,000. For "low (but not zero) risk" individuals, we estimated this risk to be 1 in 10,000. (See Supplement for details.)
+Using information on cases of Ebola diagnosed in the U.S., as well as extrapolated case information, we estimated the probability of a "some-risk" or "high-risk" individual developing a symptomatic infection with Ebola as 1 in 1,000. For "low (but not zero) risk" individuals, we estimated this risk to be 1 in 10,000 (Supplemental Table 2).
 
 <!--### Summarize risk estimates across durations of active monitoring for CDC exposure groups -->
 Incorporating these probabilities into our model, for each pathogen we calculated the probability of symptomatic illness developing in an individual after they were no longer being actively monitored. To standardize the results across diseases, we present the risk estimates across a range of different active monitoring period durations, shown as multiples of the median incubation period for each disease (Figure 3). 
 
-The model showed that an increase in the duration of the active monitoring period is associated with a decline in the probability that an individual develops symptoms due to the disease of interest after the active monitoring period ends. The rate at which that risk declines depends on the estimated variability of the incubation period distribution. Since the estimated incubation period distribution for Ebola showed the highest variability, the probability of symptoms occurring after active monitoring ends decreased more slowly when compared with the other pathogens. 
+The model showed that an increase in the duration of the active monitoring period is associated with a decline in the probability that an individual develops symptoms due to the disease of interest after the active monitoring period ends. The rate at which that risk declines depends on the estimated variability of the incubation period distribution. Since the estimated incubation period distribution for Ebola showed the highest variability, the probability of symptoms occurring after active monitoring ends decreased more slowly when compared with the other pathogens. This feature also impacts the sensitivity of estimating the optimal duration of active monitoring when the probabilities of developing symptomatic infection are mis-specified (Supplemental Table 4).
 
-During the west African Ebola outbreak, CDC recommended active monitoring for 21 days. This corresponds to about `r my_round(21/mean(pstr_gamma_params_ebola$median),1)` times the median incubation period for Ebola (vertical dashed line, Figure 3). To achieve the same level of absolute risk for either MERS-CoV or smallpox, our model suggests that a duration of active monitoring would need to be set at less than two times the median incubation period for both of these diseases. 
+During the West Africa Ebola outbreak, CDC recommended active monitoring for 21 days. This corresponds to about `r my_round(21/mean(pstr_gamma_params_ebola$median),1)` times the median incubation period for Ebola (vertical dashed line, Figure 3). To achieve the same level of absolute risk for either MERS-CoV or smallpox, our model suggests that a duration of active monitoring would need to be set at less than two times the median incubation period for both of these diseases. 
 
 ```{r risk-plots, fig.show='hide', cache=TRUE}
 phis <- c(1/1000, 1/10000)
@@ -264,7 +265,7 @@ p_smallpox_text <- arrangeGrob(p_smallpox[["plot"]],
                                left=textGrob("Smallpox",gp=gpar(fontface="bold"), rot=90, vjust=1))
 ```
 
-```{r, fig.cap="Figure 3. Estimated probabilities of symptoms occurring after active monitoring (AM) ends across different active monitoring period durations, shown as multiples of the median incubation period. Figures are shown for some or high risk ($\\phi$=1/1,000) and low (but not zero) risk ($\\phi$=1/10,000) scenarios. The vertical dashed line indicates the 21 day duration recommended for Ebola active monitoring (i.e. approximately 2.4 times the median incubation period of Ebola).", fig.height=3}
+```{r, fig.cap="Figure 3. Estimated probabilities of symptoms occurring after active monitoring (AM) ends across different active monitoring period durations, shown as multiples of the median incubation period. Figures are shown for 'some or high risk' and 'low (but not zero) risk' scenarios, with probabilities of developing symptomatic infection set to 1/1,000 and 1/10,000, respectively. The vertical dashed line indicates the 21 day duration recommended for Ebola active monitoring (i.e., approximately 2.4 times the median incubation period of Ebola).", fig.height=3}
 
 data_for_scaling <- data_frame(Disease=c("Ebola", "MERS-CoV", "Smallpox"),
                                median_incper=c(mean(pstr_gamma_params_ebola$median),
@@ -303,7 +304,7 @@ ggplot(all_data, aes(x=d_scaled, y=p50)) +
 <!--### Provide esimated cost per individual of monitoring in NYC-->
 The total expense for Ebola response by DOHMH during the period from July 31, 2014–November 7, 2015 was $9.7 million. Of this, $4.3 million was in response to a single Ebola case [@Yacisin:2015wm] and $1.9 million was for active monitoring. The remaining balance of $3.5 million was used for other Ebola preparedness activities. DOHMH monitored 5,379 non-unique individuals during this period (active monitoring began in NYC on October 25, 2014). We used these data to estimate that the cost of monitoring per person-day in NYC was $10–$20.
 
-The number of serious infection events occurring in actively monitored individuals in NYC was small. None of the monitored individuals developed Ebola. (The single Ebola case diagnosed in NYC occurred before active monitoring was implemented.) We assumed that a small fraction of monitored individuals, 30 (or 0.6%), developed symptoms within the 21 day monitoring period that were serious enough to necessitate hospitalization at an institution in NYC to rule-out Ebola. At one hospital, Bellevue, it cost between $10,000--$30,000 per hospitalization to rule out Ebola in symptomatic, actively monitored individuals (John Maher, personal communication). This does not include the substantial infrastructural costs of creating and maintaining a special pathogens unit at the hospital. 
+The number of serious infection events occurring in actively monitored individuals in NYC was small. None of the monitored individuals developed Ebola. The single Ebola case diagnosed in NYC occurred before active monitoring was implemented. We assumed that a small fraction of monitored individuals, 30 (or 0.6%), developed symptoms within the 21 day monitoring period that were serious enough to necessitate hospitalization at an institution in NYC to rule-out Ebola. At one hospital, Bellevue, it cost between $10,000--$30,000 per hospitalization to rule out Ebola in symptomatic, actively monitored individuals (John Maher, NYC Health and Hospitals, personal communication). This does not include the substantial infrastructural costs of creating and maintaining a special pathogens unit at the hospital. 
 
 <!-- ### Compare costs of different categories -->
 
@@ -390,22 +391,23 @@ ggplot(costs, aes(x=dur*gamma_params['median'],
                   color=phi_lab, fill=phi_lab)) + 
     geom_ribbon(aes(ymin=mincost, ymax=maxcost), alpha=.7) + 
     scale_y_continuous(breaks=c(1e5, 5e5, 10e5, 15e5, 20e5), labels=dollar,
+                       expand=c(0,0),
                        name='Cost range of monitoring 100 individuals') +
     scale_x_continuous(name='Duration of active monitoring (in days)', expand = c(0, 0)) +
     coord_cartesian(xlim=c(5, 43)) +
     scale_fill_manual(values=c("#e41a1c", "#377eb8")) +
     scale_color_manual(values=c("#e41a1c", "#377eb8")) +
-    geom_segment(aes(x=3, xend=min_costs[1, "min_cost_dur_days"], 
+    geom_segment(aes(x=-100, xend=min_costs[1, "min_cost_dur_days"], 
                      y=min_costs[1, "min_cost"], yend=min_costs[1, "min_cost"]), 
                  linetype=2, color="#377eb8") +
     geom_segment(aes(x=min_costs[1, "min_cost_dur_days"], xend=min_costs[1, "min_cost_dur_days"], 
-                     y=0, yend=min_costs[1, "min_cost"]), 
+                     y=-1000, yend=min_costs[1, "min_cost"]), 
                  linetype=2, color="#377eb8") +
-    geom_segment(aes(x=3, xend=min_costs[2, "min_cost_dur_days"], 
+    geom_segment(aes(x=-100, xend=min_costs[2, "min_cost_dur_days"], 
                      y=min_costs[2, "min_cost"], yend=min_costs[2, "min_cost"]), 
                  linetype=2, color="#e41a1c") +
     geom_segment(aes(x=min_costs[2, "min_cost_dur_days"], xend=min_costs[2, "min_cost_dur_days"], 
-                     y=0, yend=min_costs[2, "min_cost"]), 
+                     y=-10000, yend=min_costs[2, "min_cost"]), 
                  linetype=2, color="#e41a1c") +
     theme(legend.title=element_blank(), legend.position=c(.8, .8))
     #geom_vline(xintercept=as.numeric(min_costs[1, "min_cost_dur_days"]), linetype=2, color="#377eb8") +
@@ -419,19 +421,19 @@ ggplot(costs, aes(x=dur*gamma_params['median'],
 
 Our model provides ranges of expected cost for active monitoring systems. It identifies an optimal duration of active monitoring, by finding the expected cost range with the lowest maximum value. We applied the model to the case-study of Ebola in NYC, based on data from DOHMH (Table 1, Figure 4). These figures reflect the fact that as the active monitoring period duration increases, the probability of the highest-cost events (an individual developing the disease of interest after active monitoring ends) decreases. However, at the same time, the cost of active monitoring and possible testing due to non-specific symptoms increases as more person-days are included in the active monitoring period. For the low-risk individuals, the model suggests that the cost is minimized with around 
 `r round(min_costs[which(min_costs[,"phi"]==1e-4), "min_cost_dur_days"])` 
-days (i.e.
+days (i.e.,
 `r round(min_costs[which(min_costs[,"phi"]==1e-4), "min_cost_dur_days"]/mean(pstr_gamma_params_ebola$median),1)` 
 median incubation periods)
 of monitoring. For the high-risk individuals, the model suggests that the cost is minimized with around
 `r round(min_costs[which(min_costs[,"phi"]==1e-3), "min_cost_dur_days"])` 
 days 
-(i.e.
+(i.e.,
 `r round(min_costs[which(min_costs[,"phi"]==1e-3), "min_cost_dur_days"]/mean(pstr_gamma_params_ebola$median),1)` 
 median incubation periods)
-of monitoring (Figure 4). 
+of monitoring (Figure 4). The model results are sensitive to the cost per day of monitoring. For example, if the upper limit of the cost increases to $40/day, the durations of monitoring that would minimize expected cost decrease by 3 days for each scenario.
 
 
-![Figure 4. Estimated cost ranges for actively monitoring 100 individuals, calculated separately for some or high risk individuals and low (but not zero) risk individuals. The dashed lines intersect at the minimum point for the upper limit of each cost range.](static-figures/optimized-cost-analysis-1.png)
+![Figure 4. Estimated cost ranges of actively monitoring 100 individuals for Ebola, calculated separately for some or high risk individuals and low (but not zero) risk individuals. The dashed lines intersect at the minimum point for the upper limit of each cost range.](static-figures/optimized-cost-analysis-1.png)
 
 # Discussion
 
@@ -439,20 +441,22 @@ For three pathogens of significant public health concern, we quantified the risk
 
 Perception of risk is a key component of decision making, but ultimately science should inform public health policies. A key challenge faced by decision makers is that the public's perception of risk is often determined by the consequences of the event even if the probability of the event occurring is rare. With severe diseases, the consequences may be perceived as so dire that the public's tolerance for risk will be very low. While no policy can guarantee zero risk, analyses such as those presented here can assist in determining appropriate thresholds that reduce risk below a level tolerable for a risk-averse population.
 
-In many settings, active monitoring could serve as an alternative to quarantine, which involves both monitoring and severe restrictions on movement. In countries at low risk for Ebola, quarantine raised many ethical issues during the west African Ebola outbreak.[@Drazen:2014iz] CDC’s Ebola active monitoring recommendations were a critical component of the public health response in the United States that strived to balance the concerns from a diverse set of stakeholders without unnecessarily restricting individual liberties.[@CentersforDiseaseControlandPrevention:lyxYF_Hp] 
-However, for diseases in which the onset of infectiousness precedes the onset of symptoms, detection of the cases based on active monitoring of symptomology might not be soon enough to prevent secondary transmission.  As such, for these diseases, quarantine might be a more appropriate public health measure.
+In many settings, active monitoring could serve as an alternative to quarantine, which involves both monitoring and severe restrictions on movement. In countries at low risk for Ebola, quarantine raised many ethical issues during the West Africa Ebola outbreak.[@Drazen:2014iz] CDC’s Ebola active monitoring recommendations were a critical component of the public health response in the United States that strived to balance the concerns from a diverse set of stakeholders without unnecessarily restricting individual liberties.[@CentersforDiseaseControlandPrevention:lyxYF_Hp] 
+However, for diseases with asymptomatic transmission –such as influenza or measles– detection of the cases based on active monitoring of symptomology might not be soon enough to prevent secondary transmission.  As such, for these diseases, quarantine might be a more appropriate public health measure.
 
 Our model can suggest durations of active monitoring for emerging pathogens early in an outbreak. Accurate estimates of the median incubation period can be made even when few data are available.[@Reich:2009jq] While accurately estimating the variability of the incubation period requires more data[@WorldHealthOrganization:QuWKXo2f], existing data on the variation observed in similar pathogens could be used to inform early estimates until better data become available. When estimating incubation periods in real-time, care must be taken to adjust for possible truncation of longer incubation periods [@Brookmeyer:2001gx;@Nishiura:2011dc] or selection biases that could favor reporting of shorter incubation periods [@Virlogeux:2016ty]. 
 
 Evaluating the cost of monitoring programs is a challenging, multi-faceted problem. While we present new data from New York City's active monitoring program showing that the per-individual cost of monitoring is "low" (about $10–$20 per day), the total program cost can be substantial. Therefore minimizing unnecessary monitoring could provide valuable savings. 
 
 Some cost-efficiency may be achieved through targeted strategies. As CDC recommended for Ebola, it may be appropriate to use exposure-risk categories to modify the duration or intensity of active monitoring. Additionally, stronger public health messaging could encourage travelers to take necessary health precautions to avoid common travel-associated illnesses, e.g. malaria.[@Ezeoke:2016jv] This in turn could reduce unnecessary testing and costs associated with symptomatic events with diseases other than the one of interest. Low-cost versions of active monitoring have the potential to add value to public health response to less severe outbreaks as well.
- 
+
+Accurately estimating the risk of developing disease within exposure-risk categories poses a challenge to public health officials. Our analyses show that the sensitivity to mis-specified risk varies by pathogen. When the estimated cost varies across plausible risk levels, the full range of potential costs and durations should be considered until better data is available to obtain more precise estimates of the risk. 
+
 While we have used some of the best available data on large-scale active monitoring programs in our analyses, some potential costs and savings were not factored in to these calculations. The estimates available from DOHMH do not include the costs of cell phones given to monitored individuals, the CDC staff time in managing and monitoring screening data and running airport screenings, the US Department of Homeland Security staff time at airport screening, and the costs of tests for individuals with symptoms that were not due to Ebola. More detailed cost data was not available from DOHMH, but such data could help to disentangle the fixed costs associated with running an active monitoring program from the cost per monitored individual. Additionally, we only presented gross cost estimates for the evaluation of a symptomatic individual under active monitoring from one NYC hospital, which was not representative of all hospitals in NYC. Finally, local considerations prompted DOHMH to opt for an active monitoring program involving humans to make and receive active monitoring reports from individuals. In contrast, other jurisdictions used digital systems to administer monitoring reports.[@Parham:2015wf] The merits of these different approaches deserve further investigation.
 
-Active monitoring is useful for minimizing risk in critical, real-time outbreak response. Our framework for evaluating active monitoring of infectious diseases provides valuable information to assess the cost-effectiveness of various approaches. These tools could be used to help guide future assessments and data collection on active monitoring programs. They also provide a pathway for data to inform the design of active monitoring programs for future global disease threats.
+Active monitoring is useful for minimizing risk in critical, real-time outbreak response. Our framework for evaluating active monitoring of infectious diseases provides valuable information to assess the cost-effectiveness of various approaches. These tools could be used to strengthen the biosecurity of the U.S. and other countries as well as to help guide future assessments and data collection on active monitoring programs. They also provide a pathway for data to inform the design of active monitoring programs for future global disease threats.
 
 # Acknowledgments
-We thank the individuals who underwent active monitoring in NYC and the DOHMH staff involved in active monitoring. We thank Dr. Simon Cauchemez and Dr. Amadou Sall for providing access to the Ebola incubation period data from Guinea and giving permission for this data to be made publicly available. We also acknowledge Mr. John Maher for providing details on costs of evaluating Ebola patients at Bellvue Hospital in New York City.
+We thank the individuals who underwent active monitoring in NYC and Ms. Ifeoma Ezeoke for preparing the DOHMH active monitoring data. We thank Dr. Simon Cauchemez, PhD (Institut Pasteur, Paris, France) and Dr. Amadou Sall, PhD (Institut Pasteur, Dakar, Senegal)  for providing access to the Ebola incubation period data from Guinea and giving permission for this data to be made publicly available. We also acknowledge Mr. John Maher for providing details on costs of evaluating Ebola patients at Bellvue Hospital in New York City.
 
 # Bibliography
