@@ -25,8 +25,8 @@ shinyServer(function(input, output, session) {
     ## create plot of cost data
     output$plot_costs <-renderPlot({
         cost_m <- input$plot1_cost_per_day     ## per day cost of treatment
-        cost_trt <- c(3e6, 5e6) ## cost of response to single case
-        cost_exp <- c(0, 20e6)  ## cost of response to single case not captured by monitoring
+        cost_trt <- input$plot1_cost_per_case*1e6 ## cost of response to single case
+        cost_exp <- c(0, input$plot1_secondary_cases*input$plot1_cost_per_case[2]*1e6)  ## cost of response to single case not captured by monitoring
         cost_falsepos <- 1000*input$plot1_cost_false_pos ## cost of false positive testing
         
         cost_mat <- rbind(cost_m, cost_trt, cost_exp, cost_falsepos)
