@@ -104,46 +104,50 @@ Telephone: 413.545.4534
 # Abstract
 
 __Background__    
-During outbreaks of deadly emerging pathogens (e.g., Ebola, MERS-CoV) and bioterror threats (e.g., smallpox), actively monitoring potentially infected individuals may help limit disease transmission and morbidity. There is limited data about how to balance the cost and performance of this important public health activity.
+During outbreaks of deadly emerging pathogens (e.g., Ebola, MERS-CoV) and bioterror threats (e.g., smallpox), actively monitoring potentially infected individuals may help limit disease transmission and morbidity. There is limited data about how to balance the costs and performance of this important public health activity.
+
 
 __Methods__    
-We model the risk of individuals becoming symptomatic from the disease of interest and other causes, estimating the risks and costs associated with active monitoring programs. As a case-study, we analyze data from New York City's active monitoring program during the West Africa Ebola outbreak.
+We estimate the risks and costs associated with specific durations of active monitoring for three pathogens of significant public health concern: MERS-CoV, Ebola, and Smallpox. Specifically, we model the risk of individuals becoming symptomatic from the disease of interest and other causes. As a case-study, we analyze data from New York City's Ebola active monitoring program. Guidance issued by CDC on active monitoring was a critical cornerstone of its response to the West Africa Ebola outbreak. Individuals under Ebola active monitoring were asked to contact local health authorities to report their health status every day for 21 days after their last potential exposure.
 
 __Findings__    
-For three pathogens of significant public health concern, we quantified the risk and costs associated with specific durations of active monitoring. During the West Africa Ebola outbreak, CDC recommended active monitoring for 21 days after the last potential exposure. For monitored individuals in the CDC exposure-risk categories of "low (but not zero) risk" or "some or high risk" of Ebola, we estimated the probabilities of infection to be 1/10,000 and 1/1,000, respectively. Using these estimates, our model identified unique durations of active monitoring for Ebola that would minimize expected costs for each scenario: 21 and 31 days, respectively.
+For monitored individuals in the CDC exposure-risk categories of "low (but not zero) risk" or "some or high risk" of Ebola, we estimated the probabilities of infection to be 1/10,000 and 1/1,000, respectively. Using these estimates, our model identified unique durations of active monitoring for Ebola that would minimize expected costs for each scenario: 21 and 31 days, respectively. The chances of seeing a long incubation period (i.e. greater than three weeks) is greater for Ebola than for either MERS-CoV or Smallpox. In general, this translates into longer recommended active monitoring period durations for Ebola when compared to the other two pathogens.
 
 __Interpretation__    
 Active monitoring can save lives and minimize resource-intensive response to high-consequence events, but the costs of monitoring and responding to false alarms are also significant. These costs can be minimized by using simple targeted strategies that are evidence-based. Resources can be most effectively allocated by using exposure-risk categories to modify the duration or intensity of active monitoring. 
 
-__Funding__
+__Funding__    
 The authors received no funding for the design or writing of this manuscript.
 
 # Research in context
-Research in context panels should not contain references; key studies mentioned here should be referenced in the main text.
 
-## Evidence before this study
+__Evidence before this study__    
+We searched the ISI Web of Science using the keywords "active monitoring" and "outbreak". Several recent studies were identified that summarize and describe active monitoring programs that were in place during the 2014-2015 West Africa Ebola outbreak. No existing studies provide information or data on the cost of these programs or models to project or estimate costs for future implementations of active monitoring.
 
-This section should include a description of all the evidence that the authors considered before undertaking this study. Authors should briefly state: the sources (databases, journal or book reference lists, etc) searched; the criteria used to include or exclude studies (including the exact start and end dates of the search), which should not be limited to English language publications; the search terms used; the quality (risk of bias) of that evidence; and the pooled estimate derived from meta-analysis of the evidence, if appropriate.
+__Added value of this study__    
+Active monitoring is a relatively new countermeasure used by public health officials across the world to combat emerging infectious disease outbreaks. However, there is limited data about how to balance the cost and performance of this important public health activity. Our study is the first to explicitly assess the risks and costs associated with active monitoring programs, providing a flexible model that can be used for a wide range of outbreakscenarios. 
 
-##Added value of this study
-Authors should describe here how their findings add value to the existing evidence.
+__Implications of all the available evidence__    
+During outbreaks, active monitoring programs can be used to monitor potentially exposed individuals for symptoms. 
+While the financial and social costs can be substantial, such programs can be used to improve clinical outcomes for monitored individuals and reduce the risk of subsequent transmissions.
+Resources can be most effectively allocated by using exposure-risk categories to modify the duration or intensity of active monitoring. 
+For diseases with asymptomatic transmission –such as influenza or measles– detection of new cases based on active monitoring of symptomology might not be soon enough to prevent secondary transmission. 
 
-## Implications of all the available evidence
-Authors should state the implications for practice or policy and future research of their study combined with existing evidence.
 
 # Introduction
 
 [\\]:(### Definition, history, and potential applications of active monitoring for infectious disease (100w))
 
-The outbreak of Ebola virus disease (Ebola) in west Africa was the largest outbreak of a highly virulent acute infection in modern times, leading the global health community to reassess the ability of highly pathogenic acute infections to spread widely in today’s interconnected world. To improve rapid identification and evaluation of individuals infected with Ebola, on October 27, 2014, the U.S. Centers for Disease Control and Prevention (CDC) recommended active monitoring of individuals potentially exposed to Ebola virus. Individuals under active monitoring were asked to contact local health authorities every day for 21 days after their last potential exposure to report their health status. 
+The outbreak of Ebola virus disease (Ebola) in west Africa was the largest outbreak of a highly virulent acute infection in modern times, leading the global health community to reassess the ability of highly pathogenic acute infections to spread widely in today’s interconnected world. To improve rapid identification and evaluation of individuals infected with Ebola, on October 27, 2014, the U.S. Centers for Disease Control and Prevention (CDC) recommended active monitoring of individuals potentially exposed to Ebola virus. Individuals under active monitoring were asked to contact local health authorities to report their health status every day for 21 days after their last potential exposure. 
 
 Thousands of individuals were monitored for Ebola in the United States between October 2014 and February 2016, including over 10,000 individuals during one five month period.[@StehlingAriza:2015vd] 
+CDC’s guidance on active monitoring was a cornerstone of its response to Ebola. The guidance balanced numerous stakeholder concerns, including mitigating risk to communities and travelers without unnecessarily restricting individual liberties.
 Recommendations for active monitoring were discontinued in February 2016.[@CentersforDiseaseControlandPrevention:lyxYF_Hp] 
 Over 20% of all individuals actively monitored for Ebola in the United States were monitored in New York City (NYC), more than any other jurisdiction.[@StehlingAriza:2015vd]
 
 Active monitoring may help prevent and contain outbreaks of rapidly spreading emerging pathogens that pose a grave threat to public health. Such outbreaks may occur naturally, via a bioterrorist attack, or via unintended release from a laboratory. The decision to implement active monitoring depends on an assessment of the risk posed by a pathogen and the ability of active monitoring to reduce that risk. Key considerations include the transmissibility and pathogenicity of the pathogen, the potential size of an outbreak, and the relationship between the time of symptom onset and infectiousness.[@Fraser:2004ci] Ebola, Middle East Respiratory Syndrome Coronavirus (MERS-CoV), and smallpox are examples of viral pathogens for which active monitoring could play a pivotal role in preventing a large-scale outbreak.[@CentersforDiseaseControlandPrevention:2015tk]
 
-Active monitoring programs must balance conflicting priorities. The central goals of these programs are to identify, isolate, and treat infected individuals quickly. Setting an active monitoring period many times longer than any known incubation period of the pathogen of interest could virtually guarantee that all infected individuals would exhibit symptoms while being monitored. However, such a program would be unreasonably expensive, involve prolonged curtailing of a person’s individual freedom, and incur many financial and social costs through frequent responses to false positive cases. Evidence-based monitoring periods and appropriate tailoring of the monitoring intensity to disease risk should therefore be used to balance costs with biosecurity risks. 
+Active monitoring programs must balance conflicting priorities. The central goals of these programs are to identify, isolate, and treat infected individuals quickly. Setting an active monitoring period many times longer than any known incubation period of the pathogen of interest could virtually guarantee that all infected individuals would exhibit symptoms while being monitored. However, such a program would be unreasonably expensive, inconvenience monitored individuals, and incur many financial and social costs through frequent responses to false positive cases. Evidence-based monitoring periods and appropriate tailoring of the monitoring intensity to disease risk should therefore be used to balance costs with biosecurity risks. 
 
 Here we present an empirical framework for evaluating the risks and costs associated with active monitoring. We apply this framework to Ebola, MERS-CoV, and smallpox using data on the natural history of these diseases and data from the Ebola response of the NYC Department of Health and Mental Hygiene (DOHMH). 
 
@@ -446,7 +450,7 @@ days
 (i.e.,
 `r round(min_costs[which(min_costs[,"phi"]==1e-3), "min_cost_dur_days"]/mean(pstr_gamma_params_ebola$median),1)` 
 median incubation periods)
-of monitoring (Figure 4). The model results are sensitive to the cost per day of monitoring. For example, if the upper limit of the cost increases to $40/day, the durations of monitoring that would minimize expected cost decrease by 3 days for each scenario.
+of monitoring (Figure 4). The model results are sensitive to the uncertainties in the cost per day of monitoring and the number of secondary cases. For example, if the upper limit of the cost increases from $20 to $40/day or the number of secondary cases decreases from 4 to 2, the durations of monitoring that would minimize expected cost decrease by 2-3 days for each scenario.
 
 
 ![Figure 4. Estimated cost ranges of actively monitoring 100 individuals for Ebola, calculated separately for some or high risk individuals and low (but not zero) risk individuals. The dashed lines intersect at the minimum point for the upper limit of each cost range.](static-figures/optimized-cost-analysis-1.png)
@@ -457,7 +461,8 @@ For three pathogens of significant public health concern, we quantified the risk
 
 Perception of risk is a key component of decision making, but ultimately science should inform public health policies. A key challenge faced by decision makers is that the public's perception of risk is often determined by the consequences of the event even if the probability of the event occurring is rare. With severe diseases, the consequences may be perceived as so dire that the public's tolerance for risk will be very low. While no policy can guarantee zero risk, analyses such as those presented here can assist in determining appropriate thresholds that reduce risk below a level tolerable for a risk-averse population.
 
-In many settings, active monitoring could serve as an alternative to quarantine, which involves both monitoring and severe restrictions on movement. In countries at low risk for Ebola, quarantine raised many ethical issues during the West Africa Ebola outbreak.[@Drazen:2014iz] CDC’s Ebola active monitoring recommendations were a critical component of the public health response in the United States that strived to balance the concerns from a diverse set of stakeholders without unnecessarily restricting individual liberties.[@CentersforDiseaseControlandPrevention:lyxYF_Hp] 
+In many settings, active monitoring could serve as an alternative to quarantine, which involves both monitoring and severe restrictions on movement. In countries at low risk for Ebola, quarantine raised many ethical issues during the West Africa Ebola outbreak.[@Drazen:2014iz] CDC’s Ebola active monitoring recommendations were therefore a critical cornerstone of the public health response in the United States that strived to balance the concerns from a diverse set of stakeholders without unnecessarily restricting individual liberties.[@CentersforDiseaseControlandPrevention:lyxYF_Hp] 
+Active monitoring has since been applied by DOHMH for an individual at risk for another acute viral illness, Lassa fever. 
 However, for diseases with asymptomatic transmission –such as influenza or measles– detection of the cases based on active monitoring of symptomology might not be soon enough to prevent secondary transmission.  As such, for these diseases, quarantine might be a more appropriate public health measure.
 
 Our model can suggest durations of active monitoring for emerging pathogens early in an outbreak. Accurate estimates of the median incubation period can be made even when few data are available.[@Reich:2009jq] While accurately estimating the variability of the incubation period requires more data[@WorldHealthOrganization:QuWKXo2f], existing data on the variation observed in similar pathogens could be used to inform early estimates until better data become available. When estimating incubation periods in real-time, care must be taken to adjust for possible truncation of longer incubation periods [@Brookmeyer:2001gx;@Nishiura:2011dc] or selection biases that could favor reporting of shorter incubation periods [@Virlogeux:2016ty]. 
@@ -472,7 +477,13 @@ While we have used some of the best available data on large-scale active monitor
 
 Active monitoring is useful for minimizing risk in critical, real-time outbreak response. Our framework for evaluating active monitoring of infectious diseases provides valuable information to assess the cost-effectiveness of various approaches. These tools could be used to strengthen the biosecurity of the U.S. and other countries as well as to help guide future assessments and data collection on active monitoring programs. They also provide a pathway for data to inform the design of active monitoring programs for future global disease threats.
 
+# Disclosures
+The findings and conclusions in this article are those of the authors and do not necessarily represent the official position of DOHMH or CDC. The authors report no conflicts of interest.
+
+# Contributions
+NGR, JL, and NMV designed the study. NMV and JKV oversaw the active monitoring data collection and provided data for the study on active monitoring programs. NGR obtained incubation period data from existing publications and via personal communication with other authors. NGR ran the data analysis, prepared the figures, and drafted the manuscript. All authors participated in writing and providing substantial feedback on the manuscript.
+
 # Acknowledgments
-We thank the individuals who underwent active monitoring in NYC and Ifeoma Ezeoke for preparing the DOHMH active monitoring data. We thank Dr. Simon Cauchemez, PhD (Institut Pasteur, Paris, France) and Dr. Amadou Sall, PhD (Institut Pasteur, Dakar, Senegal)  for providing access to the Ebola incubation period data from Guinea and giving permission for this data to be made publicly available. We also acknowledge John Maher, Esq., for providing details on costs of evaluating Ebola patients at Bellvue Hospital in New York City.
+The authors received no funding for the design or writing of this manuscript. We thank the individuals who underwent active monitoring in NYC, Ifeoma Ezeoke for preparing the DOHMH active monitoring data and Margaret Pletnikoff for preparing the DOHMH cost data. We thank Dr. Simon Cauchemez, PhD (Institut Pasteur, Paris, France) and Dr. Amadou Sall, PhD (Institut Pasteur, Dakar, Senegal)  for providing access to the Ebola incubation period data from Guinea and giving permission for this data to be made publicly available. We also acknowledge John Maher, Esq., for providing details on costs of evaluating Ebola patients at Bellvue Hospital in New York City.
 
 # Bibliography
