@@ -155,7 +155,7 @@ Here we present an empirical framework for evaluating the risks and costs associ
 # Methods
 
 ### Estimating the incubation period distribution
-The incubation period of a disease is the duration of time between exposure to the pathogen and symptom onset.[@Brookmeyer:2005bc] This characteristic is imperfectly observed in most settings.[@Reich:2009jq;@Lessler:2009ub] We obtained previously published incubation period observations on 152 cases of Ebola in Guinea [@Faye:2015jc], 170 laboratory-confirmed cases of MERS-CoV in South Korea[@Virlogeux:2016ty] and 362 cases of smallpox[@Litvinjenko:1972vp;@Mack:1972jc;@Nishiura:2009dh]. We fit parametric distributions to the observed incubation period data using maximum likelihood techniques (see Supplement). We ran sensitivity analyses to evaluate the influence of several outlying observations in the Ebola dataset.
+The incubation period of a disease is the duration of time between exposure to the pathogen and symptom onset.[@Brookmeyer:2005bc] This characteristic is imperfectly observed in most settings.[@Reich:2009jq;@Lessler:2009ub] We obtained previously published incubation period observations on 145 cases of Ebola in Guinea [@Faye:2015jc], 170 laboratory-confirmed cases of MERS-CoV in South Korea[@Virlogeux:2016ty] and 362 cases of smallpox[@Litvinjenko:1972vp;@Mack:1972jc;@Nishiura:2009dh]. We fit parametric distributions to the observed incubation period data using maximum likelihood techniques (see Supplement). We ran sensitivity analyses to evaluate the influence of several outlying observations in the Ebola dataset.
  
 ### A model for active monitoring outcomes
 We developed a model that uses varying probabilities to alter the incubation period, thus estimating whether active monitoring would identify an individual infected with the pathogen of interest. Figure 1 presents the model schema, which involves a monitored individual having one of four outcomes: 
@@ -292,6 +292,7 @@ data_for_scaling <- data_frame(Disease=c("Ebola", "MERS-CoV", "Smallpox"),
                                                mean(pstr_gamma_params_mers$median), 
                                                mean(pstr_gamma_params_smallpox$median)))
 
+## making long data_frame with data for each disease, including 
 all_data <- rbind(mutate(p_ebola[["data"]], Disease="Ebola"),
                   mutate(p_mers[["data"]], Disease="MERS-CoV"),
                   mutate(p_smallpox[["data"]], Disease="Smallpox")) %>%
@@ -333,7 +334,7 @@ The number of serious infection events occurring in actively monitored individua
 ## calculate per-day hazard of symptoms with other pathogens
 n_monitored <- 5379   ## per email from Neil 6/20/2016
 n_symptomatic <- 30   ## per email from Neil 6/20/2016, with conservative/high assumption
-s.21 <- 1-n_symptomatic*.3/n_monitored
+s.21 <- 1-n_symptomatic/n_monitored
 per_day_hazard <- 1-s.21^(1/21)
 
 ## $1.9m, 5321 monitored, 21 day duration
@@ -358,6 +359,30 @@ costs <- calc_monitoring_costs(durs = durs,
                                N = 100,
                                cost_mat = cost_mat,
                                gamma_params = gamma_params)
+
+## costs at 5th percentile duration...
+gamma_params_p5 <- c(median = unname(quantile(pstr_gamma_params_ebola$median, prob=.05)), 
+                     shape = unname(quantile(pstr_gamma_params_ebola$shape, prob=.05)),
+                     scale = unname(quantile(pstr_gamma_params_ebola$scale, prob=.05)))
+costs_p5 <- calc_monitoring_costs(durs = durs,
+                                  probs_of_disease = phis,
+                                  per_day_hazard = per_day_hazard,
+                                  N = 100,
+                                  cost_mat = cost_mat,
+                                  gamma_params = gamma_params_p5)
+
+## costs at 95th percentile duration...
+gamma_params_p95 <- c(median = unname(quantile(pstr_gamma_params_ebola$median, prob=.95)), 
+                      shape = unname(quantile(pstr_gamma_params_ebola$shape, prob=.95)),
+                      scale = unname(quantile(pstr_gamma_params_ebola$scale, prob=.95)))
+costs_p95 <- calc_monitoring_costs(durs = durs,
+                                  probs_of_disease = phis,
+                                  per_day_hazard = per_day_hazard,
+                                  N = 100,
+                                  cost_mat = cost_mat,
+                                  gamma_params = gamma_params_p95)
+
+
 
 nphi <- length(phis)
 ndurs <- length(durs)
@@ -436,6 +461,52 @@ ggplot(costs, aes(x=dur*gamma_params['median'],
     ## geom_hline(yintercept=opt_10K$objective, linetype=2) +
     ## geom_hline(yintercept=opt_1K$objective, linetype=2) +
     ## ggtitle("Estimated cost ranges of monitoring 100 individuals at two risk levels")
+```
+
+
+```{r optimized-cost-with-uncertainty, }
+durs <- seq(.5, 5, by=.1)
+phis <- c(1/1000, 1/10000)
+
+nsamp <- 1000
+sampled_idx <- sample.int(nrow(pstr_gamma_params_ebola), 
+                          size=nsamp, replace=FALSE)
+sampled_params <- as.matrix(pstr_gamma_params_ebola[sampled_idx, c("median", "shape", "scale")])
+
+## run optimization over a sample from posterior
+for (i in 1:nsamp) {
+  tmp <- calc_monitoring_costs(durs = durs,
+                               probs_of_disease = phis,
+                               per_day_hazard = per_day_hazard,
+                               N = 100,
+                               cost_mat = cost_mat,
+                               gamma_params = sampled_params[i,], 
+                               return_scalar=FALSE)
+  
+  ## calculate minimum max cost for this sample
+  tmp_sampled_costs <- tmp %>%
+    group_by(phi) %>%
+    summarize(min_cost = min(maxcost),
+              min_cost_dur = dur[which.min(maxcost)],
+              min_cost_dur_days = min_cost_dur * gamma_params['median']) %>%
+    as.matrix()
+  if (i == 1) {
+    min_sampled_costs <- tmp_sampled_costs
+  } else {
+    min_sampled_costs <- rbind(min_sampled_costs, tmp_sampled_costs)
+  }
+}
+
+min_sampled_costs <- as.data.frame(min_sampled_costs)
+min_sampled_costs$phi_lab <- factor(min_sampled_costs$phi, 
+                              levels=c(1/1000, 1/10000),
+                              labels=c("some or high risk", "low (but not zero) risk"))
+
+costs_distr %>% group_by(phi, phi_lab, dur) %>%
+  do(tidy(t(quantile(.$maxcost, probs=c(.05, .5, .95)))))
+
+## minimize explicitly with optim?
+
 ```
 
 

@@ -30,7 +30,7 @@ library(knitr)
 
 All incubation period observations were treated as single interval-censored data, which means that intervals of possible incubation periods were observed rather than exact values [@Reich:2009jq]. The data used for these analyses are publicly available at [[repository to be made public upon acceptance]]. 
 
-We fitted the observed data for each disease to a gamma probability distribution using Markov Chain Monte Carlo (MCMC) methods with the Metropolis-Hastings algorithm. The gamma distribution is one of several "heavy-tailed" distributions often used to describe incubation periods, and aligns with assumptions made by previous researchers. [@Virlogeux:2016ty] We assumed uninformative, flat priors on the shape and scale parameters of the gamma distribution. 
+We fitted the observed data for each disease to a gamma probability distribution using Bayesian Markov Chain Monte Carlo (MCMC) methods with the Metropolis-Hastings algorithm. The gamma distribution is one of several "heavy-tailed" distributions often used to describe incubation periods, and aligns with assumptions made by previous researchers. [@Virlogeux:2016ty] We assumed uninformative, flat priors on the shape and scale parameters of the gamma distribution. 
 
 We used a standard procedure to evaluate MCMC convergence for each of the pathogens. First, we adjusted the size of the proposal distributions to obtain acceptance rates between 30% and 40%. Second, we visually inspected the resulting chains to assess convergence. Third, we thinned the posterior samples to reduce auto-correlation between observations. Fourth, we computed the Gelman and Rubin $\hat R$ multiple sequence diagnostic to assess convergence across chains [@Gelman:1992ts]. Fifth, we specified the appropriate number of samples, burn-in, and thinning rates to obtain 1 million posterior samples for smallpox and MERS-CoV and 3 million for Ebola. 
 
@@ -41,6 +41,8 @@ For MERS-CoV, we ran 20 parallel MCMC chains each with 120,000 samples, discardi
 For Ebola, the data structure was different. Rather than having a unique single interval censored observation for every case, we had 300 draws from the posterior distribtion of incubation periods for each individual in the transmission tree. We ran a single parallel MCMC chain for each of the 300 posterior samples. Each chain had 110,000 samples, we discarded the first 100,000 as burn-in and did not thin. This procedure yielded 3 million samples from the posterior distribution. We chose to retain more samples for this analysis to account for the greater number of chains being run.
 
 Two-dimensional credible regions were estimated using kernel density estimation on the joint posterior distribution of gamma parameters with flexible bandwidth matrices estimated by multivariate smooth cross-validation.[@Duong:2005fk;@Duong:2015wn] 
+
+Missing data had limited impact on our analysis because reported cases typically have known possible times of infection. There were no missing data for either MERS or smallpox. Seven index cases out of 152 total cases from the Ebola outbreak in Guinea did not have known possible times of infection. Incubation periods were not estimated for these individuals in the original manuscript describing this outbreak[@Faye:2015jc], and these seven observations were excluded from our analysis, leaving 145 observations of the incubation period for Ebola. We note that there may be biased sampling of incubation periods as typically only more severe cases may be reported or observed, and these cases may have different incubation periods than cases with less severe symptoms. 
 
 # Estimates of probabilities of infection
 
@@ -102,16 +104,16 @@ CDC risk level | Number of cases reported in the United States | Estimated denom
 ```{r, echo=FALSE}
 n_monitored <- 5379
 n_symptomatic <- 30
-s.21 <- 1-n_symptomatic*.3/n_monitored
+s.21 <- 1-n_symptomatic/n_monitored
 lam <- 1-s.21^(1/21)
 ```
 
 
 There were 5,379 non-unique persons who underwent active monitoring by DOHMH during October 25, 2014 to November 7, 2015. This represented 5,025 unique persons, some of whom were monitored on more than one occasion. During the course of these individuals being actively monitored by DOHMH, some individuals developed symptoms that could possibly have indicated the onset of Ebola.  Specifically, there were 122 occasions of an individual experiencing fever, diarrhea, vomiting, or unexplained bleeding/bruising. These symptomatic individuals were evaluated by DOHMH staff, and 39 were referred for follow-up testing for Ebola at a hospital or other medical facility. We assumed that 30 of those seeking care sought care at a hospital, representing `r round(n_symptomatic/n_monitored*100)`% of the total number of monitored individuals. Subsequent analyses showed little sensitivity to this assumption, as the overall proportion was so small.
 
-Our aim was to develop a simple model for the rate at which individuals were falling ill from causes other than Ebola. To do this, we performed a simple discrete-time survival analysis, assuming that the hazard of developing symptoms from other sources was constant over time. We observed a single aggregated datapoint, that after 21 days of monitoring, only a small fraction of individuals had reported symptoms that required hospitalization: `r n_symptomatic` x  0.3 / `r n_monitored` = `r round(n_symptomatic*0.3/n_monitored, 4)`. Assuming that every day during a monitoring period had the same risk of developing symptoms, we can write the survival function, the probability that an individual would be symptom free after $t$ days, as
+Our aim was to develop a simple model for the rate at which individuals were falling ill from causes other than Ebola. To do this, we performed a simple discrete-time survival analysis, assuming that the hazard of developing symptoms from other sources was constant over time. We observed a single aggregated datapoint, that after 21 days of monitoring, only a small fraction of individuals had reported symptoms that required hospitalization: `r n_symptomatic` / `r n_monitored` = `r round(n_symptomatic/n_monitored, 4)`. Assuming that every day during a monitoring period had the same risk of developing symptoms, we can write the survival function, the probability that an individual would be symptom free after $t$ days, as
 $$S(t) = (1-\lambda)^t$$
-By plugging in $S(21) =$ 1- `r round(n_symptomatic*0.3/n_monitored, 4)`, we solve for $\lambda$, the constant per-day hazard, and obtain the estimate $\hat\lambda$ = `r round(lam*1000, 2)`/1000. Therefore, for the model below we estimate the probability of a monitored individual developing Ebola-like symptoms during a $d$ day monitoring period as $r_d = 1 - (1-\hat\lambda)^d$. 
+By plugging in $S(21) =$ 1- `r round(n_symptomatic/n_monitored, 4)`, we solve for $\lambda$, the constant per-day hazard, and obtain the estimate $\hat\lambda$ = `r round(lam*1000, 2)`/1000. This translates into one hospitalized case per every `r round(1/lam)` person-days of active monitoring. Therefore, for the model below we estimate the probability of a monitored individual developing Ebola-like symptoms during a $d$ day monitoring period as $r_d = 1 - (1-\hat\lambda)^d$. 
  
 
 # Probabilistic model
