@@ -28,7 +28,7 @@ my_round <- function(x, k) format(round(x, k), nsmall=k)
 library(activeMonitr)
 library(gridExtra)
 library(ggplot2)
-library(tidyr)
+library(broom)
 library(scales)
 library(knitr)
 theme_set(theme_bw())
@@ -285,7 +285,7 @@ p_smallpox_text <- arrangeGrob(p_smallpox[["plot"]],
                                left=textGrob("Smallpox",gp=gpar(fontface="bold"), rot=90, vjust=1))
 ```
 
-```{r, fig.cap="Figure 3. Estimated probabilities of symptoms occurring after active monitoring (AM) ends across different active monitoring period durations, shown as multiples of the median incubation period. Figures are shown for 'some or high risk' and 'low (but not zero) risk' scenarios, with probabilities of developing symptomatic infection set to 1/1,000 and 1/10,000, respectively. The vertical dashed line indicates the 21 day duration recommended for Ebola active monitoring (i.e., approximately 2.4 times the median incubation period of Ebola).", fig.height=3}
+```{r fig-3, fig.cap="Figure 3. Estimated probabilities of symptoms occurring after active monitoring (AM) ends across different active monitoring period durations, shown as multiples of the median incubation period. Figures are shown for 'some or high risk' and 'low (but not zero) risk' scenarios, with probabilities of developing symptomatic infection set to 1/1,000 and 1/10,000, respectively. The vertical dashed line indicates the 21 day duration recommended for Ebola active monitoring (i.e., approximately 2.4 times the median incubation period of Ebola).", fig.height=3}
 
 data_for_scaling <- data_frame(Disease=c("Ebola", "MERS-CoV", "Smallpox"),
                                median_incper=c(mean(pstr_gamma_params_ebola$median),
@@ -307,7 +307,7 @@ all_data <- rbind(mutate(p_ebola[["data"]], Disease="Ebola"),
 colors <- c("#1b9e77", "#d95f02", "#7570b3")
 ggplot(all_data, aes(x=d_scaled, y=p50)) + 
     geom_smooth(aes(color=Disease), se=FALSE) + 
-    #geom_ribbon(aes(ymin=p05, ymax=p95, fill=Disease), alpha=.1) +
+    #geom_ribbon(aes(ymin=p05, ymax=p95, fill=Disease), alpha=.2) +
     facet_grid(.~phi_lab) + #, labeller=label_parsed) + 
     scale_y_log10(breaks=c(1/10000, 1/100000, 1/1000000, 1/10000000, 1/100000000), labels=c("1/10,000", "1/100,000", "1/1,000,000", "1/10,000,000","1/100,000,000")) +
     scale_color_manual(values=colors) +
@@ -340,6 +340,8 @@ per_day_hazard <- 1-s.21^(1/21)
 ## $1.9m, 5321 monitored, 21 day duration
 per_day_cost <- 1900000/(n_monitored*21)
 
+## cost matrix construction
+## columns represent upper and lower bounds
 cost_m <- c(10, 20)     ## per day cost of treatment
 cost_trt <- c(3e6, 5e6) ## cost of response to single case
 cost_exp <- c(0, 20e6)  ## cost of response to single case not captured by monitoring
@@ -403,8 +405,9 @@ rownames(out) <- c("some risk and high risk", "low (but not zero) risk")
 kable(out, 
       caption="Table 1: Total expected costs to the public health system (including active monitoring and response) per 100 monitored individuals, at two exposure-risk categories. Columns represent multiples of the median incubation period of Ebola. Rows represent the CDC exposure-risk category. Costs are inclusive of active monitoring and public health response and are based on model outputs for Ebola. Values are in $'000s.")
 
-# ggplot(num_out, aes(x=dur, color=factor(phi), fill=factor(phi))) + 
-#     geom_ribbon(aes(ymin=mincost, ymax=maxcost), alpha=.5) + geom_hline(yintercept=1900000)
+#ggplot(num_out, aes(x=dur, color=factor(phi), fill=factor(phi))) + 
+#  geom_ribbon(aes(ymin=mincost, ymax=maxcost), alpha=.5) +
+#  geom_hline(yintercept=1900000)
 ```
 
 
@@ -464,11 +467,11 @@ ggplot(costs, aes(x=dur*gamma_params['median'],
 ```
 
 
-```{r optimized-cost-with-uncertainty, }
+```{r optimized-cost-with-uncertainty, cache=TRUE}
 durs <- seq(.5, 5, by=.1)
 phis <- c(1/1000, 1/10000)
 
-nsamp <- 1000
+nsamp <- 10000
 sampled_idx <- sample.int(nrow(pstr_gamma_params_ebola), 
                           size=nsamp, replace=FALSE)
 sampled_params <- as.matrix(pstr_gamma_params_ebola[sampled_idx, c("median", "shape", "scale")])
@@ -497,31 +500,46 @@ for (i in 1:nsamp) {
   }
 }
 
-min_sampled_costs <- as.data.frame(min_sampled_costs)
+min_sampled_costs <- as_data_frame(min_sampled_costs)
 min_sampled_costs$phi_lab <- factor(min_sampled_costs$phi, 
                               levels=c(1/1000, 1/10000),
                               labels=c("some or high risk", "low (but not zero) risk"))
 
-costs_distr %>% group_by(phi, phi_lab, dur) %>%
-  do(tidy(t(quantile(.$maxcost, probs=c(.05, .5, .95)))))
+#quantile(min_sampled_costs$min_cost_dur, probs=c(.05, .5, .95))
+#quantile(min_sampled_costs$min_cost_dur_days, probs=c(.05, .5, .95))
+#quantile(min_sampled_costs$min_cost, probs=c(.05, .5, .95))
 
-## minimize explicitly with optim?
+aa <- min_sampled_costs %>% group_by(phi, phi_lab) %>%
+  do(broom::tidy(t(quantile(.$min_cost, probs=c(.025, .5, .975)))))
+## min_cost_dur is sensitive to the sampled parameters
+## by using min_cost_dur_days, we keep it on a common scale
+#bb <- min_sampled_costs %>% group_by(phi, phi_lab) %>%
+#  do(broom::tidy(t(quantile(.$min_cost_dur, probs=c(.05, .5, .95)))))
+min_cost_days_distr <- min_sampled_costs %>% group_by(phi, phi_lab) %>%
+  do(broom::tidy(t(quantile(.$min_cost_dur_days, probs=c(.025, .5, .975))))) %>%
+  as.data.frame()
 
 ```
 
 
-Our model provides ranges of expected cost for active monitoring systems. It identifies an optimal duration of active monitoring, by finding the expected cost range with the lowest maximum value. We applied the model to the case-study of Ebola in NYC, based on data from DOHMH (Table 1, Figure 4). These figures reflect the fact that as the active monitoring period duration increases, the probability of the highest-cost events (an individual developing the disease of interest after active monitoring ends) decreases. However, at the same time, the cost of active monitoring and possible testing due to non-specific symptoms increases as more person-days are included in the active monitoring period. For the low-risk individuals, the model suggests that the cost is minimized with around 
-`r round(min_costs[which(min_costs[,"phi"]==1e-4), "min_cost_dur_days"])` 
-days (i.e.,
+Our model provides ranges of expected cost for active monitoring systems. It identifies an optimal duration of active monitoring, by finding the expected cost range with the lowest maximum value. We applied the model to the case-study of Ebola in NYC, based on data from DOHMH (Table 1, Figure 4). These figures reflect the fact that as the active monitoring period duration increases, the probability of the highest-cost events (an individual developing the disease of interest after active monitoring ends) decreases. However, at the same time, the cost of active monitoring and possible testing due to non-specific symptoms increases as more person-days are included in the active monitoring period. For the low-risk individuals, the model suggests that the cost is minimized with  
+`r round(min_costs[which(min_costs[,"phi"]==1e-4), "min_cost_dur_days"],1)` 
+days of monitoring (i.e.,
 `r round(min_costs[which(min_costs[,"phi"]==1e-4), "min_cost_dur_days"]/mean(pstr_gamma_params_ebola$median),1)` 
-median incubation periods)
-of monitoring. For the high-risk individuals, the model suggests that the cost is minimized with around
-`r round(min_costs[which(min_costs[,"phi"]==1e-3), "min_cost_dur_days"])` 
-days 
+median incubation periods, 95% CI = 
+`r round(min_cost_days_distr[which(min_cost_days_distr[,"phi"]==1e-4), "X2.5."],1)` 
+-
+`r round(min_cost_days_distr[which(min_cost_days_distr[,"phi"]==1e-4), "X97.5."],1)`). 
+For the high-risk individuals, the model suggests that the cost is minimized with 
+`r round(min_costs[which(min_costs[,"phi"]==1e-3), "min_cost_dur_days"],1)` 
+days of monitoring 
 (i.e.,
 `r round(min_costs[which(min_costs[,"phi"]==1e-3), "min_cost_dur_days"]/mean(pstr_gamma_params_ebola$median),1)` 
-median incubation periods)
-of monitoring (Figure 4). The model results are sensitive to the uncertainties in the cost per day of monitoring and the number of secondary cases. For example, if the upper limit of the cost increases from $20 to $40/day or the number of secondary cases decreases from 4 to 2, the durations of monitoring that would minimize expected cost decrease by 2-3 days for each scenario.
+median incubation periods, 95% CI = 
+`r round(min_cost_days_distr[which(min_cost_days_distr[,"phi"]==1e-3), "X2.5."],1)` 
+-
+`r round(min_cost_days_distr[which(min_cost_days_distr[,"phi"]==1e-3), "X97.5."],1)`) 
+(Figure 4). The model results are sensitive to the assumed cost per day of monitoring and the number of secondary cases. For example, if the upper limit of the cost increases from $20 to $40/day or the number of secondary cases decreases from 4 to 2, the durations of monitoring that would minimize expected cost decrease by 2-3 days for each scenario.
 
 
 ![Figure 4. Estimated cost ranges of actively monitoring 100 individuals for Ebola, calculated separately for some or high risk individuals and low (but not zero) risk individuals. The dashed lines intersect at the minimum point for the upper limit of each cost range.](static-figures/optimized-cost-analysis-1.png)
@@ -537,6 +555,8 @@ Active monitoring has since been applied by DOHMH for an individual at risk for 
 However, for diseases with asymptomatic transmission –such as influenza or measles– detection of the cases based on active monitoring of symptomology might not be soon enough to prevent secondary transmission.  As such, for these diseases, quarantine might be a more appropriate public health measure.
 
 Our model can suggest durations of active monitoring for emerging pathogens early in an outbreak. Accurate estimates of the median incubation period can be made even when few data are available.[@Reich:2009jq] While accurately estimating the variability of the incubation period requires more data[@WorldHealthOrganization:QuWKXo2f], existing data on the variation observed in similar pathogens could be used to inform early estimates until better data become available. When estimating incubation periods in real-time, care must be taken to adjust for possible truncation of longer incubation periods [@Brookmeyer:2001gx;@Nishiura:2011dc] or selection biases that could favor reporting of shorter incubation periods [@Virlogeux:2016ty]. 
+
+While our model explicitly propagates uncertainty in the incubation period distribution, a formal, data-driven understanding of the uncertainty for other model parameters is not likely to be available to public health practitioners in practice due to lack of reliable data. Therefore, we ran the model for plausible ranges of other parameters in order to present a range of possible costs and risks. Sensitivity to these assumptions can be assessed through the open-access web applet that implements the model.
 
 Evaluating the cost of monitoring programs is a challenging, multi-faceted problem. While we present new data from New York City's active monitoring program showing that the per-individual cost of monitoring is "low" (about $10–$20 per day), the total program cost can be substantial. Therefore minimizing unnecessary monitoring could provide valuable savings. 
 
