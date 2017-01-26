@@ -12,9 +12,9 @@ Code to run the analyses for the manuscript can be found in:
 [activemonitr/inst/analysis-code/](https://github.com/reichlab/activemonitr/tree/master/inst/analysis-code)
 
 The manuscript itself is reproducible and can be found in: 
-[activemonitr/inst/manuscript/](https://github.com/reichlab/activemonitr/blob/master/inst/manuscript/plosmed-active-monitoring.Rmd)
+[activemonitr/inst/manuscript/](https://github.com/reichlab/activemonitr/blob/master/inst/manuscript/active-monitoring.Rmd)
 
-The code for the Shiny app that accompanies the publication can be found in:
+There is [an open-source web app](http://iddynamics.jhsph.edu/apps/shiny/activemonitr/) that accompanies the manuscript. The code for the Shiny app that accompanies the publication can be found in:
 [activemonitr/inst/shiny/](https://github.com/reichlab/activemonitr/tree/master/inst/shiny)
 
 Raw data used for the analyses can be found in: 
