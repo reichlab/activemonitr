@@ -1,5 +1,7 @@
 # Modeling of costs and risks of active monitoring
 
+[![DOI](https://zenodo.org/badge/48653754.svg)](https://zenodo.org/badge/latestdoi/48653754)
+
 This repository houses code and data for the preprint manuscript "Reducing the threat of imported infectious disease outbreaks with active monitoring" by Nicholas Reich, Justin Lessler, Jay Varma, and Neil Vora. The manuscript is currently under review.
 
 The repository is in the form of an R package, which can be installed using the following commands. You only need to run the first line if you don't already have the `devtools` package installed.
