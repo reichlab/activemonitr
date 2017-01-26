@@ -2,12 +2,16 @@
 title: "Quantifying the Risk and Cost of Active Monitoring for Infectious Diseases"
 author: "Nicholas G Reich^1^, Justin Lessler^2^, Jay K Varma^3,4^, Neil M Vora^3,5^"
 date: "January, 2017"
+header-includes:
+    - \usepackage{setspace}\doublespacing
+    - \usepackage{lineno}\linenumbers
 output:
   pdf_document:
     fig_caption: yes
     fig_height: 5
     fig_width: 5
     md_extensions: +implicit_figures
+    keep_tex: true
   word_document:
     fig_caption: yes
     fig_height: 5
@@ -38,48 +42,20 @@ data("pstr_gamma_params_smallpox")
 source('../analysis-code/inc-per-mcmc.R')
 ```
 
-  
-\  
-\     
-\    
-\  
-\  
-\     
-\    
-\  
-\  
-\     
-\    
-\  
-\  
-\     
-\    
-\  
-\  
-\  
-\     
-\    
-\  
+
+\begingroup \small
+
+\vspace{10em}
   
 ^1^Department of Biostatistics and Epidemiology, University of Massachusetts School of Public Health and Health Sciences (Amherst, USA, 01003)  
 ^2^Department of Epidemiology, Johns Hopkins Bloomberg School of Public Health (Baltimore, USA, 21205)  
 ^3^Division of Disease Control, New York City Department of Health and Mental Hygiene (New York, USA, 11101)  
 ^4^Office of the Director, National Center for Emerging and Zoonotic Infectious Diseases, Centers for Disease Control and Prevention (CDC) (Atlanta, USA, 30333)  
 ^5^Career Epidemiology Field Officer Program, Office of Public Health Preparedness and Response, CDC (Atlanta, USA, 30333)  
-  
-\  
-\  
-\  
-\  
-\  
-\  
-\  
-\  
-\  
-\  
-\  
-\  
-  
+ 
+\ 
+\ 
+
 Corresponding author:  
 Nicholas G Reich  
 Department of Biostatistics and Epidemiology  
@@ -89,14 +65,9 @@ Amherst, MA 01003
 Email: nick@schoolph.umass.edu  
 Telephone: 413.545.4534  
 
+\endgroup
 
-\  
-\  
-\  
-\  
-\  
-\  
-\  
+\clearpage
 
 
 
@@ -113,6 +84,7 @@ For monitored individuals in the CDC exposure-risk categories of "low (but not z
 __Discussion__    
 Active monitoring can save lives and minimize resource-intensive response to high-consequence events, but the costs of monitoring and responding to false alarms are also significant. These costs can be minimized by using simple targeted strategies that are evidence-based. Resources can be most effectively allocated by using exposure-risk categories to modify the duration or intensity of active monitoring. 
 
+\clearpage
 
 # Introduction
 
@@ -133,7 +105,7 @@ Here we present an empirical framework for evaluating the risks and costs associ
 # Methods
 
 ### Estimating the incubation period distribution
-The incubation period of a disease is the duration of time between exposure to the pathogen and symptom onset.[@Brookmeyer:2005bc] This characteristic is imperfectly observed in most settings.[@Reich:2009jq;@Lessler:2009ub] We obtained previously published incubation period observations on 145 cases of Ebola in Guinea [@Faye:2015jc], 170 laboratory-confirmed cases of MERS-CoV in South Korea[@Virlogeux:2016ty] and 362 cases of smallpox[@Litvinjenko:1972vp;@Mack:1972jc;@Nishiura:2009dh]. We fit parametric distributions to the observed incubation period data using maximum likelihood techniques (see Supplement). We ran sensitivity analyses to evaluate the influence of several outlying observations in the Ebola dataset.
+The incubation period of a disease is the duration of time between exposure to the pathogen and symptom onset.[@Brookmeyer:2005bc] This characteristic is imperfectly observed in most settings.[@Reich:2009jq;@Lessler:2009ub] We obtained previously published incubation period observations on 145 cases of Ebola in Guinea [@Faye:2015jc], 170 laboratory-confirmed cases of MERS-CoV in South Korea[@Virlogeux:2016ty] and 362 cases of smallpox[@Litvinjenko:1972vp;@Mack:1972jc;@Nishiura:2009dh]. We fit parametric distributions to the observed incubation period data using maximum likelihood techniques (see S1 Text). We ran sensitivity analyses to evaluate the influence of several outlying observations in the Ebola dataset. 
  
 ### A model for active monitoring outcomes
 We developed a model that uses varying probabilities to alter the incubation period, thus estimating whether active monitoring would identify an individual infected with the pathogen of interest. Figure 1 presents the model schema, which involves a monitored individual having one of four outcomes: 
@@ -145,20 +117,20 @@ We developed a model that uses varying probabilities to alter the incubation per
 
 Scenario 4 represents the highest risk of secondary transmission and may also reduce the chance of a positive clinical outcome for the sick individual. 
 
-![Figure 1. Model schematic representing four outcome scenarios for a person under active monitoring. Estimated costs shown are based on published costs[@Yacisin:2015wm] as well as new data from DOHMH and Bellevue Hospital in NYC. Details on the model formulation are available in Supplemental Table 3. Our model uses probabilities to calculate the likelihood of each of the possible model outcomes. Additionally, we estimate the probability that an individual who does not develop the disease of interest develops symptomatic illness necessitating hospitalization to rule-out the disease of interest. (See Supplement for details.)](static-figures/figure1-model-schema-v9.jpg)
+![Model schematic representing four outcome scenarios for a person under active monitoring. Estimated costs shown are based on published costs[@Yacisin:2015wm] as well as new data from DOHMH and Bellevue Hospital in NYC. Details on the model formulation are available in S1 Text (Supplemental Table 3). Our model uses probabilities to calculate the likelihood of each of the possible model outcomes. Additionally, we estimate the probability that an individual who does not develop the disease of interest develops symptomatic illness necessitating hospitalization to rule-out the disease of interest. (See S1 Text for details.)](static-figures/figure1-model-schema-v9.jpg)
 
 Using this model, we calculate the probability of each of the four outcomes, with the associated expected costs, by combining the data on the probabilities of infection, the estimated incubation period distribution, and plausible cost ranges for different outcomes.
 Since limited data prevent us from formally estimating variance, we created conservative (i.e. maximally wide) intervals for possible costs by using the endpoints of the plausible cost ranges.
-Additionally, it determines the uncertainty associated with these estimates due to not having precise incubation period observations and having an unknown time between exposure and the beginning of monitoring for a particular individual (see Supplement). For these pathogens, we assume that infectiousness coincides with the onset of symptoms.[@Velasquez:2015gv;@Cowling:2015vb;@Fenner:1988ux]
+Additionally, it determines the uncertainty associated with these estimates due to not having precise incubation period observations and having an unknown time between exposure and the beginning of monitoring for a particular individual (see S1 Text). For these pathogens, we assume that infectiousness coincides with the onset of symptoms.[@Velasquez:2015gv;@Cowling:2015vb;@Fenner:1988ux]
 
 Our model estimates the risks and costs associated with active monitoring programs for a range of active monitoring durations. To estimate the cost per person-day of monitoring, we used data on the number of individuals actively monitored by DOHMH and costs associated with the DOHMH Ebola response.  Additionally, for the purposes of hypothetical cost calculations, we assumed that an individual who becomes symptomatic with the disease of interest while under active monitoring gives rise to no secondary infections, while an individual who develops symptoms after his/her active monitoring period ends could give rise to as many as 4 new Ebola infections (an upper estimate based on prior research [@Althaus:2014cw;@Chowell:2004gh]).
 
-We developed open-source software, including a freely-available web application at [http://iddynamics.jhsph.edu/apps/shiny/activemonitr/](http://iddynamics.jhsph.edu/apps/shiny/activemonitr/). The source code for the web app, the data for the analyses, and this code to reproduce this manuscript itself are all freely available online under an open-source license. All analyses were run in `r R.version.string`.[@rcoreteam] These tools enable others to easily implement our model.
+We developed open-source software, including a freely-available web application at [http://iddynamics.jhsph.edu/apps/shiny/activemonitr/](http://iddynamics.jhsph.edu/apps/shiny/activemonitr/). The source code for the web app, the data for the analyses, and the code to reproduce this manuscript itself are all freely available online under an open-source license at GitHub (https://github.com/reichlab/activemonitr), with a static version in an open-access digital library [@Reich:2017z]. All analyses were run in `r R.version.string`.[@rcoreteam] These tools enable others to easily implement our model and reproduce our results.
 
 ### Stratifying by exposure risk
 Classifying individuals based on prior exposure risks enables targeted strategies in a range of public health response settings, including active monitoring. For example, in response to the West Africa Ebola outbreak, CDC issued recommendations on risk stratification of individuals for a potential Ebola virus exposure ("high risk", "some risk", "low (but not zero) risk", "no identifiable risk") and for how long and how intensively individuals in each of these categories should be monitored.[@CentersforDiseaseControlandPrevention:2015tc] DOHMH's active monitoring program, described previously[@Millman:2016cz], was implemented consistent with CDC recommendations. However, creating, evaluating, and modifying such classifications in practice is a difficult task and requires situational awareness and data that would vary depending on the pathogen and outbreak setting.
 
-For the CDC Ebola risk strata, we estimated probabilities of a monitored individual developing Ebola. These estimates were based on extrapolated numbers of actively monitored individuals in the United States during 2014-2016[@StehlingAriza:2015vd] and public data on the four domestic cases of Ebola[@CentersforDiseaseControlandPrevention:VbDBWqNH] (Supplemental Table 2).
+For the CDC Ebola risk strata, we estimated probabilities of a monitored individual developing Ebola. These estimates were based on extrapolated numbers of actively monitored individuals in the United States during 2014-2016[@StehlingAriza:2015vd] and public data on the four domestic cases of Ebola[@CentersforDiseaseControlandPrevention:VbDBWqNH] (S1 Text, Supplemental Table 2).
 
 # Results
 
@@ -209,21 +181,21 @@ grid.arrange(plot_all_regions,
              ncol=2)
 ```
 
-![Figure 2. Estimates and credible regions for incubation period distributions for Ebola, MERS-CoV and smallpox. The shaded elliptical areas represent regions that contain 95% of the estimated posterior distributions for each of the three diseases. The disease-specific curves plotted on the right show the estimated distribution for the incubation period for each disease (dark line). To show some of the uncertainty associated with these estimates, a random selection of density functions sampled from the joint posterior are represented by colored transparent lines around the heavy lines. Shaded vertical bands indicate the marginal credible regions for the median and 95th percentile.](static-figures/figure2-estimated-distribution-dynamic-5.png)
+![Estimates and credible regions for incubation period distributions for Ebola, MERS-CoV and smallpox. The shaded elliptical areas represent regions that contain 95% of the estimated posterior distributions for each of the three diseases. The disease-specific curves plotted on the right show the estimated distribution for the incubation period for each disease (dark line). To show some of the uncertainty associated with these estimates, a random selection of density functions sampled from the joint posterior are represented by colored transparent lines around the heavy lines. Shaded vertical bands indicate the marginal credible regions for the median and 95th percentile.](static-figures/figure2-estimated-distribution-dynamic-5.pdf)
 
 
 ### Modeling the risk of symptomatic illness
 
-Using information on cases of Ebola diagnosed in the U.S., as well as extrapolated case information, we estimated the probability of a "some-risk" or "high-risk" individual developing a symptomatic infection with Ebola as 1 in 1,000. For "low (but not zero) risk" individuals, we estimated this risk to be 1 in 10,000 (Supplemental Table 2).
+Using information on cases of Ebola diagnosed in the U.S., as well as extrapolated case information, we estimated the probability of a "some-risk" or "high-risk" individual developing a symptomatic infection with Ebola as 1 in 1,000. For "low (but not zero) risk" individuals, we estimated this risk to be 1 in 10,000 (S1 Text, Supplemental Table 2).
 
 <!--### Summarize risk estimates across durations of active monitoring for CDC exposure groups -->
 Incorporating these probabilities into our model, for each pathogen we calculated the probability of symptomatic illness developing in an individual after they were no longer being actively monitored. To standardize the results across diseases, we present the risk estimates across a range of different active monitoring period durations, shown as multiples of the median incubation period for each disease (Figure 3). 
 
-The model showed that an increase in the duration of the active monitoring period is associated with a decline in the probability that an individual develops symptoms due to the disease of interest after the active monitoring period ends. The rate at which that risk declines depends on the estimated variability of the incubation period distribution. Since the estimated incubation period distribution for Ebola showed the highest variability, the probability of symptoms occurring after active monitoring ends decreased more slowly when compared with the other pathogens. This feature also impacts the sensitivity of estimating the optimal duration of active monitoring when the probabilities of developing symptomatic infection are mis-specified (Supplemental Table 4).
+The model showed that an increase in the duration of the active monitoring period is associated with a decline in the probability that an individual develops symptoms due to the disease of interest after the active monitoring period ends. The rate at which that risk declines depends on the estimated variability of the incubation period distribution. Since the estimated incubation period distribution for Ebola showed the highest variability, the probability of symptoms occurring after active monitoring ends decreased more slowly when compared with the other pathogens. This feature also impacts the sensitivity of estimating the optimal duration of active monitoring when the probabilities of developing symptomatic infection are mis-specified (S1 Text, Supplemental Table 4).
 
 During the West Africa Ebola outbreak, CDC recommended active monitoring for 21 days. This corresponds to about `r my_round(21/mean(pstr_gamma_params_ebola$median),1)` times the median incubation period for Ebola (vertical dashed line, Figure 3). To achieve the same level of absolute risk for either MERS-CoV or smallpox, our model suggests that a duration of active monitoring would need to be set at less than two times the median incubation period for both of these diseases. 
 
-```{r risk-plots, fig.show='hide', cache=TRUE}
+```{r risk-plots, fig.show='hide', cache=FALSE}
 phis <- c(1/1000, 1/10000)
 durs <- 5:40
 yrange <- c(1e-18, 1e-2)
@@ -265,7 +237,7 @@ p_smallpox_text <- arrangeGrob(p_smallpox[["plot"]],
                                left=textGrob("Smallpox",gp=gpar(fontface="bold"), rot=90, vjust=1))
 ```
 
-```{r fig-3, fig.cap="Figure 3. Estimated probabilities of symptoms occurring after active monitoring (AM) ends across different active monitoring period durations, shown as multiples of the median incubation period. Figures are shown for 'some or high risk' and 'low (but not zero) risk' scenarios, with probabilities of developing symptomatic infection set to 1/1,000 and 1/10,000, respectively. The vertical dashed line indicates the 21 day duration recommended for Ebola active monitoring (i.e., approximately 2.4 times the median incubation period of Ebola).", fig.height=3}
+```{r fig-3, fig.cap="Estimated probabilities of symptoms occurring after active monitoring (AM) ends across different active monitoring period durations, shown as multiples of the median incubation period. Figures are shown for 'some or high risk' and 'low (but not zero) risk' scenarios, with probabilities of developing symptomatic infection set to 1/1,000 and 1/10,000, respectively. The vertical dashed line indicates the 21 day duration recommended for Ebola active monitoring (i.e., approximately 2.4 times the median incubation period of Ebola).", fig.height=3}
 
 data_for_scaling <- data_frame(Disease=c("Ebola", "MERS-CoV", "Smallpox"),
                                median_incper=c(mean(pstr_gamma_params_ebola$median),
@@ -383,7 +355,7 @@ for(i in 1:length(phis)) {
 
 rownames(out) <- c("some risk and high risk", "low (but not zero) risk") 
 kable(out, 
-      caption="Table 1: Total expected costs to the public health system (including active monitoring and response) per 100 monitored individuals, at two exposure-risk categories. Columns represent multiples of the median incubation period of Ebola. Rows represent the CDC exposure-risk category. Costs are inclusive of active monitoring and public health response and are based on model outputs for Ebola. Values are in $'000s.")
+      caption="Total expected costs to the public health system (including active monitoring and response) per 100 monitored individuals, at two exposure-risk categories. Columns represent multiples of the median incubation period of Ebola. Rows represent the CDC exposure-risk category. Costs are inclusive of active monitoring and public health response and are based on model outputs for Ebola. Values are in $'000s.")
 
 #ggplot(num_out, aes(x=dur, color=factor(phi), fill=factor(phi))) + 
 #  geom_ribbon(aes(ymin=mincost, ymax=maxcost), alpha=.5) +
@@ -447,7 +419,7 @@ ggplot(costs, aes(x=dur*gamma_params['median'],
 ```
 
 
-```{r optimized-cost-with-uncertainty, cache=TRUE}
+```{r optimized-cost-with-uncertainty, cache=FALSE}
 durs <- seq(.5, 5, by=.1)
 phis <- c(1/1000, 1/10000)
 
@@ -523,7 +495,7 @@ median incubation periods, 95% CI =
 `r round(min_cost_days_distr[which(min_cost_days_distr[,"phi"]==1e-3), "X97.5."],1)`) 
 (Figure 4). The model results are sensitive to the assumed cost per day of monitoring and the number of secondary cases. For example, if the upper limit of the cost increases from $20 to $40/day or the number of secondary cases decreases from 4 to 2, the durations of monitoring that would minimize expected cost decrease by 2-3 days for each scenario.
 
-![Figure 4. Estimated cost ranges of actively monitoring 100 individuals for Ebola, calculated separately for some or high risk individuals and low (but not zero) risk individuals. The dashed lines intersect at the minimum point for the upper limit of each cost range.](static-figures/optimized-cost-analysis-1.png)
+![Estimated cost ranges of actively monitoring 100 individuals for Ebola, calculated separately for some or high risk individuals and low (but not zero) risk individuals. The dashed lines intersect at the minimum point for the upper limit of each cost range.](static-figures/optimized-cost-analysis-1.pdf)
 
 # Discussion
 
