@@ -1,6 +1,6 @@
 # Modeling of costs and risks of active monitoring
 
-This repository houses code and data for the manuscript "Reducing the threat of imported infectious disease outbreaks with active monitoring" by Nicholas Reich, Neil Vora, Jay Varma, and Justin Lessler. 
+This repository houses code and data for the manuscript "Reducing the threat of imported infectious disease outbreaks with active monitoring" by Nicholas Reich, Justin Lessler, Jay Varma, and Neil Vora. 
 
 The repository is in the form of an R package, which can be installed using the following commands. You only need to run the first line if you don't already have the `devtools` package installed.
 ```
@@ -10,6 +10,9 @@ devtools::install_github('reichlab/activemonitr')
 
 Code to run the analyses for the manuscript can be found in: 
 [activemonitr/inst/analysis-code/](https://github.com/reichlab/activemonitr/tree/master/inst/analysis-code)
+
+The manuscript itself is reproducible and can be found in: 
+[activemonitr/inst/manuscript/](https://github.com/reichlab/activemonitr/blob/master/inst/manuscript/plosmed-active-monitoring.Rmd)
 
 The code for the Shiny app that accompanies the publication can be found in:
 [activemonitr/inst/shiny/](https://github.com/reichlab/activemonitr/tree/master/inst/shiny)
