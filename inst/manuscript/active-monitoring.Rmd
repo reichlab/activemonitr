@@ -3,12 +3,12 @@ title: "Quantifying the Risk and Cost of Active Monitoring for Infectious Diseas
 author: "Nicholas G Reich^1^, Justin Lessler^2^, Jay K Varma^3,4^, Neil M Vora^3,5^"
 date: "January, 2017"
 output:
-  word_document:
+  pdf_document:
     fig_caption: yes
     fig_height: 5
     fig_width: 5
     md_extensions: +implicit_figures
-  pdf_document:
+  word_document:
     fig_caption: yes
     fig_height: 5
     fig_width: 5
@@ -169,7 +169,7 @@ Estimates and credible regions for incubation period distribution parameters for
 We estimated smallpox to have the longest median incubation period of the three pathogens considered, although its distribution also showed the least overall variance. We estimate that MERS-CoV incubation periods are the shortest of the three, with the upper limit of the 95th percentile being just above 15 days (Figure 2). 
 
 
-```{r figure2-estimated-distribution-dynamic, fig.path='static-figures/', fig.show='hide', fig.height=5, cache=TRUE}
+```{r figure2-estimated-distribution-dynamic, fig.path='static-figures/', fig.show='hide', fig.height=5, cache=FALSE}
 data(kde_smallpox) 
 data(kde_ebola)
 data(kde_mers)
