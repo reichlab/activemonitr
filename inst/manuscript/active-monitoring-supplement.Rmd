@@ -1,7 +1,7 @@
 ---
 title: 'Methodological supplement for: Quantifying the Risk and Cost of Active Monitoring for Infectious Diseases'
 author: "Nicholas G Reich, Justin Lessler, Jay K Varma, Neil M Vora"
-date: "November, 2016"
+date: "January, 2017"
 output:
   word_document:
     fig_caption: yes
@@ -28,7 +28,7 @@ library(knitr)
 
 # Estimation of incubation period
 
-All incubation period observations were treated as single interval-censored data, which means that intervals of possible incubation periods were observed rather than exact values [@Reich:2009jq]. The data used for these analyses are publicly available at [[repository to be made public upon acceptance]]. 
+All incubation period observations were treated as single interval-censored data, which means that intervals of possible incubation periods were observed rather than exact values [@Reich:2009jq]. The data used for these analyses are publicly available at https://github.com/reichlab/activemonitr (working version of code and manuscript), or at https://doi.org/10.5281/zenodo.260135 (static release as of 26 January 2017). 
 
 We fitted the observed data for each disease to a gamma probability distribution using Bayesian Markov Chain Monte Carlo (MCMC) methods with the Metropolis-Hastings algorithm. The gamma distribution is one of several "heavy-tailed" distributions often used to describe incubation periods, and aligns with assumptions made by previous researchers. [@Virlogeux:2016ty] We assumed uninformative, flat priors on the shape and scale parameters of the gamma distribution. 
 
@@ -184,7 +184,7 @@ We ran a sensitivity analysis on our incubation period estimation. We left out t
 
 ![Supplemental Figure 1: Estimates and credible regions for incubation period distributions for Ebola, MERS-CoV and smallpox. The second plot for Ebola shows the posterior distribution leaving out the two observations that had incubation periods above 25 days. The shaded elliptical areas represent regions that contain 95% of the estimated posterior distributions for each of the three diseases. The disease-specific curves plotted on the right show the estimated distribution for the incubation period for each disease (dark line). To show some of the uncertainty associated with these estimates, a random selection of density functions sampled from the joint posterior are represented by colored transparent lines around the heavy lines. Shaded vertical bands indicate the marginal credible regions for the median and 95th percentile.](static-figures/estimated-distributions-sensitivity.png)
 
-# References
+# Bibliography
 
 
 
