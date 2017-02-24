@@ -2,7 +2,7 @@
 title: 'Methodological supplement for: Quantifying the Risk and Cost of Active Monitoring
   for Infectious Diseases'
 author: "Nicholas G Reich, Justin Lessler, Jay K Varma, Neil M Vora"
-date: "January, 2017"
+date: "February, 2017"
 header-includes:
     - \usepackage{setspace}\doublespacing
     - \usepackage{lineno}\linenumbers
