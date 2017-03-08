@@ -518,7 +518,9 @@ Recent history has shown that the unexpected emergence of new disease threats ha
 
 <!--
 # Acknowledgments
-We thank the individuals who underwent active monitoring in NYC, Ifeoma Ezeoke for preparing the DOHMH active monitoring data and Margaret Pletnikoff for preparing the DOHMH cost data. We thank Simon Cauchemez, Amadou Sall, and Ousmane Faye for providing access to the Ebola incubation period data from Guinea and giving permission for this data to be made publicly available. We also acknowledge John Maher for providing details on costs of evaluating Ebola patients at Bellevue Hospital in New York City.
+We thank the individuals who underwent active monitoring in NYC, Ifeoma Ezeoke for preparing the DOHMH active monitoring data and Margaret Pletnikoff for preparing the DOHMH cost data. We thank Dr. Simon Cauchemez, Dr. Ousmane Faye, and Dr. Amadou Sall for providing access to the Ebola incubation period data from Guinea and giving permission for this data to be made publicly available. We also acknowledge John Maher for providing details on costs of evaluating Ebola patients at Bellevue Hospital in New York City.
+
+The findings and conclusions in this article are those of the authors and do not necessarily represent the official position of DOHMH or CDC. 
 -->
 
 # Tables
@@ -544,8 +546,8 @@ __Figure 2__ Estimates and credible regions for incubation period distributions 
 \ 
 
 __Figure 3__ Estimated probabilities of symptoms occurring after active monitoring (AM) ends across different active monitoring period durations, shown as multiples of the median incubation period. Figures are shown for 'some or high risk' and 'low (but not zero) risk' scenarios, with probabilities of developing symptomatic infection set to 1/1,000 and 1/10,000, respectively. The vertical dashed line indicates the 21 day duration recommended for Ebola active monitoring (i.e., approximately 2.4 times the median incubation period of Ebola).
-![](static-figures/figure3-scaled-prob-symptoms.pdf)
-<!--static-figures/figure3-scaled-prob-symptoms.pdf-->
+![](static-figures/figure3-scaled-prob-symptoms-1.pdf)
+<!--static-figures/figure3-scaled-prob-symptoms-1.pdf-->
 
 \ 
 
