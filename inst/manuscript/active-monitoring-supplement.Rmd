@@ -1,7 +1,7 @@
 ---
 title: 'Methodological supplement for: Quantifying the Risk and Cost of Active Monitoring
   for Infectious Diseases'
-author: "Nicholas G Reich, Justin Lessler, Jay K Varma, Neil M Vora"
+author: ""
 date: "February, 2017"
 header-includes:
     - \usepackage{setspace}\doublespacing
@@ -32,7 +32,7 @@ library(knitr)
 
 # Estimation of incubation period
 
-All incubation period observations were treated as single interval-censored data, which means that intervals of possible incubation periods were observed rather than exact values [@Reich:2009jq]. The data used for these analyses are publicly available at https://github.com/reichlab/activemonitr (working version of code and manuscript), or at https://doi.org/10.5281/zenodo.260135 (static release as of 26 January 2017). 
+All incubation period observations were treated as single interval-censored data, which means that intervals of possible incubation periods were observed rather than exact values [@Reich:2009jq]. The data used for these analyses are publicly available at https://github.com/reichlab/activemonitr (current version of code), or at https://doi.org/10.5281/zenodo.260135 (static release as of 26 January 2017). 
 
 We fitted the observed data for each disease to a gamma probability distribution using Bayesian Markov Chain Monte Carlo (MCMC) methods with the Metropolis-Hastings algorithm. The gamma distribution is one of several "heavy-tailed" distributions often used to describe incubation periods, and aligns with assumptions made by previous researchers. [@Virlogeux:2016ty] We assumed uninformative, flat priors on the shape and scale parameters of the gamma distribution. 
 
