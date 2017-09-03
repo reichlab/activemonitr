@@ -1,8 +1,8 @@
 ---
 title: 'Methodological supplement for: Quantifying the Risk and Cost of Active Monitoring
   for Infectious Diseases'
-author: ""
-date: "February, 2017"
+author: "Nicholas G Reich*, Justin Lessler, Jay K Varma, Neil M Vora"
+date: "September 2017"
 header-includes:
     - \usepackage{setspace}\doublespacing
     - \usepackage{lineno}\linenumbers
@@ -18,7 +18,7 @@ output:
     fig_height: 5
     fig_width: 5
     md_extensions: +implicit_figures+grid_tables
-csl: elsevier-vancouver.csl
+csl: emerging-infectious-diseases.csl
 bibliography: active-monitoring.bib
 ---
 
