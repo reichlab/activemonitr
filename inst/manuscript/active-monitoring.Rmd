@@ -98,7 +98,7 @@ Here we present an empirical framework for evaluating the risks and costs associ
 The incubation period of a disease is the duration of time between exposure to the pathogen and symptom onset.[@Brookmeyer:2005bc] This characteristic is imperfectly observed in most settings.[@Reich:2009jq;@Lessler:2009ub] We obtained previously published incubation period observations on 145 cases of Ebola in Guinea [@Faye:2015jc], 170 laboratory-confirmed cases of MERS-CoV in South Korea[@Virlogeux:2016ty] and 362 cases of smallpox[@Litvinjenko:1972vp;@Mack:1972jc;@Nishiura:2009dh]. We fit parametric distributions to the observed incubation period data using maximum likelihood techniques (see Supplemental Text). We ran sensitivity analyses to evaluate the influence of several outlying observations in the Ebola dataset. 
  
 ### A model for active monitoring outcomes
-We developed a model that uses varying probabilities to alter the incubation period, thus estimating whether active monitoring would identify an individual infected with the pathogen of interest. Figure 1 presents the model schema, which involves a monitored individual having one of four outcomes: 
+We developed a probabilistic model that uses varying probabilities to alter the incubation period, thus estimating whether active monitoring would identify an individual infected with the pathogen of interest. Figure 1 presents the model schema, which involves a monitored individual having one of four outcomes: 
 
 1. no symptoms warranting clinical follow-up, 
 2. no symptomatic infection with the disease of interest, but occurrence of symptoms that necessitate ruling out of the disease of interest, 
@@ -107,7 +107,8 @@ We developed a model that uses varying probabilities to alter the incubation per
 
 Scenario 4 represents the highest risk of secondary transmission and may also reduce the chance of a positive clinical outcome for the sick individual. 
 
-Using this model, we calculate the probability of each of the four outcomes, with the associated expected costs, by combining the data on the probabilities of infection, the estimated incubation period distribution, and plausible cost ranges for different outcomes.
+We use a population-level probabilistic model with five key parameters. For a given set of parameters, the model calculates the expected number of individuals in a particular population or cohort of a fixed size that experience each of the four outcomes listed above. Each outcome has a specific cost and model-based probability associated with it (see Supplement and Figure 1 for details). These calculations are repeated for a set of stochastic samples of possible parameter values (e.g. samples from the posterior distribution of incubation period parameters) to provide measures of uncertainty.
+
 Since limited data prevent us from formally estimating variance, we created conservative (i.e. maximally wide) intervals for possible costs by using the endpoints of the plausible cost ranges.
 Additionally, it determines the uncertainty associated with these estimates due to not having precise incubation period observations and having an unknown time between exposure and the beginning of monitoring for a particular individual (see Supplemental Text). For these pathogens, we assume that infectiousness coincides with the onset of symptoms.[@Velasquez:2015gv;@Cowling:2015vb;@Fenner:1988ux]
 
