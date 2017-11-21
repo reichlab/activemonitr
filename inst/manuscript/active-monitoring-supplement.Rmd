@@ -5,7 +5,6 @@ author: "Nicholas G Reich*, Justin Lessler, Jay K Varma, Neil M Vora"
 date: "September 2017"
 header-includes:
     - \usepackage{setspace}\doublespacing
-    - \usepackage{lineno}\linenumbers
 output:
   pdf_document:
     fig_caption: yes
@@ -181,12 +180,15 @@ opt_durs <- rbind(opt_durs_ebola,
 kable(opt_durs, caption="Supplemental Table 4: Results of sensitivity analysis testing the impact of varying probabilities of symptomatic illness (phi) with the duration of active monitoring that minimizes the maximum expected cost.")
 ```
 
+![Estimated cost ranges of actively monitoring 100 individuals for Ebola, calculated separately for some or high risk individuals and low (but not zero) risk individuals. The dashed lines intersect at the minimum point for the upper limit of each cost range. This figure is a comparison to Figure 4 in the main text, but uses different parameters, specifically, it assumes that a case gives rise to at most one secondary infection, that the cost is a fixed \$4 million per case, and that the cost per monitored-person day is \$20 ](static-figures/supp-fig2-optimized-cost-analysis-1.pdf)
+
 
 
 # Sensitivity analysis: outlying Ebola incubation periods
 We ran a sensitivity analysis on our incubation period estimation. We left out the two observations that had a mean incubation period (across the posterior estimates provided as raw data) of greater than or equal to 25 days. One observation had a mean incubation period of 34.4 days and another of 29.5 days. Leaving these observations out did not have a substantial impact on the estimated parameters. The estimated median incubation period decreased by about 0.2 days and the estimated 95th percentile of the incubation period decreased by 1 day (Figure 1). 
 
 ![Estimates and credible regions for incubation period distributions for Ebola, MERS-CoV and smallpox. The second plot for Ebola shows the posterior distribution leaving out the two observations that had incubation periods above 25 days. The shaded elliptical areas represent regions that contain 95% of the estimated posterior distributions for each of the three diseases. The disease-specific curves plotted on the right show the estimated distribution for the incubation period for each disease (dark line). To show some of the uncertainty associated with these estimates, a random selection of density functions sampled from the joint posterior are represented by colored transparent lines around the heavy lines. Shaded vertical bands indicate the marginal credible regions for the median and 95th percentile.](static-figures/estimated-distributions-sensitivity.png)
+
 
 # Bibliography
 
