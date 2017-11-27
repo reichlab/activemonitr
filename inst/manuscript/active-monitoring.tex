@@ -25,7 +25,7 @@
 \usepackage{hyperref}
 \hypersetup{unicode=true,
             pdftitle={Quantifying the Risk and Cost of Active Monitoring for Infectious Diseases},
-            pdfauthor={Nicholas G Reich*, Justin Lessler, Jay K Varma, Neil M Vora},
+            pdfauthor={Nicholas G Reich\^{}\{*,1\}, Justin Lessler\^{}\{2\}, Jay K Varma\^{}\{3,4\}, Neil M Vora\^{}\{3,4\}},
             pdfborder={0 0 0},
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
@@ -78,7 +78,8 @@
 Diseases}
   \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
-  \author{Nicholas G Reich*, Justin Lessler, Jay K Varma, Neil M Vora}
+  \author{Nicholas G Reich\(^{*,1}\), Justin Lessler\(^{2}\), Jay K
+Varma\(^{3,4}\), Neil M Vora\(^{3,4}\)}
   \preauthor{\centering\large\emph}
   \postauthor{\par}
   \predate{\centering\large\emph}
@@ -92,12 +93,24 @@ Diseases}
 
 ~
 
-\textbf{Author Affiliations:} University of Massachusetts, Amherst,
-Massachusetts, USA (N.G. Reich); Johns Hopkins Bloomberg School of
-Public Health, Baltimore, Maryland, USA (J. Lessler); New York City
-Department of Health and Mental Hygiene, USA (J.K. Varma, N.M. Vora);
-Centers for Disease Control and Prevention, Atlanta, Georgia, USA (J.K.
-Varma, N.M. Vora)
+\paragraph{Author Affiliations}\label{author-affiliations}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  University of Massachusetts, Amherst, Massachusetts, USA
+\item
+  Johns Hopkins Bloomberg School of Public Health, Baltimore, Maryland,
+  USA
+\item
+  New York City Department of Health and Mental Hygiene, USA
+\item
+  Centers for Disease Control and Prevention, Atlanta, Georgia, USA
+\end{enumerate}
+
+*Correspondence to
+\href{mailto:nick@schoolph.umass.edu}{\nolinkurl{nick@schoolph.umass.edu}}
 
 ~
 
@@ -137,14 +150,15 @@ exposure.
 
 Thousands of individuals were monitored for Ebola in the United States
 between October 2014 and February 2016, including over 10,000
-individuals during one five month period.(1) CDC's guidance on active
-monitoring was a cornerstone of its response to Ebola. The guidance
-balanced numerous stakeholder concerns, including mitigating risk to
-communities and travelers without unnecessarily restricting individual
-liberties. Recommendations for active monitoring were discontinued in
-February 2016.(2) Over 20\% of all individuals actively monitored for
-Ebola in the United States were monitored in New York City (NYC), more
-than any other jurisdiction.(1)
+individuals during one five month period.\textsuperscript{1} CDC's
+guidance on active monitoring was a cornerstone of its response to
+Ebola. The guidance balanced numerous stakeholder concerns, including
+mitigating risk to communities and travelers without unnecessarily
+restricting individual liberties. Recommendations for active monitoring
+were discontinued in February 2016.\textsuperscript{2} Over 20\% of all
+individuals actively monitored for Ebola in the United States were
+monitored in New York City (NYC), more than any other
+jurisdiction.\textsuperscript{1}
 
 Active monitoring may help prevent and contain outbreaks of rapidly
 spreading emerging pathogens that pose a grave threat to public health.
@@ -152,13 +166,13 @@ Such outbreaks may occur naturally, via a bioterrorist attack, or via
 unintended release from a laboratory. The decision to implement active
 monitoring, or another non-pharmaceutical intervention, depends on an
 assessment of the risk posed by a pathogen and the ability of the chosen
-intervention to reduce that risk.(3) Key considerations include the
-transmissibility and pathogenicity of the pathogen, the potential size
-of an outbreak, and the relationship between the time of symptom onset
-and infectiousness.(4) Ebola, Middle East Respiratory Syndrome
-Coronavirus (MERS-CoV), and smallpox are examples of viral illnesses for
-which active monitoring could play a pivotal role in preventing a
-large-scale outbreak.(5)
+intervention to reduce that risk.\textsuperscript{3} Key considerations
+include the transmissibility and pathogenicity of the pathogen, the
+potential size of an outbreak, and the relationship between the time of
+symptom onset and infectiousness.\textsuperscript{4} Ebola, Middle East
+Respiratory Syndrome Coronavirus (MERS-CoV), and smallpox are examples
+of viral illnesses for which active monitoring could play a pivotal role
+in preventing a large-scale outbreak.\textsuperscript{5}
 
 Active monitoring programs must balance conflicting priorities. The
 central goals of these programs are to identify, isolate, and treat
@@ -186,11 +200,13 @@ the NYC Department of Health and Mental Hygiene (DOHMH).
 distribution}\label{estimating-the-incubation-period-distribution}
 
 The incubation period of a disease is the duration of time between
-exposure to the pathogen and symptom onset.(6) This characteristic is
-imperfectly observed in most settings.(7,8) We obtained previously
-published incubation period observations on 145 cases of Ebola in Guinea
-(9), 170 laboratory-confirmed cases of MERS-CoV in South Korea(10) and
-362 cases of smallpox(11--13). We fit parametric distributions to the
+exposure to the pathogen and symptom onset.\textsuperscript{6} This
+characteristic is imperfectly observed in most
+settings.\textsuperscript{7,8} We obtained previously published
+incubation period observations on 145 cases of Ebola in
+Guinea\textsuperscript{9}, 170 laboratory-confirmed cases of MERS-CoV in
+South Korea\textsuperscript{10} and 362 cases of
+smallpox\textsuperscript{11--13}. We fit parametric distributions to the
 observed incubation period data using maximum likelihood techniques (see
 Supplemental Text). We ran sensitivity analyses to evaluate the
 influence of several outlying observations in the Ebola dataset.
@@ -242,7 +258,8 @@ determines the uncertainty associated with these estimates due to not
 having precise incubation period observations and having an unknown time
 between exposure and the beginning of monitoring for a particular
 individual (see Supplemental Text). For these pathogens, we assume that
-infectiousness coincides with the onset of symptoms.(14--16)
+infectiousness coincides with the onset of
+symptoms.\textsuperscript{14--16}
 
 Our model estimates the risks and costs associated with active
 monitoring programs for a range of active monitoring durations. To
@@ -254,7 +271,7 @@ becomes symptomatic with the disease of interest while under active
 monitoring gives rise to no secondary infections, while an individual
 who develops symptoms after his/her active monitoring period ends could
 give rise to as many as 4 new Ebola infections (an upper estimate based
-on prior research (17,18)).
+on prior research\textsuperscript{17,18}).
 
 \subsubsection{Stratifying by exposure
 risk}\label{stratifying-by-exposure-risk}
@@ -266,17 +283,18 @@ outbreak, CDC issued recommendations on risk stratification of
 individuals for a potential Ebola virus exposure (``high risk'', ``some
 risk'', ``low (but not zero) risk'', ``no identifiable risk'') and for
 how long and how intensively individuals in each of these categories
-should be monitored.(19) DOHMH's active monitoring program, described
-previously(20), was implemented consistent with CDC recommendations.
-However, creating, evaluating, and modifying such classifications in
-practice is a difficult task and requires situational awareness and data
-that would vary depending on the pathogen and outbreak setting.
+should be monitored.\textsuperscript{19} DOHMH's active monitoring
+program, described previously\textsuperscript{20}, was implemented
+consistent with CDC recommendations. However, creating, evaluating, and
+modifying such classifications in practice is a difficult task and
+requires situational awareness and data that would vary depending on the
+pathogen and outbreak setting.
 
 For the CDC Ebola risk strata, we estimated probabilities of a monitored
 individual developing Ebola. These estimates were based on extrapolated
 numbers of actively monitored individuals in the United States during
-2014-2016(1) and public data on the four domestic cases of Ebola(21)
-(Supplemental Text, Table 2).
+2014-2016\textsuperscript{1} and public data on the four domestic cases
+of Ebola\textsuperscript{21} (Supplemental Text, Table 2).
 
 \subsubsection{Data Availability}\label{data-availability}
 
@@ -287,9 +305,9 @@ code for the web app, the data for the analyses, and the code to
 reproduce this manuscript itself are all freely available online under
 an open-source license at GitHub
 (\url{https://github.com/reichlab/activemonitr}), with a static version
-in an open-access digital library (22). All analyses were run in R
-version 3.4.1 (2017-06-30).(23) These tools enable others to easily
-implement our model and reproduce our results.
+in an open-access digital library\textsuperscript{22}. All analyses were
+run in R version 3.4.1 (2017-06-30).\textsuperscript{23} These tools
+enable others to easily implement our model and reproduce our results.
 
 \section{Results}\label{results}
 
@@ -298,14 +316,14 @@ estimates}\label{incubation-period-estimates}
 
 Estimates and credible regions for incubation period distribution
 parameters for Ebola, MERS-CoV, and smallpox are shown in Figure 2.
-Consistent with other studies that used the same data,(9,10,13) we
-estimated that half of all cases of Ebola will have an incubation period
-of less than 8.9 days (95\% CI: 8.0-9.8), of MERS-CoV less than 6.9 days
-(95\% CI: 6.3-7.5) and of smallpox less than 12.2 days (95\% CI:
-12.0-12.4). Additionally, the data suggest that 95\% of cases of Ebola
-will have an incubation period of less than 20.3 days (95\% CI:
-18.1-23.0), of MERS-CoV 13.3 days (95\% CI: 12.0-14.8), and of smallpox
-15.8 days (95\% CI: 15.4-16.2).
+Consistent with other studies that used the same
+data,\textsuperscript{9,10,13} we estimated that half of all cases of
+Ebola will have an incubation period of less than 8.9 days (95\% CI:
+8.0-9.8), of MERS-CoV less than 6.9 days (95\% CI: 6.3-7.5) and of
+smallpox less than 12.2 days (95\% CI: 12.0-12.4). Additionally, the
+data suggest that 95\% of cases of Ebola will have an incubation period
+of less than 20.3 days (95\% CI: 18.1-23.0), of MERS-CoV 13.3 days (95\%
+CI: 12.0-14.8), and of smallpox 15.8 days (95\% CI: 15.4-16.2).
 
 We estimated smallpox to have the longest median incubation period of
 the three pathogens considered, although its distribution also showed
@@ -357,12 +375,13 @@ study}\label{minimizing-costs-of-active-monitoring-programs-ebola-case-study}
 
 The total expense for Ebola response by DOHMH during the period from
 July 31, 2014--November 7, 2015 was \$9.7 million. Of this, \$4.3
-million was in response to a single Ebola case (24) and \$1.9 million
-was for active monitoring. The remaining balance of \$3.5 million was
-used for other Ebola preparedness activities. DOHMH monitored 5,379
-non-unique individuals during this period (active monitoring began in
-NYC on October 25, 2014). We used these data to estimate that the cost
-of monitoring per person-day in NYC was \$10--\$20.
+million was in response to a single Ebola case\textsuperscript{24} and
+\$1.9 million was for active monitoring. The remaining balance of \$3.5
+million was used for other Ebola preparedness activities. DOHMH
+monitored 5,379 non-unique individuals during this period (active
+monitoring began in NYC on October 25, 2014). We used these data to
+estimate that the cost of monitoring per person-day in NYC was
+\$10--\$20.
 
 The number of serious infection events occurring in actively monitored
 individuals in NYC was small. None of the monitored individuals
@@ -449,28 +468,31 @@ that reduce risk below a level tolerable for a risk-averse population.
 In some settings, active monitoring could serve as an alternative to
 quarantine, which involves both monitoring and severe restrictions on
 movement. In countries at low risk for Ebola, quarantine raised many
-ethical issues during the West Africa Ebola outbreak.(25) CDC's Ebola
-active monitoring recommendations were therefore a critical cornerstone
-of the public health response in the United States that strived to
-balance the concerns from a diverse set of stakeholders without
-unnecessarily restricting individual liberties.(2) Active monitoring has
-since been applied by DOHMH for an individual at risk for another acute
-viral illness, Lassa fever. However, for diseases in which asymptomatic
-persons may transmit infection --such as influenza or measles--
-detection of the cases based on active monitoring of symptomology might
-not be soon enough to prevent secondary transmission. As such, for these
-diseases, quarantine might be a more appropriate public health measure.
+ethical issues during the West Africa Ebola
+outbreak.\textsuperscript{25} CDC's Ebola active monitoring
+recommendations were therefore a critical cornerstone of the public
+health response in the United States that strived to balance the
+concerns from a diverse set of stakeholders without unnecessarily
+restricting individual liberties.\textsuperscript{2} Active monitoring
+has since been applied by DOHMH for an individual at risk for another
+acute viral illness, Lassa fever. However, for diseases in which
+asymptomatic persons may transmit infection --such as influenza or
+measles-- detection of the cases based on active monitoring of
+symptomology might not be soon enough to prevent secondary transmission.
+As such, for these diseases, quarantine might be a more appropriate
+public health measure.
 
 Our model suggests durations of active monitoring for emerging pathogens
 early in an outbreak. Accurate estimates of the median incubation period
-can be made even when few data are available.(7) While accurately
-estimating the variability of the incubation period requires more
-data(26), existing data on the variation observed in similar pathogens
-could be used to inform early estimates until better data become
-available. When estimating incubation periods in real-time, care must be
-taken to adjust for possible truncation of longer incubation periods
-(27,28) or selection biases that could favor reporting of shorter
-incubation periods (10).
+can be made even when few data are available.\textsuperscript{7} While
+accurately estimating the variability of the incubation period requires
+more data\textsuperscript{26}, existing data on the variation observed
+in similar pathogens could be used to inform early estimates until
+better data become available. When estimating incubation periods in
+real-time, care must be taken to adjust for possible truncation of
+longer incubation periods\textsuperscript{27,28} or selection biases
+that could favor reporting of shorter incubation
+periods\textsuperscript{10}.
 
 While our model explicitly propagates uncertainty in the incubation
 period distribution, public health practitioners will usually have too
@@ -504,11 +526,11 @@ recommended for Ebola, it may be appropriate to use exposure-risk
 categories to modify the duration or intensity of active monitoring.
 Additionally, stronger public health messaging could encourage travelers
 to take necessary health precautions to avoid common travel-associated
-illnesses, e.g.~malaria.(29) This, in turn, could reduce unnecessary
-testing and costs associated with symptomatic events with diseases other
-than the one of interest. Low-cost versions of active monitoring have
-the potential to add value to public health response to less severe
-outbreaks as well.
+illnesses, e.g.~malaria.\textsuperscript{29} This, in turn, could reduce
+unnecessary testing and costs associated with symptomatic events with
+diseases other than the one of interest. Low-cost versions of active
+monitoring have the potential to add value to public health response to
+less severe outbreaks as well.
 
 Accurately estimating the risk of developing disease within
 exposure-risk categories poses a challenge to public health officials.
@@ -541,8 +563,8 @@ which was not representative of all hospitals in NYC. Finally, local
 considerations prompted DOHMH to opt for an active monitoring program
 involving humans to make and receive active monitoring reports from
 individuals. In contrast, other jurisdictions used digital systems to
-administer monitoring reports.(30) The merits of these different
-approaches deserve further investigation.
+administer monitoring reports.\textsuperscript{30} The merits of these
+different approaches deserve further investigation.
 
 Recent history has shown that the unexpected emergence of new disease
 threats has become a recurring theme in global health and preparedness.
@@ -618,13 +640,14 @@ low (but not zero) risk & \$67-\$77 & \$76-\$81 & \$94-\$96 &
 
 \textbf{Figure 1} Model schematic representing four outcome scenarios
 for a person under active monitoring. Estimated costs shown are based on
-published costs(24) as well as new data from DOHMH and Bellevue Hospital
-in NYC. Details on the model formulation are available in Supplemental
-Table 3. Our model uses probabilities to calculate the likelihood of
-each of the possible model outcomes. Additionally, we estimate the
-probability that an individual who does not develop the disease of
-interest develops symptomatic illness necessitating hospitalization to
-rule-out the disease of interest. (See Supplemental Text for details.)
+published costs\textsuperscript{24} as well as new data from DOHMH and
+Bellevue Hospital in NYC. Details on the model formulation are available
+in Supplemental Table 3. Our model uses probabilities to calculate the
+likelihood of each of the possible model outcomes. Additionally, we
+estimate the probability that an individual who does not develop the
+disease of interest develops symptomatic illness necessitating
+hospitalization to rule-out the disease of interest. (See Supplemental
+Text for details.)
 
 ~
 
@@ -661,166 +684,153 @@ intersect at the minimum point for the upper limit of each cost range.
 
 \hypertarget{refs}{}
 \hypertarget{ref-StehlingAriza:2015vd}{}
-1. Stehling-Ariza T, Fisher E, Vagi S, Fechter-Leggett E, Prudent N,
-Dott M, et al. Monitoring of Persons with Risk for Exposure to Ebola
-Virus Disease - United States, November 3, 2014-March 8, 2015. MMWR
-Morbidity and mortality weekly report. 2015 Jul;64(25):685--9.
+1. Stehling-Ariza, T. \emph{et al.} Monitoring of Persons with Risk for
+Exposure to Ebola Virus Disease - United States, November 3, 2014-March
+8, 2015. \emph{MMWR. Morbidity and mortality weekly report} \textbf{64,}
+685--689 (2015).
 
 \hypertarget{ref-CentersforDiseaseControlandPrevention:lyxYF_Hp}{}
 2. Centers for Disease Control and Prevention. Interim U.S. guidance for
-monitoring and movement of persons with potential Ebola virus exposure
-{[}Internet{]}. Available from:
-\url{http://www.cdc.gov/vhf/ebola/exposure/monitoring-and-movement-of-persons-with-exposure.html}
+monitoring and movement of persons with potential Ebola virus exposure.
 
 \hypertarget{ref-peak2017comparing}{}
-3. Peak CM, Childs LM, Grad YH, Buckee CO. Comparing nonpharmaceutical
-interventions for containing emerging epidemics. Proceedings of the
-National Academy of Sciences. 2017;114(15):4023--8.
+3. Peak, C. M., Childs, L. M., Grad, Y. H. \& Buckee, C. O. Comparing
+nonpharmaceutical interventions for containing emerging epidemics.
+\emph{Proceedings of the National Academy of Sciences} \textbf{114,}
+4023--4028 (2017).
 
 \hypertarget{ref-Fraser:2004ci}{}
-4. Fraser C, Riley S, Anderson RM, Ferguson NM. Factors that make an
-infectious disease outbreak controllable. Proceedings of the National
-Academy of Sciences of the United States of America. 2004
-Apr;101(16):6146--51.
+4. Fraser, C., Riley, S., Anderson, R. M. \& Ferguson, N. M. Factors
+that make an infectious disease outbreak controllable. \emph{Proceedings
+of the National Academy of Sciences of the United States of America}
+\textbf{101,} 6146--6151 (2004).
 
 \hypertarget{ref-CentersforDiseaseControlandPrevention:2015tk}{}
 5. Centers for Disease Control and Prevention. Middle East Respiratory
-Syndrome: People at Increased Risk for MERS {[}Internet{]}. 2015.
-Available from: \url{http://www.cdc.gov/coronavirus/mers/risk.html}
+Syndrome: People at Increased Risk for MERS. (2015).
 
 \hypertarget{ref-Brookmeyer:2005bc}{}
-6. Brookmeyer R. Incubation Period of Infectious Diseases. In:
-Encyclopedia of biostatistics. Chichester, UK: John Wiley \& Sons, Ltd;
-2005.
+6. Brookmeyer, R. Incubation Period of Infectious Diseases. in
+\emph{Encyclopedia of biostatistics} (John Wiley \& Sons, Ltd, 2005).
 
 \hypertarget{ref-Reich:2009jq}{}
-7. Reich NG, Lessler J, Cummings DAT, Brookmeyer R. Estimating
-incubation period distributions with coarse data. Statistics in
-medicine. 2009 Sep;28(22):2769--84.
+7. Reich, N. G., Lessler, J., Cummings, D. A. T. \& Brookmeyer, R.
+Estimating incubation period distributions with coarse data.
+\emph{Statistics in medicine} \textbf{28,} 2769--2784 (2009).
 
 \hypertarget{ref-Lessler:2009ub}{}
-8. Lessler J, Reich NG, Brookmeyer R, Perl TM, Nelson KE, Cummings DAT.
-Incubation periods of acute respiratory viral infections: a systematic
-review. The Lancet Infectious Diseases. 2009 May;9(5):291--300.
+8. Lessler, J. \emph{et al.} Incubation periods of acute respiratory
+viral infections: a systematic review. \emph{The Lancet Infectious
+Diseases} \textbf{9,} 291--300 (2009).
 
 \hypertarget{ref-Faye:2015jc}{}
-9. Faye O, Boëlle P-Y, Heleze E, Faye O, Loucoubar C, Magassouba N, et
-al. Chains of transmission and control of Ebola virus disease in
-Conakry, Guinea, in 2014: an observational study. The Lancet Infectious
-Diseases. 2015 Mar;15(3):320--6.
+9. Faye, O. \emph{et al.} Chains of transmission and control of Ebola
+virus disease in Conakry, Guinea, in 2014: an observational study.
+\emph{The Lancet Infectious Diseases} \textbf{15,} 320--326 (2015).
 
 \hypertarget{ref-Virlogeux:2016ty}{}
-10. Virlogeux V, Park M, Wu JT, Cowling BJ. Association between Severity
-of MERS-CoV Infection and Incubation Period. Emerging Infectious
-Diseases. 2016;22(3).
+10. Virlogeux, V., Park, M., Wu, J. T. \& Cowling, B. J. Association
+between Severity of MERS-CoV Infection and Incubation Period.
+\emph{Emerging Infectious Diseases} \textbf{22,} (2016).
 
 \hypertarget{ref-Litvinjenko:1972vp}{}
-11. Litvinjenko S, Arsic B, Borjanovic S. Epidemiologic Aspects of
-Smallpox in Yugoslavia in 1972. Bulletin of the World Health
-Organization. 1972 Nov;
+11. Litvinjenko, S., Arsic, B. \& Borjanovic, S. Epidemiologic Aspects
+of Smallpox in Yugoslavia in 1972. \emph{Bulletin of the World Health
+Organization} (1972).
 
 \hypertarget{ref-Mack:1972jc}{}
-12. Mack TM. Smallpox in Europe, 1950-1971. Journal of Infectious
-Diseases. 1972 Feb;125(2):161--9.
+12. Mack, T. M. Smallpox in Europe, 1950-1971. \emph{Journal of
+Infectious Diseases} \textbf{125,} 161--169 (1972).
 
 \hypertarget{ref-Nishiura:2009dh}{}
-13. Nishiura H. Determination of the appropriate quarantine period
+13. Nishiura, H. Determination of the appropriate quarantine period
 following smallpox exposure: an objective approach using the incubation
-period distribution. International journal of hygiene and environmental
-health. 2009 Jan;212(1):97--104.
+period distribution. \emph{International journal of hygiene and
+environmental health} \textbf{212,} 97--104 (2009).
 
 \hypertarget{ref-Velasquez:2015gv}{}
-14. Velásquez GE, Aibana O, Ling EJ, Diakite I, Mooring EQ, Murray MB.
-Time from Infection to Disease and Infectiousness for Ebola Virus
-Disease, a Systematic Review. Clinical infectious diseases : an official
-publication of the Infectious Diseases Society of America. 2015
-Oct;61(7):1135--40.
+14. Velásquez, G. E. \emph{et al.} Time from Infection to Disease and
+Infectiousness for Ebola Virus Disease, a Systematic Review.
+\emph{Clinical infectious diseases : an official publication of the
+Infectious Diseases Society of America} \textbf{61,} 1135--1140 (2015).
 
 \hypertarget{ref-Cowling:2015vb}{}
-15. Cowling BJ, Park M, Fang VJ, Wu P, Leung GM, Wu JT. Preliminary
-epidemiological assessment of MERS-CoV outbreak in South Korea, May to
-June 2015. Euro Surveillance. 2015;20(25):7--13.
+15. Cowling, B. J. \emph{et al.} Preliminary epidemiological assessment
+of MERS-CoV outbreak in South Korea, May to June 2015. \emph{Euro
+Surveillance} \textbf{20,} 7--13 (2015).
 
 \hypertarget{ref-Fenner:1988ux}{}
-16. Fenner F, Henderson DA, Arita I, Jezek Z, Ladnyi ID. Smallpox and
-its Eradication. World Health Organization; 1988.
+16. Fenner, F., Henderson, D. A., Arita, I., Jezek, Z. \& Ladnyi, I. D.
+\emph{Smallpox and its Eradication}. (World Health Organization, 1988).
 
 \hypertarget{ref-Althaus:2014cw}{}
-17. Althaus CL. Estimating the Reproduction Number of Ebola Virus (EBOV)
-During the 2014 Outbreak in West Africa. PLoS currents. 2014;6.
+17. Althaus, C. L. Estimating the Reproduction Number of Ebola Virus
+(EBOV) During the 2014 Outbreak in West Africa. \emph{PLoS currents}
+\textbf{6,} (2014).
 
 \hypertarget{ref-Chowell:2004gh}{}
-18. Chowell G, Hengartner NW, Castillo-Chavez C, Fenimore PW, Hyman JM.
-The basic reproductive number of Ebola and the effects of public health
-measures: the cases of Congo and Uganda. Journal of Theoretical Biology.
-2004 Jul;229(1):119--26.
+18. Chowell, G., Hengartner, N. W., Castillo-Chavez, C., Fenimore, P. W.
+\& Hyman, J. M. The basic reproductive number of Ebola and the effects
+of public health measures: the cases of Congo and Uganda. \emph{Journal
+of Theoretical Biology} \textbf{229,} 119--126 (2004).
 
 \hypertarget{ref-CentersforDiseaseControlandPrevention:2015tc}{}
 19. Centers for Disease Control and Prevention. Epidemiologic Risk
-Factors to Consider when Evaluating a Person for Exposure to Ebola Virus
-{[}Internet{]}. 2015. Available from:
-\url{http://www.cdc.gov/vhf/ebola/exposure/risk-factors-when-evaluating-person-for-exposure.html}
+Factors to Consider when Evaluating a Person for Exposure to Ebola
+Virus. (2015).
 
 \hypertarget{ref-Millman:2016cz}{}
-20. Millman AJ, Chamany S, Guthartz S, Thihalolipavan S, Porter M,
-Schroeder A, et al. Active Monitoring of Travelers Arriving from
-Ebola-Affected Countries - New York City, October 2014-April 2015. MMWR
-Morbidity and mortality weekly report. 2016;65(3):51--4.
+20. Millman, A. J. \emph{et al.} Active Monitoring of Travelers Arriving
+from Ebola-Affected Countries - New York City, October 2014-April 2015.
+\emph{MMWR. Morbidity and mortality weekly report} \textbf{65,} 51--54
+(2016).
 
 \hypertarget{ref-CentersforDiseaseControlandPrevention:VbDBWqNH}{}
 21. Centers for Disease Control and Prevention. Cases of Ebola Diagnosed
-in the United States \textbar{} Ebola Hemorrhagic Fever \textbar{} CDC
-{[}Internet{]}. Available from:
-\url{http://www.cdc.gov/vhf/ebola/outbreaks/2014-west-africa/united-states-imported-case.html}
+in the United States \textbar{} Ebola Hemorrhagic Fever \textbar{} CDC.
 
 \hypertarget{ref-Reich:2017z}{}
-22. Reich NG, Li X. reichlab/activemonitr: preprint. Zenodo
-{[}Internet{]}. 2017; Available from:
-\url{https://zenodo.org/record/260135}
+22. Reich, N. G. \& Li, X. reichlab/activemonitr: preprint.
+\emph{Zenodo.} (2017).
+doi:\href{https://doi.org/10.5281/ZENODO.260135}{10.5281/ZENODO.260135}
 
 \hypertarget{ref-rcoreteam}{}
-23. R Core Team. R: A Language and Environment for Statistical
-Computing. Vienna, Austria: R Foundation for Statistical Computing;
-2015.
+23. R Core Team. \emph{R: A Language and Environment for Statistical
+Computing}. (R Foundation for Statistical Computing, 2015).
 
 \hypertarget{ref-Yacisin:2015wm}{}
-24. Yacisin K, Balter S, Fine A, Weiss D, Ackelsberg J, Prezant D, et
-al. Ebola virus disease in a humanitarian aid worker - New York City,
-October 2014. MMWR Morbidity and mortality weekly report. 2015
-Apr;64(12):321--3.
+24. Yacisin, K. \emph{et al.} Ebola virus disease in a humanitarian aid
+worker - New York City, October 2014. \emph{MMWR. Morbidity and
+mortality weekly report} \textbf{64,} 321--323 (2015).
 
 \hypertarget{ref-Drazen:2014iz}{}
-25. Drazen JM, Kanapathipillai R, Campion EW, Rubin EJ, Hammer SM,
-Morrissey S, et al. Ebola and quarantine. The New England journal of
-medicine. 2014 Nov;371(21):2029--30.
+25. Drazen, J. M. \emph{et al.} Ebola and quarantine. \emph{The New
+England journal of medicine} \textbf{371,} 2029--2030 (2014).
 
 \hypertarget{ref-WorldHealthOrganization:QuWKXo2f}{}
 26. World Health Organization. Consensus document on the epidemiology of
-severe acute respiratory syndrome (SARS) {[}Internet{]}. 2003. Available
-from:
-\url{http://aje.oxfordjournals.org.silk.library.umass.edu/content/163/3/211.full.pdf+html}
+severe acute respiratory syndrome (SARS). (2003).
 
 \hypertarget{ref-Brookmeyer:2001gx}{}
-27. Brookmeyer R, Blades N, Hugh-Jones M, Henderson DA. The statistical
-analysis of truncated data: application to the Sverdlovsk anthrax
-outbreak. Biostatistics. 2001 Jun;2(2):233--47.
+27. Brookmeyer, R., Blades, N., Hugh-Jones, M. \& Henderson, D. A. The
+statistical analysis of truncated data: application to the Sverdlovsk
+anthrax outbreak. \emph{Biostatistics} \textbf{2,} 233--247 (2001).
 
 \hypertarget{ref-Nishiura:2011dc}{}
-28. Nishiura H, Inaba H. Estimation of the incubation period of
+28. Nishiura, H. \& Inaba, H. Estimation of the incubation period of
 influenza A (H1N1-2009) among imported cases: addressing censoring using
-outbreak data at the origin of importation. Journal of Theoretical
-Biology. 2011 Mar;272(1):123--30.
+outbreak data at the origin of importation. \emph{Journal of Theoretical
+Biology} \textbf{272,} 123--130 (2011).
 
 \hypertarget{ref-Ezeoke:2016jv}{}
-29. Ezeoke I, Saffa A, Guthartz S, Tate A, Varma JK, Vora NM. Health
-Precautions Taken by Travelers to Countries with Ebola Virus Disease.
-Emerging Infectious Diseases. 2016 May;22(5):929--31.
+29. Ezeoke, I. \emph{et al.} Health Precautions Taken by Travelers to
+Countries with Ebola Virus Disease. \emph{Emerging Infectious Diseases}
+\textbf{22,} 929--931 (2016).
 
 \hypertarget{ref-Parham:2015wf}{}
-30. Parham M, Edison L, Soetebier K, Feldpausch A, Kunkes A, Smith W, et
-al. Ebola active monitoring system for travelers returning from West
-Africa---Georgia, 2014-2015. MMWR Morbidity and mortality weekly report.
-2015 Apr;64(13):347--50.
+30. Parham, M. \emph{et al.} Ebola active monitoring system for
+travelers returning from West Africa---Georgia, 2014-2015. \emph{MMWR.
+Morbidity and mortality weekly report} \textbf{64,} 347--350 (2015).
 
 
 \end{document}

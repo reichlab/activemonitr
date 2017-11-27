@@ -1,0 +1,578 @@
+\documentclass[fleqn,10pt]{wlscirep}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+\title{Quantifying the Risk and Cost of Active Monitoring for Infectious Diseases}
+
+\author[1,*]{Nicholas G Reich}
+\author[2]{Justin Lessler}
+\author[3,4]{Jay K Varma}
+\author[3,4]{Neil M Vora}
+\affil[1]{University of Massachusetts-Amherst, Department of Biostatistics and Epidemiology, Amherst, MA, 01003, USA}
+\affil[2]{Johns Hopkins Bloomberg School of Public Health, Department of Epidemiology, Baltimore, MD, 21205, USA}
+\affil[3]{New York City Department of Health and Mental Hygiene, New York, NY, 11101, USA}
+\affil[4]{Centers for Disease Control and Prevention, Atlanta, GA, 30329, USA}
+
+\affil[*]{nick@schoolph.umass.edu}
+
+
+\keywords{Ebola, MERS, Smallpox, active monitoring, quarantine, incubation period}
+
+\begin{abstract}
+During outbreaks of deadly emerging pathogens (e.g., Ebola, MERS-CoV)
+and bioterror threats (e.g., smallpox), actively monitoring potentially
+infected individuals aims to limit disease transmission and morbidity.
+Guidance issued by CDC on active monitoring was a cornerstone of its
+response to the West Africa Ebola outbreak. There are limited data on
+how to balance the costs and performance of this important public health
+activity. We present a framework that estimates the risks and costs of
+specific durations of active monitoring for pathogens of significant
+public health concern. We analyze data from New York City's Ebola active
+monitoring program over a 16-month period in 2014-2016. For monitored
+individuals, we identified unique durations of active monitoring that
+minimize expected costs for those at ``low (but not zero) risk'' and
+``some or high risk'': 21 and 31 days, respectively. Extending our
+analysis to smallpox and MERS-CoV, we found that the optimal length of
+active monitoring relative to the median incubation period was reduced
+compared to Ebola due to less variable incubation periods. Active
+monitoring can save lives but is expensive. Resources can be most
+effectively allocated by using exposure-risk categories to modify the
+duration or intensity of active monitoring.
+\end{abstract}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+%\SweaveOpts{concordance=TRUE}
+
+\flushbottom
+\maketitle
+
+\thispagestyle{empty}
+
+
+
+
+
+
+
+\section*{Introduction}
+
+The outbreak of Ebola virus disease (Ebola) in west Africa was the largest outbreak of a highly virulent acute infection in modern times, leading the global health community to reassess the ability of highly pathogenic acute infections to spread widely in today’s interconnected world. To improve rapid identification and evaluation of individuals infected with Ebola, on October 27, 2014, the U.S. Centers for Disease Control and Prevention (CDC) recommended active monitoring of individuals potentially exposed to Ebola virus. Individuals under active monitoring were asked to contact local health authorities to report their health status every day for 21 days after their last potential exposure. 
+
+Thousands of individuals were monitored for Ebola in the United States between October 2014 and February 2016, including over 10,000 individuals during one five month period.\cite{StehlingAriza:2015vd}
+CDC’s guidance on active monitoring was a cornerstone of its response to Ebola. The guidance balanced numerous stakeholder concerns, including mitigating risk to communities and travelers without unnecessarily restricting individual liberties.
+Recommendations for active monitoring were discontinued in February 2016.\cite{CentersforDiseaseControlandPrevention:lyxYF_Hp} 
+Over 20\% of all individuals actively monitored for Ebola in the United States were monitored in New York City (NYC), more than any other jurisdiction.\cite{StehlingAriza:2015vd}
+
+Active monitoring may help prevent and contain outbreaks of rapidly spreading emerging pathogens that pose a grave threat to public health. Such outbreaks may occur naturally, via a bioterrorist attack, or via unintended release from a laboratory. The decision to implement active monitoring, or another non-pharmaceutical intervention, depends on an assessment of the risk posed by a pathogen and the ability of the chosen intervention to reduce that risk.\cite{peak2017comparing} Key considerations include the transmissibility and pathogenicity of the pathogen, the potential size of an outbreak, and the relationship between the time of symptom onset and infectiousness.\cite{Fraser:2004ci} Ebola, Middle East Respiratory Syndrome Coronavirus (MERS-CoV), and smallpox are examples of viral illnesses for which active monitoring could play a pivotal role in preventing a large-scale outbreak.\cite{CentersforDiseaseControlandPrevention:2015tk}
+
+Active monitoring programs must balance conflicting priorities. The central goals of these programs are to identify, isolate, and treat infected individuals quickly. Setting an active monitoring period many times longer than any known incubation period of the pathogen of interest could virtually guarantee that all infected individuals would exhibit symptoms while being monitored. However, such a program would be unreasonably expensive, inconvenience monitored individuals, and incur many financial and social costs through frequent responses to false positive cases. Evidence-based monitoring periods and appropriate tailoring of the monitoring intensity to disease risk should therefore be used to balance costs with biosecurity risks. 
+
+Here we present an empirical framework for evaluating the risks and costs associated with active monitoring (implemented in an online tool available at \href{http://iddynamics.jhsph.edu/apps/shiny/activemonitr/}{http://iddynamics.jhsph.edu/apps/shiny/activemonitr/}). We apply this framework to Ebola, MERS-CoV, and smallpox using data on the natural history of these diseases and data from the Ebola response of the NYC Department of Health and Mental Hygiene (DOHMH). 
+
+
+\section*{Methods}
+
+\subsection*{Estimating the incubation period distribution}
+The incubation period of a disease is the duration of time between exposure to the pathogen and symptom onset.\cite{Brookmeyer:2005bc} This characteristic is imperfectly observed in most settings.\cite{Reich:2009jq, Lessler:2009ub} We obtained previously published incubation period observations on 145 cases of Ebola in Guinea \cite{Faye:2015jc}, 170 laboratory-confirmed cases of MERS-CoV in South Korea\cite{Virlogeux:2016ty} and 362 cases of smallpox\cite{Litvinjenko:1972vp, Mack:1972jc, Nishiura:2009dh}. We fit parametric distributions to the observed incubation period data using maximum likelihood techniques (see Supplemental Text). We ran sensitivity analyses to evaluate the influence of several outlying observations in the Ebola dataset. 
+ 
+\subsection*{A model for active monitoring outcomes}
+We developed a probabilistic model that uses varying probabilities to alter the incubation period, thus estimating whether active monitoring would identify an individual infected with the pathogen of interest. Figure 1 presents the model schema, which involves a monitored individual having one of four outcomes: 
+
+\begin{enumerate}
+\item no symptoms warranting clinical follow-up, 
+\item no symptomatic infection with the disease of interest, but occurrence of symptoms that necessitate ruling out of the disease of interest, 
+\item symptomatic infection with the disease of interest occurring during the individual's period of active monitoring, and
+\item symptomatic infection with the disease of interest occurring outside the individual's period of active monitoring. 
+\end{enumerate}
+
+Scenario 4 represents the highest risk of secondary transmission and may also reduce the chance of a positive clinical outcome for the sick individual. 
+
+We use a population-level probabilistic model with five key parameters. For a given set of parameters, the model calculates the expected number of individuals in a particular population or cohort of a fixed size that experience each of the four outcomes listed above. Each outcome has a specific cost and model-based probability associated with it (see Supplement and Figure 1 for details). These calculations are repeated for a set of stochastic samples of possible parameter values (e.g. samples from the posterior distribution of incubation period parameters) to provide measures of uncertainty. Formal statements of the equations underlying the model are available in the Supplement.
+
+Since limited data prevent us from formally estimating variance, we created conservative (i.e. maximally wide) intervals for possible costs by using the endpoints of the plausible cost ranges.
+Additionally, the model determines the uncertainty associated with these estimates due to not having precise incubation period observations and having an unknown time between exposure and the beginning of monitoring for a particular individual (see Supplemental Text). For these pathogens, we assume that infectiousness coincides with the onset of symptoms.\cite{Velasquez:2015gv, Cowling:2015vb, Fenner:1988ux}
+
+Our model estimates the risks and costs associated with active monitoring programs for a range of active monitoring durations. To estimate the cost per person-day of monitoring, we used data on the number of individuals actively monitored by DOHMH and costs associated with the DOHMH Ebola response.  Additionally, for the purposes of hypothetical cost calculations, we assumed that an individual who becomes symptomatic with the disease of interest while under active monitoring gives rise to no secondary infections, while an individual who develops symptoms after his/her active monitoring period ends could give rise to as many as 4 new Ebola infections (an upper estimate based on prior research \cite{Althaus:2014cw, Chowell:2004gh}).
+
+\subsection*{Stratifying by exposure risk}
+Classifying individuals based on prior exposure risks enables targeted strategies in a range of public health response settings, including active monitoring. For example, in response to the West Africa Ebola outbreak, CDC issued recommendations on risk stratification of individuals for a potential Ebola virus exposure ("high risk", "some risk", "low (but not zero) risk", "no identifiable risk") and for how long and how intensively individuals in each of these categories should be monitored.\cite{CentersforDiseaseControlandPrevention:2015tc} DOHMH's active monitoring program, described previously\cite{Millman:2016cz}, was implemented consistent with CDC recommendations. However, creating, evaluating, and modifying such classifications in practice is a difficult task and requires situational awareness and data that would vary depending on the pathogen and outbreak setting.
+
+For the CDC Ebola risk strata, we estimated probabilities of a monitored individual developing Ebola. These estimates were based on extrapolated numbers of actively monitored individuals in the United States during 2014-2016\cite{StehlingAriza:2015vd} and public data on the four domestic cases of Ebola\cite{CentersforDiseaseControlandPrevention:VbDBWqNH} (Supplemental Text, Table 2).
+
+\subsection*{Data Availability}
+
+We developed open-source software, including a freely-available web application at \href{http://iddynamics.jhsph.edu/apps/shiny/activemonitr/}{http://iddynamics.jhsph.edu/apps/shiny/activemonitr/}. The source code for the web app, the data for the analyses, and the code to reproduce this manuscript itself are all freely available online under an open-source license at GitHub \href{https://github.com/reichlab/activemonitr}{https://github.com/reichlab/activemonitr}, with a static version in an open-access digital library \cite{Reich:2017z}. All analyses were run in R version 3.4.1 (2017-06-30).\cite{rcoreteam} These tools enable others to easily implement our model and reproduce our results.
+
+
+\section*{Results}
+
+\subsection*{Incubation period estimates}
+
+Estimates and credible regions for incubation period distribution parameters for Ebola, MERS-CoV, and smallpox are shown in Figure 2. Consistent with other studies that used the same data,\cite{Faye:2015jc, Virlogeux:2016ty, Nishiura:2009dh} we estimated that half of all cases of Ebola will have an incubation period of less than 
+$8.9$ 
+days (95\% CI: 
+$8.0$-$9.8$), 
+of MERS-CoV less than 
+$6.9$ days (95\% CI: 
+$6.3$-$7.5$) 
+and of smallpox less than 
+$12.2$
+days (95\% CI: 
+$12.0$-$12.4$). Additionally, the data suggest that 95\% of cases of Ebola will have an incubation period of less than $20.3$ days (95\% CI: $18.1$-$23.0$), of MERS-CoV $13.3$ days (95\% CI: $12.0$-$14.8$), and of smallpox $15.8$ days (95\% CI: $15.4$-$16.2$).
+
+We estimated smallpox to have the longest median incubation period of the three pathogens considered, although its distribution also showed the least overall variance. We estimate that MERS-CoV incubation periods are the shortest of the three, with the upper limit of the 95th percentile being just above 15 days (Figure 2). 
+
+
+
+\subsection*{Modeling the risk of symptomatic illness}
+
+Using information on cases of Ebola diagnosed in the U.S., as well as extrapolated case information, we estimated the probability of a "some-risk" or "high-risk" individual developing a symptomatic infection with Ebola as 1 in 1,000. For "low (but not zero) risk" individuals, we estimated this risk to be 1 in 10,000 (Supplemental Text, Table 2).
+
+Incorporating these probabilities into our model, for each pathogen we calculated the probability of symptomatic illness developing in an individual after they were no longer being actively monitored. To standardize the results across diseases, we present the risk estimates across a range of different active monitoring period durations, shown as multiples of the median incubation period for each disease (Figure 3). 
+
+The model showed that an increase in the duration of the active monitoring period is associated with a decline in the probability that an individual develops symptoms due to the disease of interest after the active monitoring period ends. The rate at which that risk declines depends on the estimated variability of the incubation period distribution. Since the estimated incubation period distribution for Ebola showed the highest variability, the probability of symptoms occurring after active monitoring ends decreased more slowly when compared with the other pathogens. This feature also impacts the sensitivity of estimating the optimal duration of active monitoring when the probabilities of developing symptomatic infection are mis-specified (Supplemental Text, Table 4).
+
+During the West Africa Ebola outbreak, CDC recommended active monitoring for 21 days. This corresponds to about $2.4$ times the median incubation period for Ebola (vertical dashed line, Figure 3). To achieve the same level of absolute risk for either MERS-CoV or smallpox, our model suggests that a duration of active monitoring would need to be set at less than two times the median incubation period for both of these diseases. 
+
+
+
+
+
+
+
+
+\subsection*{Minimizing costs of active monitoring programs: Ebola case study}
+The total expense for Ebola response by DOHMH during the period from July 31, 2014–November 7, 2015 was \$9.7 million. Of this, \$4.3 million was in response to a single Ebola case \cite{Yacisin:2015wm} and \$1.9 million was for active monitoring. The remaining balance of \$3.5 million was used for other Ebola preparedness activities. DOHMH monitored 5,379 non-unique individuals during this period (active monitoring began in NYC on October 25, 2014). We used these data to estimate that the cost of monitoring per person-day in NYC was \$10–\$20.
+
+The number of serious infection events occurring in actively monitored individuals in NYC was small. None of the monitored individuals developed Ebola. The single Ebola case diagnosed in NYC occurred before active monitoring was implemented. We assumed that a small fraction of monitored individuals, 30 (or 0.6\%), developed symptoms within the 21 day monitoring period that were serious enough to necessitate hospitalization at an institution in NYC to rule-out Ebola. At one hospital, Bellevue, it cost between \$10,000--\$30,000 per hospitalization to rule out Ebola in symptomatic, actively monitored individuals (John Maher, NYC Health and Hospitals, personal communication). This does not include the substantial infrastructural costs of creating and maintaining a special pathogens unit at the hospital. 
+
+
+
+
+
+
+
+
+
+
+
+
+Our model provides ranges of expected cost for active monitoring systems. It identifies an optimal duration of active monitoring, by finding the expected cost range with the lowest maximum value. We applied the model to the case-study of Ebola in NYC, based on data from DOHMH (Table 1, Figure 4). Expected costs of short periods of active monitoring (left hand side of Figure 4) are driven by the cost of a missed case and the number of expected additional secondary cases, while the rate of decline with additional days of monitoring is driven by the shape of the incubation period distribution. The costs of longer periods of active monitoring are driven by the per day cost of monitoring and costs of false positive detections (right hand side of Figure 4).
+
+The "best case scenario", from a public health and expected cost standpoint, can be seen as the lower limit of the shaded cost ranges in Figure 4. In this scenario, none of the monitored individuals is infected. Therefore, the expected costs are simply determined by the costs of the monitoring and attending to false alarms. This cost rises steadily as the duration of monitoring increases.
+
+However, in scenarios when a monitored individual does develop symptomatic illness, the expected cost curve does achieve a minimum value at a specific duration of active monitoring.
+For the low-risk individuals, the model suggests that the upper limit of the cost range is minimized with 
+$21.3$ 
+days of monitoring (i.e.,
+$2.4$ 
+median incubation periods, 95\% CI = 
+$19.5$ 
+-
+$22.2$). 
+For the some- or high-risk individuals, the model suggests that the cost is minimized with 
+$31.1$ 
+days of monitoring 
+(i.e.,
+$3.5$ 
+median incubation periods, 95\% CI = 
+$27.5$ 
+-
+$34.6$) 
+(Figure 4). The model results are sensitive to the assumed cost per day of monitoring and the number of secondary cases. For example, if the upper limit of the cost increases from \$20 to \$40/day or the number of secondary cases decreases from 4 to 2, the durations of monitoring that would minimize expected cost decrease by 2-3 days for each scenario.
+
+
+
+The wide ranges of expected cost are largely driven by the uncertainty in the number of secondary cases that may result from a single infection missed by active monitoring. The upper limit in Figure 4 assumes that 4 secondary cases occur, which is a possible, but unlikely, scenario. The uncertainty in these estimates could be driven down by making more specific assumptions about each of the model input parameters. For example, if we assume that a case gives rise to only one secondary infection, that the cost is a fixed \$4 million per case, and that the cost per monitored-person day is \$20, the upper limit of expected costs is lower compared with the scenario shown in Figure 4 (see Supplemental Figure 1). Specifically, for the some- or high-risk individuals, the new model suggests that the upper limit of the expected cost range achieves its minimum at a level that is 
+$\$113376$ 
+less than the scenario presented in Figure 4.
+However, we also caution against relying too strongly on single analyses like these that are based on strong assumptions. While they characterize individual possible scenarios clearly, they also understate the true uncertainty associated with the estimates.
+
+
+\section*{Discussion}
+
+For three pathogens of significant public health concern, we quantified the risk, costs, and attendant uncertainty associated with specific durations of active monitoring. The approach presented can be used to develop empirically based public health policies in future outbreaks. 
+
+Perception of risk is a key component of decision making, but ultimately science should inform public health policies. A key challenge faced by decision makers is that the public's perception of risk is often determined by the consequences of the event even if the probability of the event occurring is rare. With severe diseases, the consequences may be perceived as so dire that the public's tolerance for risk will be very low. While no policy can guarantee zero risk, analyses such as those presented here can assist in determining appropriate thresholds that reduce risk below a level tolerable for a risk-averse population.
+
+In some settings, active monitoring could serve as an alternative to quarantine, which involves both monitoring and severe restrictions on movement. In countries at low risk for Ebola, quarantine raised many ethical issues during the West Africa Ebola outbreak.\cite{Drazen:2014iz} CDC’s Ebola active monitoring recommendations were therefore a critical cornerstone of the public health response in the United States that strived to balance the concerns from a diverse set of stakeholders without unnecessarily restricting individual liberties.\cite{CentersforDiseaseControlandPrevention:lyxYF_Hp}
+Active monitoring has since been applied by DOHMH for an individual at risk for another acute viral illness, Lassa fever. 
+However, for diseases in which asymptomatic persons may transmit infection –such as influenza or measles– detection of the cases based on active monitoring of symptomology might not be soon enough to prevent secondary transmission.  As such, for these diseases, quarantine might be a more appropriate public health measure.
+
+Our model suggests durations of active monitoring for emerging pathogens early in an outbreak. Accurate estimates of the median incubation period can be made even when few data are available.\cite{Reich:2009jq} While accurately estimating the variability of the incubation period requires more data\cite{WorldHealthOrganization:QuWKXo2f}, existing data on the variation observed in similar pathogens could be used to inform early estimates until better data become available. When estimating incubation periods in real-time, care must be taken to adjust for possible truncation of longer incubation periods \cite{Brookmeyer:2001gx,Nishiura:2011dc} or selection biases that could favor reporting of shorter incubation periods \cite{Virlogeux:2016ty}. 
+
+While our model explicitly propagates uncertainty in the incubation period distribution, public health practitioners will usually have too little data to estimate uncertainty for other model parameters. To help account for this limitation, we ran the model for plausible ranges of other parameters, presenting a range of possible costs and risks. Sensitivity to these and other assumptions can be assessed through the open-access web applet that implements the model.
+
+Evaluating the cost of monitoring programs is a challenging, multi-faceted problem. While we present new data from New York City's active monitoring program showing that the per-individual cost of monitoring is "low" (about $10–$20 per day), the total program cost can be substantial. Limiting who needs to be monitored and the duration of monitoring could provide valuable savings. 
+
+We present a framework for assessing the cost of active monitoring, which is one possible public health strategy for combating an emerging epidemic. However, alternate strategies such as quarantine, pharmaceutical interventions, or increasing risk communication could also be implemented. These different interventions could also be assessed under a similar framework to that presented here. We hope this paper provides the key underpinnings needed for a formal cost-effectiveness analysis. Such an analysis, that synthesizes model-based estimates of costs, benefits, and risks, could provide additional valuable information about the value of each possible strategy.
+
+Some cost-efficiency may be achieved through targeted strategies. As CDC recommended for Ebola, it may be appropriate to use exposure-risk categories to modify the duration or intensity of active monitoring. Additionally, stronger public health messaging could encourage travelers to take necessary health precautions to avoid common travel-associated illnesses, e.g. malaria.\cite{Ezeoke:2016jv} This, in turn, could reduce unnecessary testing and costs associated with symptomatic events with diseases other than the one of interest. Low-cost versions of active monitoring have the potential to add value to public health response to less severe outbreaks as well. 
+
+Accurately estimating the risk of developing disease within exposure-risk categories poses a challenge to public health officials. Our analyses show that the sensitivity to mis-specified risk varies by pathogen. When the estimated cost varies across plausible risk levels, the full range of potential costs and durations should be considered until better data are available to obtain more precise estimates of the risk. Additionally, since data on active monitoring programs and imported infections are very rare, every effort should be taken to validate future model estimates of risk and sensitivity analyses should be consulted to mitigate the impact of biased estimates due to inadequate data.
+
+The framework presented is generally applicable, but given the lack of empirical cost information for the response to and monitoring of smallpox and MERS-CoV our analysis is strongly focused on Ebola. While we have used some of the best available data on large-scale active monitoring programs in our analyses, some potential costs and savings were not factored in to these calculations. The estimates available from DOHMH do not include the costs of cell phones given to monitored individuals, the staff time incurred by CDC and US Department of Homeland Security in screening travelers at airports, and the costs of evaluating individuals with symptoms that were not due to Ebola. More detailed cost data was not available from DOHMH, but such data could help to disentangle the fixed costs associated with running an active monitoring program from the cost per monitored individual. Additionally, we only presented gross cost estimates for the evaluation of a symptomatic individual under active monitoring from one NYC hospital, which was not representative of all hospitals in NYC. Finally, local considerations prompted DOHMH to opt for an active monitoring program involving humans to make and receive active monitoring reports from individuals. In contrast, other jurisdictions used digital systems to administer monitoring reports.\cite{Parham:2015wf} The merits of these different approaches deserve further investigation. 
+
+Recent history has shown that the unexpected emergence of new disease threats has become a recurring theme in global health and preparedness. While active monitoring does not play a role in the response to every emerging infectious disease (e.g., it has not played an important role in the response to the Zika virus epidemic), it will likely be used again in the response to future threats. Our framework provides valuable information for assessing the cost-effectiveness of various active monitoring strategies in response to critical disease outbreaks. By providing an empirical basis for evaluating active monitoring programs, these tools can strengthen biosecurity and optimize active monitoring programs in response to future global disease threats.
+
+\section*{Acknowledgments}
+We thank the individuals who underwent active monitoring in NYC, Ifeoma Ezeoke for preparing the DOHMH active monitoring data and Margaret Pletnikoff for preparing the DOHMH cost data. We thank Dr. Simon Cauchemez, Dr. Ousmane Faye, and Dr. Amadou Sall for providing access to the Ebola incubation period data from Guinea and giving permission for this data to be made publicly available. We also acknowledge John Maher for providing details on costs of evaluating Ebola patients at Bellevue Hospital in New York City.
+
+NGR was funded by a grant from the MIDAS program of the National Institutes of General Medical Sciences (R35GM119582). The findings and conclusions in this article are those of the authors and do not necessarily represent the official position of DOHMH, CDC, NIGMS, or the National Institutes of Health. 
+
+\section*{Author Contributions}
+NGR, JL, JKV, and NMV designed the study. NMV and JKV oversaw the active monitoring data collection and provided data for the study on active monitoring programs. NGR obtained incubation period data from existing publications and via personal communication with other authors. NGR ran the data analysis, prepared the figures, and drafted the manuscript. All authors participated in writing and providing substantial feedback on the manuscript.
+
+\section*{Competing Financial Interests}
+All authors claim no competing financial interests associated with this work.
+
+\section*{Tables}
+
+% latex table generated in R 3.4.1 by xtable 1.8-2 package
+% Mon Nov 27 10:57:18 2017
+\begin{table}[ht]
+\centering
+\begin{tabular}{rllll}
+  \hline
+ & 1.5 & 2 & 3 & 5 \\ 
+  \hline
+some risk and high risk & \$427-\$523 & \$436-\$475 & \$454-\$460 & \$490-\$493 \\ 
+  low (but not zero) risk & \$67-\$77 & \$76-\$81 & \$94-\$96 & \$130-\$133 \\ 
+   \hline
+\end{tabular}
+\caption{Total expected costs to the public health system (including active monitoring and response) per 100 monitored individuals, at two exposure-risk categories. Columns represent multiples of the median incubation period of Ebola. Rows represent the CDC exposure-risk category. Costs are inclusive of active monitoring and public health response and are based on model outputs for Ebola. Values are in \$'000s.} 
+\end{table}
+
+
+
+\section*{Figure captions}
+
+
+\begin{figure}[htbp]
+\begin{center}
+\caption{Model schematic representing four outcome scenarios for a person under active monitoring. Estimated costs shown are based on published costs\cite{Yacisin:2015wm} as well as new data from DOHMH and Bellevue Hospital in NYC. Details on the model formulation are available in Supplemental Table 3. Our model uses probabilities to calculate the likelihood of each of the possible model outcomes. Additionally, we estimate the probability that an individual who does not develop the disease of interest develops symptomatic illness necessitating hospitalization to rule-out the disease of interest. (See Supplemental Text for details.)}
+\end{center}
+\end{figure}
+
+ 
+
+%<!-- static-figures/figure1-model-schema-v9.jpg-->
+
+\begin{figure}[htbp]
+\begin{center}
+\caption{Estimates and credible regions for incubation period distributions for Ebola, MERS-CoV and smallpox. The shaded elliptical areas represent regions that contain 95\% of the estimated posterior distributions for each of the three diseases. The disease-specific curves plotted on the right show the estimated distribution for the incubation period for each disease (dark line). To show some of the uncertainty associated with these estimates, a random selection of density functions sampled from the joint posterior are represented by colored transparent lines around the heavy lines. Shaded vertical bands indicate the marginal credible regions for the median and 95th percentile. }
+\end{center}
+\end{figure}
+
+%<!--![](static-figures/figure2-estimated-distribution-dynamic-5.pdf)
+
+\begin{figure}[htbp]
+\begin{center}
+\caption{Estimated probabilities of symptoms occurring after active monitoring (AM) ends across different active monitoring period durations, shown as multiples of the median incubation period. Figures are shown for 'some or high risk' and 'low (but not zero) risk' scenarios, with probabilities of developing symptomatic infection set to 1/1,000 and 1/10,000, respectively. The vertical dashed line indicates the 21 day duration recommended for Ebola active monitoring (i.e., approximately 2.4 times the median incubation period of Ebola).}
+\end{center}
+\end{figure}
+
+
+%<!--static-figures/figure3-scaled-prob-symptoms-1.pdf-->
+
+\begin{figure}[htbp]
+\begin{center}
+\caption{Estimated cost ranges of actively monitoring 100 individuals for Ebola, calculated separately for some or high risk individuals and low (but not zero) risk individuals. The dashed lines intersect at the minimum point for the upper limit of each cost range. }
+\end{center}
+\end{figure}
+%static-figures/figure4-optimized-cost-analysis-1.pdf-->
+
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname doiprefix\endcsname\relax\def\doiprefix{DOI }\fi
+\providecommand{\bibinfo}[2]{#2}
+\providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem{StehlingAriza:2015vd}
+\bibinfo{author}{Stehling-Ariza, T.} \emph{et~al.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Monitoring of Persons with Risk
+  for Exposure to Ebola Virus Disease - United States, November 3, 2014-March
+  8, 2015.}}}
+\newblock {\emph{\JournalTitle{MMWR}}} \textbf{\bibinfo{volume}{64}},
+  \bibinfo{pages}{685--689} (\bibinfo{year}{2015}).
+
+\bibitem{CentersforDiseaseControlandPrevention:lyxYF_Hp}
+\bibinfo{author}{{Centers for Disease Control and Prevention}}.
+\newblock \bibinfo{title}{{Interim U.S. guidance for monitoring and movement of
+  persons with potential Ebola virus exposure}}.
+\newblock
+  \urlprefix\url{http://www.cdc.gov/vhf/ebola/exposure/monitoring-and-movement-of-persons-with-exposure.html}.
+
+\bibitem{peak2017comparing}
+\bibinfo{author}{Peak, C.~M.}, \bibinfo{author}{Childs, L.~M.},
+  \bibinfo{author}{Grad, Y.~H.} \& \bibinfo{author}{Buckee, C.~O.}
+\newblock \bibinfo{journal}{\bibinfo{title}{Comparing nonpharmaceutical
+  interventions for containing emerging epidemics}}.
+\newblock {\emph{\JournalTitle{Proceedings of the National Academy of
+  Sciences}}} \textbf{\bibinfo{volume}{114}}, \bibinfo{pages}{4023--4028}
+  (\bibinfo{year}{2017}).
+
+\bibitem{Fraser:2004ci}
+\bibinfo{author}{Fraser, C.}, \bibinfo{author}{Riley, S.},
+  \bibinfo{author}{Anderson, R.~M.} \& \bibinfo{author}{Ferguson, N.~M.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Factors that make an infectious
+  disease outbreak controllable.}}}
+\newblock {\emph{\JournalTitle{Proceedings of the National Academy of Sciences
+  of the United States of America}}} \textbf{\bibinfo{volume}{101}},
+  \bibinfo{pages}{6146--6151} (\bibinfo{year}{2004}).
+
+\bibitem{CentersforDiseaseControlandPrevention:2015tk}
+\bibinfo{author}{{Centers for Disease Control and Prevention}}.
+\newblock \bibinfo{title}{{Middle East Respiratory Syndrome: People at
+  Increased Risk for MERS}} (\bibinfo{year}{2015}).
+\newblock \urlprefix\url{http://www.cdc.gov/coronavirus/mers/risk.html}.
+
+\bibitem{Brookmeyer:2005bc}
+\bibinfo{author}{Brookmeyer, R.}
+\newblock \bibinfo{title}{{Incubation Period of Infectious Diseases}}.
+\newblock In \emph{\bibinfo{booktitle}{Encyclopedia of Biostatistics}}
+  (\bibinfo{publisher}{John Wiley {\&} Sons, Ltd},
+  \bibinfo{address}{Chichester, UK}, \bibinfo{year}{2005}).
+
+\bibitem{Reich:2009jq}
+\bibinfo{author}{Reich, N.~G.}, \bibinfo{author}{Lessler, J.},
+  \bibinfo{author}{Cummings, D. A.~T.} \& \bibinfo{author}{Brookmeyer, R.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Estimating incubation period
+  distributions with coarse data}}}.
+\newblock {\emph{\JournalTitle{Statistics in Medicine}}}
+  \textbf{\bibinfo{volume}{28}}, \bibinfo{pages}{2769--2784}
+  (\bibinfo{year}{2009}).
+
+\bibitem{Lessler:2009ub}
+\bibinfo{author}{Lessler, J.} \emph{et~al.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Incubation periods of acute
+  respiratory viral infections: a systematic review.}}}
+\newblock {\emph{\JournalTitle{Lancet Infectious Diseases}}}
+  \textbf{\bibinfo{volume}{9}}, \bibinfo{pages}{291--300}
+  (\bibinfo{year}{2009}).
+
+\bibitem{Faye:2015jc}
+\bibinfo{author}{Faye, O.} \emph{et~al.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Chains of transmission and control
+  of Ebola virus disease in Conakry, Guinea, in 2014: an observational
+  study.}}}
+\newblock {\emph{\JournalTitle{The Lancet Infectious Diseases}}}
+  \textbf{\bibinfo{volume}{15}}, \bibinfo{pages}{320--326}
+  (\bibinfo{year}{2015}).
+
+\bibitem{Virlogeux:2016ty}
+\bibinfo{author}{Virlogeux, V.}, \bibinfo{author}{Park, M.},
+  \bibinfo{author}{Wu, J.~T.} \& \bibinfo{author}{Cowling, B.~J.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Association between Severity of
+  MERS-CoV Infection and Incubation Period}}}.
+\newblock {\emph{\JournalTitle{Emerging Infectious Diseases}}}
+  \textbf{\bibinfo{volume}{22}} (\bibinfo{year}{2016}).
+
+\bibitem{Litvinjenko:1972vp}
+\bibinfo{author}{Litvinjenko, S.}, \bibinfo{author}{Arsic, B.} \&
+  \bibinfo{author}{Borjanovic, S.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Epidemiologic Aspects of Smallpox
+  in Yugoslavia in 1972}}}.
+\newblock {\emph{\JournalTitle{Bull. World Health Organ}}}
+  (\bibinfo{year}{1972}).
+
+\bibitem{Mack:1972jc}
+\bibinfo{author}{Mack, T.~M.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Smallpox in Europe, 1950-1971}}}.
+\newblock {\emph{\JournalTitle{Journal of Infectious Diseases}}}
+  \textbf{\bibinfo{volume}{125}}, \bibinfo{pages}{161--169}
+  (\bibinfo{year}{1972}).
+
+\bibitem{Nishiura:2009dh}
+\bibinfo{author}{Nishiura, H.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Determination of the appropriate
+  quarantine period following smallpox exposure: an objective approach using
+  the incubation period distribution.}}}
+\newblock {\emph{\JournalTitle{International Journal of Hygiene and
+  Environmental Health}}} \textbf{\bibinfo{volume}{212}},
+  \bibinfo{pages}{97--104} (\bibinfo{year}{2009}).
+
+\bibitem{Velasquez:2015gv}
+\bibinfo{author}{Vel{\'a}squez, G.~E.} \emph{et~al.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Time from Infection to Disease and
+  Infectiousness for Ebola Virus Disease, a Systematic Review.}}}
+\newblock {\emph{\JournalTitle{Clinical Infectious Diseases}}}
+  \textbf{\bibinfo{volume}{61}}, \bibinfo{pages}{1135--1140}
+  (\bibinfo{year}{2015}).
+
+\bibitem{Cowling:2015vb}
+\bibinfo{author}{Cowling, B.~J.} \emph{et~al.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Preliminary epidemiological
+  assessment of MERS-CoV outbreak in South Korea, May to June 2015.}}}
+\newblock {\emph{\JournalTitle{Euro Surveillance}}}
+  \textbf{\bibinfo{volume}{20}}, \bibinfo{pages}{7--13} (\bibinfo{year}{2015}).
+
+\bibitem{Fenner:1988ux}
+\bibinfo{author}{Fenner, F.}, \bibinfo{author}{Henderson, D.~A.},
+  \bibinfo{author}{Arita, I.}, \bibinfo{author}{Jezek, Z.} \&
+  \bibinfo{author}{Ladnyi, I.~D.}
+\newblock \emph{\bibinfo{title}{{Smallpox and its Eradication}}}
+  (\bibinfo{publisher}{World Health Organization}, \bibinfo{year}{1988}).
+
+\bibitem{Althaus:2014cw}
+\bibinfo{author}{Althaus, C.~L.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Estimating the Reproduction Number
+  of Ebola Virus (EBOV) During the 2014 Outbreak in West Africa.}}}
+\newblock {\emph{\JournalTitle{PLOS Currents}}} \textbf{\bibinfo{volume}{6}}
+  (\bibinfo{year}{2014}).
+
+\bibitem{Chowell:2004gh}
+\bibinfo{author}{Chowell, G.}, \bibinfo{author}{Hengartner, N.~W.},
+  \bibinfo{author}{Castillo-Chavez, C.}, \bibinfo{author}{Fenimore, P.~W.} \&
+  \bibinfo{author}{Hyman, J.~M.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{The basic reproductive number of
+  Ebola and the effects of public health measures: the cases of Congo and
+  Uganda.}}}
+\newblock {\emph{\JournalTitle{Journal of Theoretical Biology}}}
+  \textbf{\bibinfo{volume}{229}}, \bibinfo{pages}{119--126}
+  (\bibinfo{year}{2004}).
+
+\bibitem{CentersforDiseaseControlandPrevention:2015tc}
+\bibinfo{author}{{Centers for Disease Control and Prevention}}.
+\newblock \bibinfo{title}{{Epidemiologic Risk Factors to Consider when
+  Evaluating a Person for Exposure to Ebola Virus}} (\bibinfo{year}{2015}).
+\newblock
+  \urlprefix\url{http://www.cdc.gov/vhf/ebola/exposure/risk-factors-when-evaluating-person-for-exposure.html}.
+
+\bibitem{Millman:2016cz}
+\bibinfo{author}{Millman, A.~J.} \emph{et~al.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Active Monitoring of Travelers
+  Arriving from Ebola-Affected Countries - New York City, October 2014-April
+  2015.}}}
+\newblock {\emph{\JournalTitle{MMWR}}} \textbf{\bibinfo{volume}{65}},
+  \bibinfo{pages}{51--54} (\bibinfo{year}{2016}).
+
+\bibitem{CentersforDiseaseControlandPrevention:VbDBWqNH}
+\bibinfo{author}{{Centers for Disease Control and Prevention}}.
+\newblock \bibinfo{title}{{Cases of Ebola Diagnosed in the United States |
+  Ebola Hemorrhagic Fever | CDC}}.
+\newblock
+  \urlprefix\url{http://www.cdc.gov/vhf/ebola/outbreaks/2014-west-africa/united-states-imported-case.html}.
+
+\bibitem{Reich:2017z}
+\bibinfo{author}{Reich, N.~G.} \& \bibinfo{author}{Li, X.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{reichlab/activemonitr:
+  preprint}}}.
+\newblock {\emph{\JournalTitle{Zenodo.}}}  (\bibinfo{year}{2017}).
+\newblock \urlprefix\url{https://zenodo.org/record/260135}.
+\newblock \doiprefix 10.5281/ZENODO.260135.
+
+\bibitem{rcoreteam}
+\bibinfo{author}{{{R Core Team}}}.
+\newblock \emph{\bibinfo{title}{{R: A Language and Environment for Statistical
+  Computing}}}.
+\newblock \bibinfo{organization}{R Foundation for Statistical Computing},
+  \bibinfo{address}{Vienna, Austria} (\bibinfo{year}{2015}).
+
+\bibitem{Yacisin:2015wm}
+\bibinfo{author}{Yacisin, K.} \emph{et~al.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Ebola virus disease in a
+  humanitarian aid worker - New York City, October 2014.}}}
+\newblock {\emph{\JournalTitle{MMWR}}} \textbf{\bibinfo{volume}{64}},
+  \bibinfo{pages}{321--323} (\bibinfo{year}{2015}).
+
+\bibitem{Drazen:2014iz}
+\bibinfo{author}{Drazen, J.~M.} \emph{et~al.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Ebola and quarantine.}}}
+\newblock {\emph{\JournalTitle{The New England journal of medicine}}}
+  \textbf{\bibinfo{volume}{371}}, \bibinfo{pages}{2029--2030}
+  (\bibinfo{year}{2014}).
+
+\bibitem{WorldHealthOrganization:QuWKXo2f}
+\bibinfo{author}{{World Health Organization}}.
+\newblock \bibinfo{title}{{Consensus document on the epidemiology of severe
+  acute respiratory syndrome (SARS)}} (\bibinfo{year}{2003}).
+\newblock
+  \urlprefix\url{http://aje.oxfordjournals.org.silk.library.umass.edu/content/163/3/211.full.pdf+html}.
+
+\bibitem{Brookmeyer:2001gx}
+\bibinfo{author}{Brookmeyer, R.}, \bibinfo{author}{Blades, N.},
+  \bibinfo{author}{Hugh-Jones, M.} \& \bibinfo{author}{Henderson, D.~A.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{The statistical analysis of
+  truncated data: application to the Sverdlovsk anthrax outbreak.}}}
+\newblock {\emph{\JournalTitle{Biostatistics}}} \textbf{\bibinfo{volume}{2}},
+  \bibinfo{pages}{233--247} (\bibinfo{year}{2001}).
+
+\bibitem{Nishiura:2011dc}
+\bibinfo{author}{Nishiura, H.} \& \bibinfo{author}{Inaba, H.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Estimation of the incubation
+  period of influenza A (H1N1-2009) among imported cases: addressing censoring
+  using outbreak data at the origin of importation.}}}
+\newblock {\emph{\JournalTitle{Journal of Theoretical Biology}}}
+  \textbf{\bibinfo{volume}{272}}, \bibinfo{pages}{123--130}
+  (\bibinfo{year}{2011}).
+
+\bibitem{Ezeoke:2016jv}
+\bibinfo{author}{Ezeoke, I.} \emph{et~al.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Health Precautions Taken by
+  Travelers to Countries with Ebola Virus Disease.}}}
+\newblock {\emph{\JournalTitle{Emerging Infectious Diseases}}}
+  \textbf{\bibinfo{volume}{22}}, \bibinfo{pages}{929--931}
+  (\bibinfo{year}{2016}).
+
+\bibitem{Parham:2015wf}
+\bibinfo{author}{Parham, M.} \emph{et~al.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Ebola active monitoring system for
+  travelers returning from West Africa---Georgia, 2014-2015.}}}
+\newblock {\emph{\JournalTitle{MMWR}}} \textbf{\bibinfo{volume}{64}},
+  \bibinfo{pages}{347--350} (\bibinfo{year}{2015}).
+
+\end{thebibliography}
+
+\end{document}

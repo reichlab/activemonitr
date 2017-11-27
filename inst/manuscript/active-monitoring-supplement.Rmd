@@ -17,7 +17,7 @@ output:
     fig_height: 5
     fig_width: 5
     md_extensions: +implicit_figures+grid_tables
-csl: emerging-infectious-diseases.csl
+csl: nature.csl
 bibliography: active-monitoring.bib
 ---
 
