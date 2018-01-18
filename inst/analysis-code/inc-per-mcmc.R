@@ -475,7 +475,7 @@ plot_gamma_densities <- function(mcmc_df, kde, n_to_plot, to=30,
         geom_text(aes(x=to-5, y=.2, label=label_txt)) +
         ylab("density") + coord_cartesian(ylim=c(0, .225))
     if(xaxs_lab) {
-        p <- p + xlab("durtion of incubation period (days)")
+        p <- p + xlab("duration of incubation period (days)")
     } else {
         p <- p + xlab(NULL)
     }
