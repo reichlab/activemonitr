@@ -17,11 +17,11 @@ plot_risk <- function(pstr_data,
                       return_plot=FALSE) {
     require(ggplot2)
     require(grid)
-    dat <- expand.grid(shape=median(pstr_data$shape),
-                       scale=median(pstr_data$scale),
-                       u=u,
-                       phi=phi,
-                       d=durations)
+    dat <- crossing(shape=median(pstr_data$shape),
+                    scale=median(pstr_data$scale),
+                    u=u,
+                    phi=phi,
+                    d=durations)
     dat <- prob_of_missing_case(dat)
     p <- ggplot(dat, aes(d, p, group=factor(phi), color=factor(phi))) +
         geom_line() + facet_grid(.~u) +
@@ -78,10 +78,10 @@ plot_risk_uncertainty <- function(pstr_data,
     param_bounds <- arrange(pstr_data, ltp)[round(nrow(pstr_data)*c(alpha, 1-alpha)),]
 
     ## make dataset
-    dat_sim_pst_param <- expand.grid(idx = param_bounds$idx,
-                                     phi=phi,
-                                     d=durations,
-                                     reps=1:nreps) %>%
+    dat_sim_pst_param <- crossing(idx = param_bounds$idx,
+                                  phi=phi,
+                                  d=durations,
+                                  reps=1:nreps) %>%
         left_join(param_bounds %>%
                       select(idx, shape, scale))
     dat_sim_pst_param$u <- sample(1:max_u, size=nrow(dat_sim_pst_param), replace=TRUE)
