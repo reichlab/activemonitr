@@ -72,17 +72,18 @@ plot_risk_uncertainty <- function(pstr_data,
     require(grid)
     ## calculate 99th percentile of distributions, to pick confidence bounds
     pstr_data <- pstr_data %>%
-        mutate(long_tail_pct = qgamma(p=long_tail_pct, shape=shape, scale=scale))
+        mutate(ltp = qgamma(p=long_tail_pct, shape=shape, scale=scale))
 
     ## find percentiles of distributions, based on bounds
-    param_bounds <- arrange(pstr_data, long_tail_pct)[round(nrow(pstr_data)*c(alpha, 1-alpha)),]
+    param_bounds <- arrange(pstr_data, ltp)[round(nrow(pstr_data)*c(alpha, 1-alpha)),]
 
     ## make dataset
-    dat_sim_pst_param <- expand.grid(shape = param_bounds$shape,
-                                     scale = param_bounds$scale,
+    dat_sim_pst_param <- expand.grid(idx = param_bounds$idx,
                                      phi=phi,
                                      d=durations,
-                                     reps=1:nreps)
+                                     reps=1:nreps) %>%
+        left_join(param_bounds %>%
+                      select(idx, shape, scale))
     dat_sim_pst_param$u <- sample(1:max_u, size=nrow(dat_sim_pst_param), replace=TRUE)
 
     dat_sim_pst_param <- prob_of_missing_case(dat_sim_pst_param)
