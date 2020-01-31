@@ -16,7 +16,8 @@ plot_risk <- function(pstr_data,
                       durations=5:25,
                       return_plot=FALSE) {
     require(ggplot2)
-    require(grid)
+    require(tidyr)
+    require(dplyr)
     dat <- crossing(shape=median(pstr_data$shape),
                     scale=median(pstr_data$scale),
                     u=u,
@@ -69,7 +70,8 @@ plot_risk_uncertainty <- function(pstr_data,
                                   return_data=FALSE,
                                   return_plot=FALSE) {
     require(ggplot2)
-    require(grid)
+    require(tidyr)
+    require(dplyr)
     ## calculate 99th percentile of distributions, to pick confidence bounds
     pstr_data <- pstr_data %>%
         mutate(ltp = qgamma(p=long_tail_pct, shape=shape, scale=scale))
@@ -141,5 +143,3 @@ plot_risk_uncertainty <- function(pstr_data,
     }
     return(out)
 }
-
-
