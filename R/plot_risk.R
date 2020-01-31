@@ -45,6 +45,7 @@ plot_risk <- function(pstr_data,
 #' @param alpha numeric value between 0 and 1, percentiles to use (with 1-alpha) when choosing the bounds for the shape and scale parameters
 #' @param nreps numeric, number of reps needed to stabilize uniform integration
 #' @param max_u numeric value, the maximum assumed duration of time between exposure and monitoring
+#' @param min_u numeric, the minimum assumed duration of time between exposure and monitoring
 #' @param phi probability a case becomes symptomatic
 #' @param durations durations of active monitoring to plot
 #' @param yrange if not NULL, a vector of the ylim to plot
@@ -62,6 +63,7 @@ plot_risk_uncertainty <- function(pstr_data,
                                   alpha=0.05,
                                   nreps=100,
                                   max_u=14,
+                                  min_u=1,
                                   phi=c(.0001, .001, .01),
                                   durations=5:25,
                                   yrange=NULL,
@@ -86,7 +88,9 @@ plot_risk_uncertainty <- function(pstr_data,
                                   reps=1:nreps) %>%
         left_join(param_bounds %>%
                       select(idx, shape, scale))
-    dat_sim_pst_param$u <- sample(1:max_u, size=nrow(dat_sim_pst_param), replace=TRUE)
+    dat_sim_pst_param$u <- sample(min_u:max_u,
+                                  size=nrow(dat_sim_pst_param),
+                                  replace=TRUE)
 
     dat_sim_pst_param <- prob_of_missing_case(dat_sim_pst_param)
     dat_sim_pst_param_sum <- group_by(dat_sim_pst_param, d, phi) %>%
