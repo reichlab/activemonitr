@@ -94,11 +94,15 @@ plot_risk_uncertainty <- function(pstr_data,
 
     dat_sim_pst_param <- prob_of_missing_case(dat_sim_pst_param)
     dat_sim_pst_param_sum <- group_by(dat_sim_pst_param, d, phi) %>%
-        summarize(p05 = quantile(p, prob=.05),
+        summarize(p01 = quantile(p, prob=.01),
+                  p025 = quantile(p, prob=.025),
+                  p05 = quantile(p, prob=.05),
                   p25 = quantile(p, prob=.25),
                   p50 = quantile(p, prob=.50),
                   p75 = quantile(p, prob=.75),
-                  p95 = quantile(p, prob=.95)) %>%
+                  p95 = quantile(p, prob=.95),
+                  p975 = quantile(p, prob=.975),
+                  p99 = quantile(p, prob=.99)) %>%
         ungroup()
 
     ## something like this will make labels appear right
