@@ -25,4 +25,3 @@ Column names of the dat argument
  \item{"u"}{the assumed number of days between exposure and the beginning of monitoring}
 }
 }
-

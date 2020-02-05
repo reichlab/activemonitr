@@ -1,8 +1,9 @@
 Package: activeMonitr
 Title: Evaluating public health active monitoring
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: c(
     person(c("Nicholas", "G."), "Reich", , "nick@umass.edu", role = c("aut", "cre")), 
+    person(c("Stephen", "A."), "Lauer", , "slauer5@jh.edu", role = c("ctb")),
     person("Xuelian", "Li", , , role = c("aut"))
     )
 Description: Data and code for evaluating public health active monitoring and
@@ -15,4 +16,5 @@ Depends:
     R (>= 3.0.2)
 License: GPLv3
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.1.1
+Encoding: UTF-8

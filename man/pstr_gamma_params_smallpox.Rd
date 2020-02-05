@@ -28,4 +28,3 @@ data from several sources (see References).
   \item Nishiura, H. Determination of the appropriate quarantine period following smallpox exposure: an objective approach using the incubation period distribution. Int J Hyg Environ Health 212, 97–104 (2009).
 }
 }
-

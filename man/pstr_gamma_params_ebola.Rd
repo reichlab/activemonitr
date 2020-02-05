@@ -23,4 +23,3 @@ data from Faye et al. (2015).
 \references{
 Faye, O. et al. Chains of transmission and control of Ebola virus disease in Conakry, Guinea, in 2014: an observational study. The Lancet Infectious Diseases 15, 320–326 (2015).
 }
-
