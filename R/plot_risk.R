@@ -41,13 +41,11 @@ plot_risk <- function(pstr_data,
 #' Function for plotting risk and uncertainty of case escaping active monitoring
 #'
 #' @param pstr_data a data object with posterior distributions of gamma parameters (must have shape and scale column)
-#' @param long_tail_pct numeric value between 0 and 1, which percentile should be chosen to represent the long tail of the distribution
-#' @param alpha numeric value between 0 and 1, percentiles to use (with 1-alpha) when choosing the bounds for the shape and scale parameters
-#' @param nreps numeric, number of reps needed to stabilize uniform integration
-#' @param max_u numeric value, the maximum assumed duration of time between exposure and monitoring
-#' @param min_u numeric, the minimum assumed duration of time between exposure and monitoring
+#' @param nsamp number of samples from posterior distribution upon which to base calculations
+#' @param u numeric value or vector of assumed duration(s) of time between exposure and monitoring
 #' @param phi probability a case becomes symptomatic
 #' @param durations durations of active monitoring to plot
+#' @param ci_width numeric value between 0 and 1 indicating the nominal value for the eventually computed and displayed CI
 #' @param yrange if not NULL, a vector of the ylim to plot
 #' @param include_xlab logical, whether to include an x-axis label
 #' @param include_legend logical, whether to include a legend
@@ -59,13 +57,11 @@ plot_risk <- function(pstr_data,
 #'
 #' @examples plot_risk_uncertainty(ebola_gamma_pstr)
 plot_risk_uncertainty <- function(pstr_data,
-                                  long_tail_pct=0.99,
-                                  alpha=0.05,
-                                  nreps=100,
-                                  max_u=14,
-                                  min_u=1,
+                                  nsamp=1000,
+                                  u=runif(nsamp, 1, 14),
                                   phi=c(.0001, .001, .01),
                                   durations=5:25,
+                                  ci_width=0.90,
                                   yrange=NULL,
                                   include_xlab=TRUE,
                                   include_legend=TRUE,
@@ -73,36 +69,21 @@ plot_risk_uncertainty <- function(pstr_data,
                                   return_plot=FALSE) {
     require(ggplot2)
     require(tidyr)
-    require(dplyr)
-    ## calculate 99th percentile of distributions, to pick confidence bounds
-    pstr_data <- pstr_data %>%
-        mutate(ltp = qgamma(p=long_tail_pct, shape=shape, scale=scale))
 
-    ## find percentiles of distributions, based on bounds
-    param_bounds <- arrange(pstr_data, ltp)[round(nrow(pstr_data)*c(alpha, 1-alpha)),]
+    if(nrow(pstr_data)<=nsamp)
+        error("number of samples needs to be smaller than the number of draws from the posterior distribution")
 
-    ## make dataset
-    dat_sim_pst_param <- crossing(idx = param_bounds$idx,
-                                  phi=phi,
-                                  d=durations,
-                                  reps=1:nreps) %>%
-        left_join(param_bounds %>%
-                      select(idx, shape, scale))
-    dat_sim_pst_param$u <- sample(min_u:max_u,
-                                  size=nrow(dat_sim_pst_param),
-                                  replace=TRUE)
+    ## generate a sample of the posterior distribution from which to calculate
+    pstr_samp <- pstr_data %>%
+        sample_n(nsamp) %>%
+        mutate(u = u) %>%
+        crossing(d=durations,phi=phi)
 
-    dat_sim_pst_param <- prob_of_missing_case(dat_sim_pst_param)
+    dat_sim_pst_param <- prob_of_missing_case(pstr_samp)
     dat_sim_pst_param_sum <- group_by(dat_sim_pst_param, d, phi) %>%
-        summarize(p01 = quantile(p, prob=.01),
-                  p025 = quantile(p, prob=.025),
-                  p05 = quantile(p, prob=.05),
-                  p25 = quantile(p, prob=.25),
+        summarize(ltp = quantile(p, prob=(1-ci_width)/2),
                   p50 = quantile(p, prob=.50),
-                  p75 = quantile(p, prob=.75),
-                  p95 = quantile(p, prob=.95),
-                  p975 = quantile(p, prob=.975),
-                  p99 = quantile(p, prob=.99)) %>%
+                  utp = quantile(p, prob=1-(1-ci_width)/2)) %>%
         ungroup()
 
     ## something like this will make labels appear right
@@ -118,7 +99,7 @@ plot_risk_uncertainty <- function(pstr_data,
         #facet_grid(.~phi_lab, labeller=label_parsed) +
         facet_grid(.~phi_lab, labeller=label_parsed) +
         geom_line(aes(y=p50)) +
-        geom_ribbon(aes(ymin=p05, ymax=p95), alpha=.2, color=NA) +
+        geom_ribbon(aes(ymin=ltp, ymax=utp), alpha=.2, color=NA) +
         scale_y_log10() +
         ylab("Pr(symptoms after AM)") +
         theme(legend.justification=c(0,0), legend.position=c(0,0))

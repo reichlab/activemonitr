@@ -18,7 +18,7 @@ The manuscript itself is dynamically generated, reproducible, and can be found i
 [activemonitr/inst/manuscript/](https://github.com/reichlab/activemonitr/blob/master/inst/manuscript/active-monitoring.Rmd)
 
 ## Web app
-There is [an open-source web app](http://iddynamics.jhsph.edu/apps/shiny/activemonitr/) that accompanies the manuscript. The code for the Shiny app that accompanies the publication can be found in:
+There is [an open-source web app](https://www.iddynamics.jhsph.edu/apps/connect/activemonitr/) that accompanies the manuscript. The code for the Shiny app that accompanies the publication can be found in:
 [activemonitr/inst/shiny/](https://github.com/reichlab/activemonitr/tree/master/inst/shiny)
 
 ## Data

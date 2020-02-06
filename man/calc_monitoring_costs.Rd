@@ -28,4 +28,3 @@ a length(probs_of_disease)xlength(durs) matrix of costs, one row per subgroup, o
 \description{
 Cost calculations for active monitoring scenarios
 }
-

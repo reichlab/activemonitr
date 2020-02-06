@@ -4,8 +4,8 @@
 \alias{plot_risk}
 \title{Function for plotting risk of case escaping active monitoring}
 \usage{
-plot_risk(pstr_data, u = 7, phi = c(1e-04, 0.001, 0.01), durations = 5:25,
-  return_plot = FALSE)
+plot_risk(pstr_data, u = 7, phi = c(1e-04, 0.001, 0.01),
+  durations = 5:25, return_plot = FALSE)
 }
 \arguments{
 \item{pstr_data}{a data object with posterior distributions of gamma parameters (must have shape and scale column)}
@@ -27,4 +27,3 @@ Function for plotting risk of case escaping active monitoring
 \examples{
 plot_risk(ebola_gamma_pstr, u=c(5, 10))
 }
-

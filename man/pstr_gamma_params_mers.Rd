@@ -24,4 +24,3 @@ data from Virlogeux et al. (2016).
 \references{
 Virlogeux, V., Park, M., Wu, J. T. & Cowling, B. J. Association between Severity of MERS-CoV Infection and Incubation Period. Emerging Infectious Diseases 22, (2016).
 }
-

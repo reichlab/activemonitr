@@ -1,0 +1,6 @@
+ChangeLog file for activeMonitr
+
+v0.0.2 - (2020-02-05) Updated plotting function to include smoother integration over posterior distribution and unknown exposure time, with contributions from Stephen Lauer.
+
+v0.0.1 - Initial release of package
+

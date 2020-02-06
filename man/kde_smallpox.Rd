@@ -11,4 +11,3 @@ data(kde_ebola)
 \description{
 Kernel Density Estimates for posterior distributions
 }
-

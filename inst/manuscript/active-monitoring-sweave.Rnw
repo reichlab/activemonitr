@@ -206,8 +206,10 @@ tmp <- mean(qgamma(.90, shape=pstr_gamma_params_smallpox$shape, scale=pstr_gamma
 maxu_smallpox <- 2*(tmp - mean(pstr_gamma_params_smallpox$median))
 
 ## make plots/data
-p_ebola <- plot_risk_uncertainty(pstr_gamma_params_ebola, phi=phis, 
-                                 max_u = maxu_ebola,
+p_ebola <- plot_risk_uncertainty(pstr_gamma_params_ebola, 
+                                 phi=phis, 
+                                 nsamp=1000,
+                                 u = runif(1000, 1, maxu_ebola),
                                  durations=durs, 
                                  return_plot=TRUE,
                                  return_data=TRUE,
@@ -216,7 +218,8 @@ p_ebola <- plot_risk_uncertainty(pstr_gamma_params_ebola, phi=phis,
 p_ebola_text <- arrangeGrob(p_ebola[["plot"]], 
                                left=textGrob("Ebola",gp=gpar(fontface="bold"), rot=90, vjust=1))
 p_mers <- plot_risk_uncertainty(pstr_gamma_params_mers, phi=phis, 
-                                max_u = maxu_mers,
+                                nsamp=1000,
+                                u = runif(1000, 1, maxu_mers),
                                 durations=durs, return_plot=TRUE,
                                 return_data=TRUE,
                                 include_xlab = FALSE, yrange=yrange, 
@@ -224,7 +227,8 @@ p_mers <- plot_risk_uncertainty(pstr_gamma_params_mers, phi=phis,
 p_mers_text <- arrangeGrob(p_mers[["plot"]], 
                            left=textGrob("MERS-CoV",gp=gpar(fontface="bold"), rot=90, vjust=1))
 p_smallpox <- plot_risk_uncertainty(pstr_gamma_params_smallpox, phi=phis, 
-                                    max_u = maxu_smallpox,
+                                    nsamp=1000,
+                                    u = runif(1000, 1, maxu_smallpox),
                                     durations=durs, return_plot=TRUE,
                                     return_data=TRUE,
                                     include_legend=FALSE, yrange=yrange)
