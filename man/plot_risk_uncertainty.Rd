@@ -4,13 +4,25 @@
 \alias{plot_risk_uncertainty}
 \title{Function for plotting risk and uncertainty of case escaping active monitoring}
 \usage{
-plot_risk_uncertainty(pstr_data, nsamp = 1000, u = runif(nsamp, 1, 14),
-  phi = c(1e-04, 0.001, 0.01), durations = 5:25, ci_width = 0.9,
-  yrange = NULL, include_xlab = TRUE, include_legend = TRUE,
-  return_data = FALSE, return_plot = FALSE)
+plot_risk_uncertainty(
+  pstr_data,
+  dist = c("gamma", "lnorm", "weibull"),
+  nsamp = 1000,
+  u = runif(nsamp, 1, 14),
+  phi = c(1e-04, 0.001, 0.01),
+  durations = 5:25,
+  ci_width = 0.9,
+  yrange = NULL,
+  include_xlab = TRUE,
+  include_legend = TRUE,
+  return_data = FALSE,
+  return_plot = FALSE
+)
 }
 \arguments{
 \item{pstr_data}{a data object with posterior distributions of gamma parameters (must have shape and scale column)}
+
+\item{dist}{character string specifying the parametric distribution of pstr_data, defaults to gamma}
 
 \item{nsamp}{number of samples from posterior distribution upon which to base calculations}
 

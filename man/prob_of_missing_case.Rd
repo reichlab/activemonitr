@@ -4,10 +4,12 @@
 \alias{prob_of_missing_case}
 \title{Calculate probabilility of a case not being caught by monitoring}
 \usage{
-prob_of_missing_case(dat)
+prob_of_missing_case(dat, dist)
 }
 \arguments{
 \item{dat}{a data.frame with column names explained in details}
+
+\item{dist}{character string specifying the parametric distribution of dat}
 }
 \value{
 the inputted data.frame with an additional column called 'p'

@@ -1,6 +1,6 @@
 #' Posterior distribution of Ebola incubation period
 #'
-#' A dataset containing samples from an estimated posterior distribution of the 
+#' A dataset containing samples from an estimated posterior distribution of the
 #' incubation period of Ebola. Distribution was estimated from de-identified
 #' data from Faye et al. (2015).
 #'
@@ -19,10 +19,10 @@
 NULL
 
 
-#' 
+#'
 #' Posterior distribution of MERS-CoV incubation period
 #'
-#' A dataset containing samples from an estimated posterior distribution of the 
+#' A dataset containing samples from an estimated posterior distribution of the
 #' incubation period of MERS-CoV. Distribution was estimated from de-identified
 #' data from Virlogeux et al. (2016).
 #'
@@ -42,10 +42,10 @@ NULL
 NULL
 
 
-#' 
+#'
 #' Posterior distribution of smallpox incubation period
 #'
-#' A dataset containing samples from an estimated posterior distribution of the 
+#' A dataset containing samples from an estimated posterior distribution of the
 #' incubation period of smallpox. Distribution was estimated from de-identified
 #' data from several sources (see References).
 #'
@@ -59,7 +59,7 @@ NULL
 #'   \item \code{chain} which chain the sample belongs to
 #'   }
 #' @docType data
-#' @references 
+#' @references
 #' \itemize{
 #'   \item Litvinjenko, S., Arsic, B. & Borjanovic, S. Epidemiologic Aspects of Smallpox in Yugoslavia in 1972. Bulletin of the World Health Organization (1972).
 #'   \item Mack, T. M. Smallpox in Europe, 1950-1971. Journal of Infectious Diseases 125, 161–169 (1972).
@@ -70,7 +70,32 @@ NULL
 NULL
 
 
-#' 
+#'
+#' Bootstrapped parameter estimates of 2019-nCoV incubation period
+#'
+#' A dataset containing samples from an estimated bootstrap distribution of the
+#' incubation period of 2019-nCoV was estimated from data
+#' collected and stored at https://github.com/HopkinsIDD/ncov_incubation.
+#'
+#' @format A data frame with 1,000 rows and 2 variables:
+#' \itemize{
+#'   \item \code{meanlog} meanlog parameter of log-normal distribution
+#'   \item \code{sdlog} sdlog parameter of log-normal distribution
+#'   \item \code{idx} index of sample
+#'   \item \code{median} the median correponding to this bootstrapped sample
+#'   \item \code{p95} the 95th percentile correponding to this bootstrapped sample
+#'   }
+#' @docType data
+#' @references
+#' \itemize{
+#'   \item Lauer, S. A., Grantz, K. H., Bi, Q., Jones, F. K., Zheng, Q., Meredith, H., Azman, A. S., Reich, N. G., & Lessler, J. The incubation period of 2019-nCoV from publicly reported confirmed cases: estimation and application. medRxiv (2020).
+#' }
+#' @name boot_lnorm_params_ncov
+#' @usage data(boot_lnorm_params_ncov)
+NULL
+
+
+#'
 #' Kernel Density Estimates for posterior distributions
 #'
 #' @format Output from fit_kde() function in inst/analysis-code/inc-per-mcmc.R. Data used in plotting credible regions of posterior estimates.

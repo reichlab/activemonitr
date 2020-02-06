@@ -41,6 +41,7 @@ plot_risk <- function(pstr_data,
 #' Function for plotting risk and uncertainty of case escaping active monitoring
 #'
 #' @param pstr_data a data object with posterior distributions of gamma parameters (must have shape and scale column)
+#' @param dist character string specifying the parametric distribution of pstr_data, defaults to gamma
 #' @param nsamp number of samples from posterior distribution upon which to base calculations
 #' @param u numeric value or vector of assumed duration(s) of time between exposure and monitoring
 #' @param phi probability a case becomes symptomatic
@@ -57,6 +58,7 @@ plot_risk <- function(pstr_data,
 #'
 #' @examples plot_risk_uncertainty(ebola_gamma_pstr)
 plot_risk_uncertainty <- function(pstr_data,
+                                  dist=c("gamma", "lnorm", "weibull"),
                                   nsamp=1000,
                                   u=runif(nsamp, 1, 14),
                                   phi=c(.0001, .001, .01),
@@ -70,16 +72,30 @@ plot_risk_uncertainty <- function(pstr_data,
     require(ggplot2)
     require(tidyr)
 
-    if(nrow(pstr_data)<=nsamp)
-        error("number of samples needs to be smaller than the number of draws from the posterior distribution")
+    dist <- match.arg(dist)
+    if(!(dist %in% c("gamma", "lnorm", "weibull")))
+        stop('the only distributions supported at this time are "gamma", "lnorm", and "weibull"')
+    if(dist %in% c("gamma", "weibull") & !("shape" %in% colnames(pstr_data)))
+        stop('for the gamma or weibull distribution, please have a column named "shape"')
+    if(dist=="gamma" & !("scale" %in% colnames(pstr_data)) & !("rate" %in% colnames(pstr_data)))
+        stop('for the gamma distribution, please have a column named "scale" or "rate"')
+    if(dist=="weibull" & !("scale" %in% colnames(pstr_data)))
+        stop('for the weibull distribution, please have a column named "scale"')
+    if(dist=="lnorm" & !("meanlog" %in% colnames(pstr_data)))
+        stop('for the lnorm distribution, please have a column named "meanlog"')
+    if(dist=="lnorm" & !("sdlog" %in% colnames(pstr_data)))
+        stop('for the lnorm distribution, please have a column named "sdlog"')
+    if(nrow(pstr_data)<nsamp)
+        stop("number of samples needs to be less than or equal to than the number of draws from the posterior distribution")
 
     ## generate a sample of the posterior distribution from which to calculate
     pstr_samp <- pstr_data %>%
         sample_n(nsamp) %>%
         mutate(u = u) %>%
-        crossing(d=durations,phi=phi)
+        crossing(d = durations,
+                 phi = phi)
 
-    dat_sim_pst_param <- prob_of_missing_case(pstr_samp)
+    dat_sim_pst_param <- prob_of_missing_case(pstr_samp, dist)
     dat_sim_pst_param_sum <- group_by(dat_sim_pst_param, d, phi) %>%
         summarize(ltp = quantile(p, prob=(1-ci_width)/2),
                   p50 = quantile(p, prob=.50),
