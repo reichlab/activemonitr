@@ -50,6 +50,7 @@ plot_risk <- function(pstr_data,
 #' @param yrange if not NULL, a vector of the ylim to plot
 #' @param include_xlab logical, whether to include an x-axis label
 #' @param include_legend logical, whether to include a legend
+#' @param output_plot logical, whether or not to automatically output the plot
 #' @param return_data logical, whether or not to return the data used for plotting
 #' @param return_plot logical, whether or not to return the plotted grob
 #'
@@ -67,6 +68,7 @@ plot_risk_uncertainty <- function(pstr_data,
                                   yrange=NULL,
                                   include_xlab=TRUE,
                                   include_legend=TRUE,
+                                  output_plot=TRUE,
                                   return_data=FALSE,
                                   return_plot=FALSE) {
     require(ggplot2)
@@ -112,7 +114,6 @@ plot_risk_uncertainty <- function(pstr_data,
         dat_sim_pst_param_sum$phi_lab <- factor(dat_sim_pst_param_sum$phi)
     }
     p <- ggplot(dat_sim_pst_param_sum, aes(x=d, color=phi_lab, fill=phi_lab)) +
-        #facet_grid(.~phi_lab, labeller=label_parsed) +
         facet_grid(.~phi_lab, labeller=label_parsed) +
         geom_line(aes(y=p50)) +
         geom_ribbon(aes(ymin=ltp, ymax=utp), alpha=.2, color=NA) +
@@ -137,7 +138,8 @@ plot_risk_uncertainty <- function(pstr_data,
         p <- p + coord_cartesian(ylim=yrange)
     }
 
-    print(p)
+    if(output_plot)
+        print(p)
     out <- vector("list", 2)
     names(out) <- c("data", "plot")
     if(return_plot) {
