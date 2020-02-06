@@ -1,7 +1,7 @@
 #######################################
 ## Title: active-monitoring global.R ##
 ## Author(s): Xuelian Li,            ##
-##            Nicholas G Reich       ## 
+##            Nicholas G Reich       ##
 ## Date Created:  01/04/2016         ##
 ## Date Modified: 01/04/2016 XL      ##
 #######################################
@@ -17,6 +17,7 @@ theme_set(theme_bw(base_size = 18))
 data("pstr_gamma_params_ebola")
 data("pstr_gamma_params_mers")
 data("pstr_gamma_params_smallpox")
+data("boot_lnorm_params_ncov")
 
 
 plot1_side_text <- conditionalPanel(

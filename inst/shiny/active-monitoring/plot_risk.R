@@ -66,6 +66,7 @@ plot_risk_uncertainty <- function(pstr_data,
                                   yrange=NULL,
                                   include_xlab=TRUE,
                                   include_legend=TRUE,
+                                  output_plot=TRUE,
                                   return_data=FALSE,
                                   return_plot=FALSE) {
     require(ggplot2)
@@ -136,7 +137,8 @@ plot_risk_uncertainty <- function(pstr_data,
         p <- p + coord_cartesian(ylim=yrange)
     }
 
-    print(p)
+    if(output_plot)
+        print(p)
     out <- vector("list", 2)
     names(out) <- c("data", "plot")
     if(return_plot) {
@@ -147,6 +149,7 @@ plot_risk_uncertainty <- function(pstr_data,
     }
     return(out)
 }
+
 
 ##' make posterior likelihood plot for gamma distribution
 ##'
