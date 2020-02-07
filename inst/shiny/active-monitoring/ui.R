@@ -45,13 +45,19 @@ shinyUI(fluidPage(
           Individuals under active monitoring are typically asked to contact local health authorities every day for some number of days after their last potential exposure to report their health status."),
         p("We developed a model that estimates the risks and costs associated with active monitoring programs. Our model provides a range of expected costs for an active monitoring program,
           based on a series of assumptions about the disease of interest and the costs of the program.
-          The model is discussed in detail in a manuscript that is currently under review. The figure below provides an overview of the model schematic."),
-        p("On the other tabs of this application, users may specify different model parameters to see how they impact the cost of active monitoring programs."),
+          The model is discussed in detail in",
+          a("Quantifying the Risk and Cost of Active Monitoring for Infectious Diseases", href='https://www.nature.com/articles/s41598-018-19406-x'),
+          "by Reich, et al. (2018). The figure below provides an overview of the model schematic."),
+        p("On the other tabs of this application, users may specify different model parameters to see how they impact the effectiveness and cost of active monitoring programs."),
         img(src='figure1-model-schema-v7.jpg', height='400px'),
         p("This app was developed by",
-          a("Nicholas G Reich", href='https://reichlab.github.io/'), "(UMass-Amherst Biostatistics),",
-          a("Stephen A Lauer", href='https://salauer.github.io/'), "(Johns Hopkins Bloomberg SPH),",
-          "and Xuelian Li.")
+          a("Nicholas G Reich", href='https://reichlab.github.io/'),
+          "(UMass-Amherst Biostatistics),",
+          a("Stephen A Lauer", href='https://salauer.github.io/'),
+          "(Johns Hopkins Bloomberg SPH), and Xuelian Li."),
+        p("Publications:"),
+        p("Reich, NG, Lessler, J, Varma, JK, and Vora, NM. Quantifying the risk and cost of active monitoring for infectious diseases. Sci Rep. 2018;8(1):1093. doi:10.1038/s41598-018-19406-x."),
+        p("Lauer, SA, Grantz, KH, Bi, Q, Jones, FK, Zheng, Q, Meredith, H, Azman, AS, Reich, NG, and Lessler, J. The incubation period of 2019-nCoV from publicly reported confirmed cases: estimation and application. medRxiv. 2020. doi:10.1101/2020.02.02.20020016.")
       ),
 
       ## user inputs for cost plot panel
