@@ -10,27 +10,28 @@
 #' @export
 #'
 #' @examples plot_risk(ebola_gamma_pstr, u=c(5, 10))
-plot_risk <- function(pstr_data, 
-                      u=7, 
+plot_risk <- function(pstr_data,
+                      u=7,
                       phi=c(.0001, .001, .01),
                       durations=5:25,
                       return_plot=FALSE) {
     require(ggplot2)
-    require(grid)
-    dat <- expand.grid(shape=median(pstr_data$shape), 
-                       scale=median(pstr_data$scale), 
-                       u=u, 
-                       phi=phi,
-                       d=durations)
+    require(tidyr)
+    require(dplyr)
+    dat <- crossing(shape=median(pstr_data$shape),
+                    scale=median(pstr_data$scale),
+                    u=u,
+                    phi=phi,
+                    d=durations)
     dat <- prob_of_missing_case(dat)
-    p <- ggplot(dat, aes(d, p, group=factor(phi), color=factor(phi))) + 
+    p <- ggplot(dat, aes(d, p, group=factor(phi), color=factor(phi))) +
         geom_line() + facet_grid(.~u) +
         scale_y_log10(breaks=c(1e-06, 1e-04, 1e-02), labels=c("1/1,000,000", "1/10,000", "1/100")) +
         scale_x_continuous(expand = c(0, 0)) +
-        ylab("probability of symptoms outside of active monitoring") + 
+        ylab("probability of symptoms outside of active monitoring") +
         xlab("duration of active monitoring (days)") +
         scale_color_discrete(name=expression(phi),
-                             breaks=c("0.01", "0.001", "1e-04"), 
+                             breaks=c("0.01", "0.001", "1e-04"),
                              labels=c("1/100", "1/1,000", "1/10,000")) +
         theme(panel.margin = unit(.7, "lines")) + ggtitle("stratified by days since exposure")
     print(p)
@@ -40,6 +41,7 @@ plot_risk <- function(pstr_data,
 #' Function for plotting risk and uncertainty of case escaping active monitoring
 #'
 #' @param pstr_data a data object with posterior distributions of gamma parameters (must have shape and scale column)
+#' @param dist character string specifying the parametric distribution of pstr_data, defaults to gamma
 #' @param nsamp number of samples from posterior distribution upon which to base calculations
 #' @param u numeric value or vector of assumed duration(s) of time between exposure and monitoring
 #' @param phi probability a case becomes symptomatic
@@ -48,6 +50,7 @@ plot_risk <- function(pstr_data,
 #' @param yrange if not NULL, a vector of the ylim to plot
 #' @param include_xlab logical, whether to include an x-axis label
 #' @param include_legend logical, whether to include a legend
+#' @param output_plot logical, whether or not to automatically output the plot
 #' @param return_data logical, whether or not to return the data used for plotting
 #' @param return_plot logical, whether or not to return the plotted grob
 #'
@@ -56,6 +59,7 @@ plot_risk <- function(pstr_data,
 #'
 #' @examples plot_risk_uncertainty(ebola_gamma_pstr)
 plot_risk_uncertainty <- function(pstr_data,
+                                  dist=c("gamma", "lnorm", "weibull"),
                                   nsamp=1000,
                                   u=runif(nsamp, 1, 14),
                                   phi=c(.0001, .001, .01),
@@ -64,63 +68,78 @@ plot_risk_uncertainty <- function(pstr_data,
                                   yrange=NULL,
                                   include_xlab=TRUE,
                                   include_legend=TRUE,
+                                  output_plot=TRUE,
                                   return_data=FALSE,
                                   return_plot=FALSE) {
     require(ggplot2)
     require(tidyr)
-    
-    if(nrow(pstr_data)<=nsamp)
-        error("number of samples needs to be smaller than the number of draws from the posterior distribution")
-    
+
+    dist <- match.arg(dist)
+    if(!(dist %in% c("gamma", "lnorm", "weibull")))
+        stop('the only distributions supported at this time are "gamma", "lnorm", and "weibull"')
+    if(dist %in% c("gamma", "weibull") & !("shape" %in% colnames(pstr_data)))
+        stop('for the gamma or weibull distribution, please have a column named "shape"')
+    if(dist=="gamma" & !("scale" %in% colnames(pstr_data)) & !("rate" %in% colnames(pstr_data)))
+        stop('for the gamma distribution, please have a column named "scale" or "rate"')
+    if(dist=="weibull" & !("scale" %in% colnames(pstr_data)))
+        stop('for the weibull distribution, please have a column named "scale"')
+    if(dist=="lnorm" & !("meanlog" %in% colnames(pstr_data)))
+        stop('for the lnorm distribution, please have a column named "meanlog"')
+    if(dist=="lnorm" & !("sdlog" %in% colnames(pstr_data)))
+        stop('for the lnorm distribution, please have a column named "sdlog"')
+    if(nrow(pstr_data)<nsamp)
+        stop("number of samples needs to be less than or equal to than the number of draws from the posterior distribution")
+
     ## generate a sample of the posterior distribution from which to calculate
     pstr_samp <- pstr_data %>%
         sample_n(nsamp) %>%
         mutate(u = u) %>%
-        crossing(d=durations,phi=phi)
+        crossing(d = durations,
+                 phi = phi)
 
-    dat_sim_pst_param <- prob_of_missing_case(pstr_samp)
+    dat_sim_pst_param <- prob_of_missing_case(pstr_samp, dist)
     dat_sim_pst_param_sum <- group_by(dat_sim_pst_param, d, phi) %>%
         summarize(ltp = quantile(p, prob=(1-ci_width)/2),
                   p50 = quantile(p, prob=.50),
                   utp = quantile(p, prob=1-(1-ci_width)/2)) %>%
         ungroup()
-    
+
     ## something like this will make labels appear right
     if(identical(unique(dat_sim_pst_param_sum$phi), c(1e-04, 2e-03))) {
-        dat_sim_pst_param_sum$phi_lab <- factor(dat_sim_pst_param_sum$phi, 
-                                                levels=c(1e-04, 2e-03), 
-                                                labels=c("phi==1/10000", "phi==1/500")) 
+        dat_sim_pst_param_sum$phi_lab <- factor(dat_sim_pst_param_sum$phi,
+                                                levels=c(1e-04, 2e-03),
+                                                labels=c("phi==1/10000", "phi==1/500"))
     } else {
         ## for now, leaving out fancy formatting
         dat_sim_pst_param_sum$phi_lab <- factor(dat_sim_pst_param_sum$phi)
     }
-    p <- ggplot(dat_sim_pst_param_sum, aes(x=d, color=phi_lab, fill=phi_lab)) + 
-        #facet_grid(.~phi_lab, labeller=label_parsed) +
+    p <- ggplot(dat_sim_pst_param_sum, aes(x=d, color=phi_lab, fill=phi_lab)) +
         facet_grid(.~phi_lab, labeller=label_parsed) +
-        geom_line(aes(y=p50)) + 
-        geom_ribbon(aes(ymin=ltp, ymax=utp), alpha=.2, color=NA) + 
+        geom_line(aes(y=p50)) +
+        geom_ribbon(aes(ymin=ltp, ymax=utp), alpha=.2, color=NA) +
         scale_y_log10() +
-        ylab("Pr(symptoms after AM)") + 
+        ylab("Pr(symptoms after AM)") +
         theme(legend.justification=c(0,0), legend.position=c(0,0))
-    
+
     ## formatting options for xlab
     if(include_xlab) {
-        p <- p + xlab("duration of active monitoring (days)") 
+        p <- p + xlab("duration of active monitoring (days)")
     } else {
-        p <- p + xlab(NULL) 
+        p <- p + xlab(NULL)
     }
-    
+
     ## remove legend if specified
     if(!include_legend) {
-        p <- p + guides(color=FALSE, fill=FALSE) 
+        p <- p + guides(color=FALSE, fill=FALSE)
     }
-    
+
     ## zoom on y axis if desired
     if(!is.null(yrange)) {
         p <- p + coord_cartesian(ylim=yrange)
     }
-    
-    print(p)
+
+    if(output_plot)
+        print(p)
     out <- vector("list", 2)
     names(out) <- c("data", "plot")
     if(return_plot) {
@@ -131,5 +150,3 @@ plot_risk_uncertainty <- function(pstr_data,
     }
     return(out)
 }
-
-

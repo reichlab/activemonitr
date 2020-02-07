@@ -1,7 +1,7 @@
 #######################################
 ## Title: active-monitoring ui.R     ##
 ## Author(s): Xuelian Li,            ##
-##            Nicholas G Reich       ## 
+##            Nicholas G Reich       ##
 ## Date Created:  12/27/2016         ##
 ## Date Modified: 01/04/2016 XL      ##
 #######################################
@@ -12,7 +12,7 @@ shinyUI(fluidPage(
     tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css?family=Slabo+27px")
   ),
   titlePanel("Determining Durations for Active Monitoring"),
-  
+
   fluidPage(
     bootstrapPage(
       ## create tabs
@@ -20,33 +20,36 @@ shinyUI(fluidPage(
         tabPanel("Model Overview",
                  value="overview"),
         tabPanel("Costs of Active Monitoring Programs",
-                 plotOutput("plot_costs"), 
+                 plotOutput("plot_costs"),
                  value="cost.plot"),
         tabPanel("Incubation Period Estimates",
                  plotOutput("plot_inc_per"),
                  value="incper.plot"),
+        tabPanel("Undetected infections",
+                 plotOutput("plot_risk_uncertainty"),
+                 value="undinf.plot"),
         id="tabs")
     ),
 
-    hr(), 
-    
+    hr(),
+
     fluidRow(
-      
+
       ## text for overview panel
       conditionalPanel(
         condition="input.tabs == 'overview'",
-        p("Active monitoring has shown promise as a tool in preventing and responding to outbreaks of pathogens that pose a grave threat to public health, such as", 
+        p("Active monitoring has shown promise as a tool in preventing and responding to outbreaks of pathogens that pose a grave threat to public health, such as",
           a("the 2014 west Africa Ebola outbreak", href="http://www.cdc.gov/vhf/ebola/exposure/monitoring-and-movement-of-persons-with-exposure.html"),
-          ". It could play an important role in containing outbreaks of rapidly spreading emerging pathogens, occurring either naturally or via a bioterrorist attack. 
-          Individuals under active monitoring are typically asked to contact local health authorities every day for some number of days after their last potential exposure to report their health status."), 
-        p("We developed a model that estimates the risks and costs associated with active monitoring programs. Our model provides a range of expected costs for an active monitoring program, 
-          based on a series of assumptions about the disease of interest and the costs of the program.  
+          ". It could play an important role in containing outbreaks of rapidly spreading emerging pathogens, occurring either naturally or via a bioterrorist attack.
+          Individuals under active monitoring are typically asked to contact local health authorities every day for some number of days after their last potential exposure to report their health status."),
+        p("We developed a model that estimates the risks and costs associated with active monitoring programs. Our model provides a range of expected costs for an active monitoring program,
+          based on a series of assumptions about the disease of interest and the costs of the program.
           The model is discussed in detail in a manuscript that is currently under review. The figure below provides an overview of the model schematic."),
         p("On the other tabs of this application, users may specify different model parameters to see how they impact the cost of active monitoring programs."),
         img(src='figure1-model-schema-v7.jpg', height='400px'),
         p("This app was developed by", a("Nicholas G Reich", href='https://reichlab.github.io/'),  "and Xuelian Li at UMass-Amherst Biostatistics.")
       ),
-      
+
       ## user inputs for cost plot panel
       conditionalPanel(
         condition="input.tabs == 'cost.plot'",
@@ -56,16 +59,17 @@ shinyUI(fluidPage(
                               "Smallpox" = "Smallpox"
                             ),
                             selected="Ebola"),
-               checkboxGroupInput("plot1_prob_symptoms", 
+               checkboxGroupInput("plot1_prob_symptoms",
                                   "Probability a monitored individual develops symptoms",
-                                  c("1/10" = "0.1", 
+                                  c("1/1" = "1",
+                                    "1/10" = "0.1",
                                     "1/100" = "0.01",
                                     "1/1,000" = "0.001",
                                     "1/10,000" ="0.0001"),
                                   #"custom" = "custom"),
                                   selected=c("0.001", "0.0001"))
         ),
-        column(4, 
+        column(4,
                #h4("Cost model inputs"),
                sliderInput("plot1_secondary_cases", "Number of secondary cases",
                            min=0, max=25, value=4),
@@ -73,10 +77,10 @@ shinyUI(fluidPage(
                            min=0, max=20, value=c(3,5)),
                sliderInput("plot1_cost_per_day", "Cost per monitored person-day ($)",
                            min=0, max=100, value=c(10,20))#,
-               
-               # checkboxGroupInput("plot1_prob_symptoms", 
+
+               # checkboxGroupInput("plot1_prob_symptoms",
                #                    "Probability a monitored individual develops symptoms",
-               #                    c("1/10" = "0.1", 
+               #                    c("1/10" = "0.1",
                #                      "1/100" = "0.01",
                #                      "1/1,000" = "0.001",
                #                      "1/10,000" ="0.0001"),
@@ -87,7 +91,7 @@ shinyUI(fluidPage(
                    #numericInput("plot1_prob_symptoms_custom", "Custom probability",
                 #               min=0, max=1, value=0, step=.01)#)
         ),
-        column(4, 
+        column(4,
                #h4("Cost model inputs"),
                sliderInput("plot1_cost_false_pos", "Cost of a false positive ($000s)",
                            min=0, max=100, value=c(10,30)),
@@ -95,16 +99,48 @@ shinyUI(fluidPage(
                            min=10, max=10000, value=1000, step = 10)
         )
       ),
-      
+
       ## text for incubation period panel
       conditionalPanel(
           condition="input.tabs == 'incper.plot'",
           p("The above figure shows the estimated incubation period parameters (points) and confidence regions. These estimates are based on obtained previously published incubation period observations on",
-            a("152 cases of Ebola in Guinea", href="http://www.ncbi.nlm.nih.gov/pubmed/25619149"), 
+            a("152 cases of Ebola in Guinea", href="http://www.ncbi.nlm.nih.gov/pubmed/25619149"),
             a("170 laboratory-confirmed cases of MERS-CoV in South Korea", href="http://datadryad.org/resource/doi:10.5061/dryad.v3546"),
-            "and", 
+            "and",
             a("362 cases of smallpox", href="http://www.ncbi.nlm.nih.gov/pubmed/18178524"), ".",
             "We fitted the observed data for each disease to a gamma probability distribution using Markov Chain Monte Carlo (MCMC) methods with the Metropolis-Hastings algorithm. The gamma distribution is one of several 'heavy-tailed' distributions often used to describe incubation periods, and aligns with assumptions made by previous researchers.")
+      ),
+
+      ## user inputs for undetected infections plot panel
+      conditionalPanel(
+          condition="input.tabs == 'undinf.plot'",
+          column(3,
+                 radioButtons("plot3_disease", "Pathogen",
+                              c("2019-nCoV" = "nCoV",
+                                "Ebola" = "Ebola",
+                                "MERS-CoV" = "Mers",
+                                "Smallpox" = "Smallpox"),
+                              selected="nCoV"),
+                 checkboxGroupInput("plot3_prob_symptoms",
+                                    "Probability a monitored individual develops symptoms",
+                                    c("1/1" = "1",
+                                      "1/10" = "0.1",
+                                      "1/100" = "0.01",
+                                      "1/1,000" = "0.001",
+                                      "1/10,000" ="0.0001"),
+                                    #"custom" = "custom"),
+                                    selected=c("1", "0.1"))
+          ),
+          column(4,
+                 #h4("Cost model inputs"),
+                 sliderInput("plot3_duration", "Length of active-monitoring program",
+                             min=0, max=100, value=c(1,28)),
+                 sliderInput("plot3_u", "Days since infectious exposure",
+                             min=0, max=30, value=c(1,5)),
+                 sliderInput("plot3_ci", "Confidence interval width",
+                             min=0.5, max=1, value=c(0.95), round=-1)#,
+
+          )
       )
     )
   )
