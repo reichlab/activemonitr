@@ -1,6 +1,7 @@
 #######################################
 ## Title: active-monitoring ui.R     ##
 ## Author(s): Xuelian Li,            ##
+##            Stephen A Lauer        ##
 ##            Nicholas G Reich       ##
 ## Date Created:  12/27/2016         ##
 ## Date Modified: 01/04/2016 XL      ##
@@ -19,15 +20,15 @@ shinyUI(fluidPage(
       tabsetPanel(
         tabPanel("Model Overview",
                  value="overview"),
-        tabPanel("Costs of Active Monitoring Programs",
-                 plotOutput("plot_costs"),
-                 value="cost.plot"),
         tabPanel("Incubation Period Estimates",
                  plotOutput("plot_inc_per"),
                  value="incper.plot"),
         tabPanel("Undetected infections",
                  plotOutput("plot_risk_uncertainty"),
                  value="undinf.plot"),
+        tabPanel("Costs of Active Monitoring Programs",
+                 plotOutput("plot_costs"),
+                 value="cost.plot"),
         id="tabs")
     ),
 
@@ -47,7 +48,10 @@ shinyUI(fluidPage(
           The model is discussed in detail in a manuscript that is currently under review. The figure below provides an overview of the model schematic."),
         p("On the other tabs of this application, users may specify different model parameters to see how they impact the cost of active monitoring programs."),
         img(src='figure1-model-schema-v7.jpg', height='400px'),
-        p("This app was developed by", a("Nicholas G Reich", href='https://reichlab.github.io/'),  "and Xuelian Li at UMass-Amherst Biostatistics.")
+        p("This app was developed by",
+          a("Nicholas G Reich", href='https://reichlab.github.io/'), "(UMass-Amherst Biostatistics),",
+          a("Stephen A Lauer", href='https://salauer.github.io/'), "(Johns Hopkins Bloomberg SPH),",
+          "and Xuelian Li.")
       ),
 
       ## user inputs for cost plot panel
