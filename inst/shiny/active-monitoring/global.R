@@ -5,13 +5,14 @@
 ## Date Created:  01/04/2016         ##
 ## Date Modified: 01/04/2016 XL      ##
 #######################################
-require(shiny)
-require(dplyr)
-require(ggplot2)
-require(scales)
-require(activeMonitr)
+library(shiny)
+library(Cairo)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(activeMonitr)
 
-source("plot_risk.R")
+# source("plot_risk.R")
 theme_set(theme_bw(base_size = 18))
 
 data("pstr_gamma_params_ebola")
