@@ -150,3 +150,43 @@ plot_risk_uncertainty <- function(pstr_data,
     }
     return(out)
 }
+
+##' make posterior likelihood plot for gamma distribution
+##'
+##' @param mcmc_dfs the rbound outputs from inc_per_mcmc
+##' @param kdes list of results from call to fit_kde
+##' @param label_txt labels for points
+##' @param colors colors for each region
+##' @param show.legend logical, passed to geom_point
+##' @param base.size size for font, to be passed to theme_bw()
+plot_modified_credible_regions <- function(mcmc_dfs, kdes, label_txt, colors, show.legend=FALSE, base.size=12) {
+    require(ggplot2)
+    require(reshape2)
+    require(dplyr)
+
+    ## set credible region data for KDE percentiles
+    pstr_median <- data.frame(median=rep(NA, length(mcmc_dfs)),
+                              p95=rep(NA, length(mcmc_dfs)),
+                              disease = factor(label_txt,
+                                               levels=label_txt, ordered=TRUE))
+
+    ## make plot
+    p <- ggplot() +  theme_bw() + xlab("median incubation period (days)") + ylab("95th percentile of incubation period (days)")
+    for(i in 1:length(mcmc_dfs)) {
+        pstr_median[i,"median"] <- median(mcmc_dfs[[i]]$median)
+        pstr_median[i,"p95"] <- median(mcmc_dfs[[i]]$p95)
+        p <- p + stat_contour(aes(x=Var1, y=Var2, z=value),
+                              data=kdes[[i]][["contour_df"]],
+                              breaks=kdes[[i]][["contour_level"]],
+                              geom="polygon",
+                              fill=colors[i], alpha=.6)
+    }
+    p <- p + geom_point(data=pstr_median, aes(x=median, y=p95, color=disease),
+                        show.legend = show.legend) +
+        theme_bw(base_size = base.size) +
+        theme(legend.title=element_blank(),
+              legend.position=c(1,1), legend.justification=c(1,1)) +
+        scale_color_manual(values=colors)
+    print(p)
+    return(p)
+}
