@@ -13,8 +13,9 @@ Depends:
     grid,
     dplyr,
     reshape2,
-    R (>= 3.0.2)
+    tidyr,
+    R (>= 3.5)
 License: GPLv3
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Encoding: UTF-8

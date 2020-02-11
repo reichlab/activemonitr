@@ -4,7 +4,7 @@
 \alias{prob_of_missing_case}
 \title{Calculate probabilility of a case not being caught by monitoring}
 \usage{
-prob_of_missing_case(dat, dist)
+prob_of_missing_case(dat, dist = "gamma")
 }
 \arguments{
 \item{dat}{a data.frame with column names explained in details}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_risk.R
 \name{plot_modified_credible_regions}
 \alias{plot_modified_credible_regions}
-\title{make posterior likelihood plot for gamma distribution}
+\title{make posterior likelihood plot of the median and 95th percentile of distribution}
 \usage{
 plot_modified_credible_regions(
   mcmc_dfs,
@@ -26,6 +26,12 @@ plot_modified_credible_regions(
 
 \item{base.size}{size for font, to be passed to theme_bw()}
 }
+\value{
+a plot
+}
 \description{
-make posterior likelihood plot for gamma distribution
+make posterior likelihood plot of the median and 95th percentile of distribution
+}
+\examples{
+plot_risk_uncertainty(ebola_gamma_pstr, kde_ebola, label_txt="Ebola", colors=c("#1b9e77", "#d95f02", "#7570b3"))
 }

@@ -65,7 +65,9 @@ shinyUI(fluidPage(
         condition="input.tabs == 'cost.plot'",
         column(3,
                radioButtons("plot1_disease", "Pathogen",
-                            c("Ebola" = "Ebola", "MERS-CoV" = "Mers",
+                            c("2019-nCoV" = "nCoV",
+                              "Ebola" = "Ebola",
+                              "MERS-CoV" = "Mers",
                               "Smallpox" = "Smallpox"
                             ),
                             selected="Ebola"),
@@ -114,11 +116,10 @@ shinyUI(fluidPage(
       conditionalPanel(
           condition="input.tabs == 'incper.plot'",
           p("The above figure shows the estimated incubation period parameters (points) and confidence regions. These estimates are based on obtained previously published incubation period observations on",
-            a("152 cases of Ebola in Guinea", href="http://www.ncbi.nlm.nih.gov/pubmed/25619149"),
-            a("170 laboratory-confirmed cases of MERS-CoV in South Korea", href="http://datadryad.org/resource/doi:10.5061/dryad.v3546"),
-            "and",
-            a("362 cases of smallpox", href="http://www.ncbi.nlm.nih.gov/pubmed/18178524"), ".",
-            "We fitted the observed data for each disease to a gamma probability distribution using Markov Chain Monte Carlo (MCMC) methods with the Metropolis-Hastings algorithm. The gamma distribution is one of several 'heavy-tailed' distributions often used to describe incubation periods, and aligns with assumptions made by previous researchers.")
+            a("152 cases of Ebola in Guinea,", href="http://www.ncbi.nlm.nih.gov/pubmed/25619149"),
+            a("170 laboratory-confirmed cases of MERS-CoV in South Korea,", href="http://datadryad.org/resource/doi:10.5061/dryad.v3546"),
+            a("362 cases of smallpox,", href="http://www.ncbi.nlm.nih.gov/pubmed/18178524"), "and",
+            a("101 cases of 2019-nCoV", href="https://www.medrxiv.org/content/10.1101/2020.02.02.20020016v1"), ". We fitted the observed data for Ebola, MERS-CoV, and smallpox to gamma probability distributions using Markov Chain Monte Carlo (MCMC) methods with the Metropolis-Hastings algorithm. The gamma distribution is one of several 'heavy-tailed' distributions often used to describe incubation periods, and aligns with assumptions made by previous researchers. The 2019-nCoV data were bootstrapped and fit to log-normal distributions.")
       ),
 
       ## user inputs for undetected infections plot panel

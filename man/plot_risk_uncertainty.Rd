@@ -15,6 +15,7 @@ plot_risk_uncertainty(
   yrange = NULL,
   include_xlab = TRUE,
   include_legend = TRUE,
+  output_plot = TRUE,
   return_data = FALSE,
   return_plot = FALSE
 )
@@ -39,6 +40,8 @@ plot_risk_uncertainty(
 \item{include_xlab}{logical, whether to include an x-axis label}
 
 \item{include_legend}{logical, whether to include a legend}
+
+\item{output_plot}{logical, whether or not to automatically output the plot}
 
 \item{return_data}{logical, whether or not to return the data used for plotting}
 

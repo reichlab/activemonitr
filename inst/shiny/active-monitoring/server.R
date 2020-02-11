@@ -6,22 +6,6 @@
 ## Date Modified: 01/04/2016 XL      ##
 #######################################
 shinyServer(function(input, output, session) {
-  data_df <- reactive({
-    ## choose data based on the type of disease
-    if (input$plot1_radio=="Ebola"){
-    data_df <- pstr_gamma_params_ebola
-    }
-    else if (input$plot1_radio=="Mers") {
-    data_df<-pstr_gamma_params_mers
-    }
-    else {
-    data_df<-pstr_gamma_params_smallpox
-    }
-
-    ## Output reactive dataframe
-    data_df
-  })
-
     ## create plot of cost data
     output$plot_costs <-renderPlot({
         cost_m <- input$plot1_cost_per_day     ## per day cost of treatment
@@ -32,14 +16,22 @@ shinyServer(function(input, output, session) {
         cost_mat <- rbind(cost_m, cost_trt, cost_exp, cost_falsepos)
 
         pstr_params <- switch(input$plot1_disease,
+                              nCoV = boot_lnorm_params_ncov,
                               Ebola = pstr_gamma_params_ebola,
                               Mers = pstr_gamma_params_mers,
                               Smallpox = pstr_gamma_params_smallpox)
 
-        gamma_params <- c(median = mean(pstr_params$median),
-                          shape = mean(pstr_params$shape),
-                          scale = mean(pstr_params$scale))
-
+        if(input$plot1_disease=="nCoV"){
+            inc_dist <- "lnorm"
+            gamma_params <- c(median = mean(pstr_params$median),
+                              meanlog = mean(pstr_params$meanlog),
+                              sdlog = mean(pstr_params$sdlog))
+        } else{
+            inc_dist <- "gamma"
+            gamma_params <- c(median = mean(pstr_params$median),
+                              shape = mean(pstr_params$shape),
+                              scale = mean(pstr_params$scale))
+        }
         durs <- seq(.1, 10, by=.1)
         phis <- as.numeric(input$plot1_prob_symptoms)
 
@@ -48,6 +40,7 @@ shinyServer(function(input, output, session) {
                                        per_day_hazard = 1/input$plot1_per_day_hazard_denom,
                                        N = 100,
                                        cost_mat = cost_mat,
+                                       dist=inc_dist,
                                        gamma_params = gamma_params,
                                        return_scalar=FALSE)
 
@@ -95,18 +88,17 @@ shinyServer(function(input, output, session) {
 
     ## create the plot2 of incubation period data
     output$plot_inc_per <-renderPlot({
-        data(kde_smallpox)
-        data(kde_ebola)
-        data(kde_mers)
-        colors <- c("#1b9e77", "#d95f02", "#7570b3")
-        lighter_colors <- c("#8ecfbc", "#fdb174", "#b8b6d6")
+        colors <- c("#1b9e77", "#d95f02", "#7570b3","#0072B2")
+        lighter_colors <- c("#8ecfbc", "#fdb174", "#b8b6d6", "#56B4E9")
         plot_modified_credible_regions(list(pstr_gamma_params_ebola,
                                             pstr_gamma_params_mers,
-                                            pstr_gamma_params_smallpox),
+                                            pstr_gamma_params_smallpox,
+                                            boot_lnorm_params_ncov),
                                        kdes=list(kde_ebola,
                                                  kde_mers,
-                                                 kde_smallpox),
-                                       label_txt=c("Ebola", "MERS-CoV", "Smallpox"),
+                                                 kde_smallpox,
+                                                 kde_ncov),
+                                       label_txt=c("Ebola", "MERS-CoV", "Smallpox", "2019-nCoV"),
                                        colors=colors, show.legend=TRUE, base.size=18)
     })
 
