@@ -16,14 +16,22 @@ shinyServer(function(input, output, session) {
         cost_mat <- rbind(cost_m, cost_trt, cost_exp, cost_falsepos)
 
         pstr_params <- switch(input$plot1_disease,
+                              nCoV = boot_lnorm_params_ncov,
                               Ebola = pstr_gamma_params_ebola,
                               Mers = pstr_gamma_params_mers,
                               Smallpox = pstr_gamma_params_smallpox)
 
-        gamma_params <- c(median = mean(pstr_params$median),
-                          shape = mean(pstr_params$shape),
-                          scale = mean(pstr_params$scale))
-
+        if(input$plot1_disease=="nCoV"){
+            inc_dist <- "lnorm"
+            gamma_params <- c(median = mean(pstr_params$median),
+                              meanlog = mean(pstr_params$meanlog),
+                              sdlog = mean(pstr_params$sdlog))
+        } else{
+            inc_dist <- "gamma"
+            gamma_params <- c(median = mean(pstr_params$median),
+                              shape = mean(pstr_params$shape),
+                              scale = mean(pstr_params$scale))
+        }
         durs <- seq(.1, 10, by=.1)
         phis <- as.numeric(input$plot1_prob_symptoms)
 
@@ -32,6 +40,7 @@ shinyServer(function(input, output, session) {
                                        per_day_hazard = 1/input$plot1_per_day_hazard_denom,
                                        N = 100,
                                        cost_mat = cost_mat,
+                                       dist=inc_dist,
                                        gamma_params = gamma_params,
                                        return_scalar=FALSE)
 

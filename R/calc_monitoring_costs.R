@@ -4,27 +4,34 @@
 #' @param per_day_hazard hazard to pass to the calculation of theta
 #' @param N number of indiviuals for which to calculate the costs
 #' @param cost_mat 4x2 matrix of costs where each named row corresponds to a cost, and the columns are the lower and upper bounds
+#' @param dist character string specifying the parametric distribution of the incubation period; defaults to "gamma"
 #' @param gamma_params the median, shape and scale parameters for the assumed-gamma incubation period distribution
 #' @param return_scalar logical, whether to return the scalar max cost value using the first value of durs and probs_of_disease
 #' @return a length(probs_of_disease)xlength(durs) matrix of costs, one row per subgroup, one column per duration
 #'
 #' @export
-calc_monitoring_costs <- function(durs, probs_of_disease, per_day_hazard, N, cost_mat, gamma_params, return_scalar=FALSE) {
-  require(dplyr)
-  ## checks
-  if(any(probs_of_disease>1) | any(probs_of_disease<0)) stop("all probs_of_disease must be between 0 and 1")
+calc_monitoring_costs <- function(durs, probs_of_disease, per_day_hazard, N, cost_mat, dist=c("gamma", "lnorm"), gamma_params, return_scalar=FALSE) {
+    match.arg(dist)
+    require(dplyr)
+    ## checks
+    if(any(probs_of_disease>1) | any(probs_of_disease<0)) stop("all probs_of_disease must be between 0 and 1")
 
-  ## extract the costs into individual vectors
-  cost_m <- cost_mat["cost_m",]     ## per day cost of treatment
-  cost_trt <- cost_mat["cost_trt",] ## cost of response to single case
-  cost_exp <- cost_mat["cost_exp",]  ## cost of response to single case not captured by monitoring
-  cost_falsepos <- cost_mat["cost_falsepos",] ## cost of false positive testing
-  
-  ## extract incubation period parameters
-  med_ip <- gamma_params["median"]
-  shp <- gamma_params["shape"]
-  scl <- gamma_params["scale"]
-  
+    ## extract the costs into individual vectors
+    cost_m <- cost_mat["cost_m",]     ## per day cost of treatment
+    cost_trt <- cost_mat["cost_trt",] ## cost of response to single case
+    cost_exp <- cost_mat["cost_exp",]  ## cost of response to single case not captured by monitoring
+    cost_falsepos <- cost_mat["cost_falsepos",] ## cost of false positive testing
+
+    ## extract incubation period parameters
+    med_ip <- gamma_params["median"]
+    if(dist=="gamma"){
+        shp <- gamma_params["shape"]
+        scl <- gamma_params["scale"]
+    }
+    if(dist=="lnorm"){
+        mlog <- gamma_params["meanlog"]
+        slog <- gamma_params["sdlog"]
+    }
   phis <- probs_of_disease
   # out <- matrix(NA, nrow=length(phis), ncol=length(durs))
   # colnames(out) <- durs
@@ -47,13 +54,16 @@ calc_monitoring_costs <- function(durs, probs_of_disease, per_day_hazard, N, cos
       c3 <- c1 + c2 + cost_exp    ## cost of response to single case + exposure followups
       costs <- cbind(c1, c1a, c2, c3)
       ## calculate probabilities
-      ip_prob <- pgamma(dur*med_ip, shape=shp, scale=scl)
-      pi_vec <- c((1-phi)*(1-theta), 
-                  (1-phi)*theta, 
-                  phi*ip_prob, 
+      if(dist=="gamma")
+          ip_prob <- pgamma(dur*med_ip, shape=shp, scale=scl)
+      if(dist=="lnorm")
+          ip_prob <- plnorm(dur*med_ip, meanlog=mlog, sdlog=slog)
+      pi_vec <- c((1-phi)*(1-theta),
+                  (1-phi)*theta,
+                  phi*ip_prob,
                   phi*(1-ip_prob))
       num_costs <- t(costs %*% pi_vec * N)
-#      out[i,j] <- paste0("$", formatC(round(num_costs[1], -3)/1000, big.mark=",", format="d"), 
+#      out[i,j] <- paste0("$", formatC(round(num_costs[1], -3)/1000, big.mark=",", format="d"),
 #                         "-$", formatC(round(num_costs[2], -3)/1000, big.mark=",", format="d"))
       num_out[k,] <- c(phi, dur, num_costs)
     }

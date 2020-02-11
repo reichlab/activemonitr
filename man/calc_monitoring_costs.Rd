@@ -4,8 +4,16 @@
 \alias{calc_monitoring_costs}
 \title{Cost calculations for active monitoring scenarios}
 \usage{
-calc_monitoring_costs(durs, probs_of_disease, per_day_hazard, N, cost_mat,
-  gamma_params, return_scalar = FALSE)
+calc_monitoring_costs(
+  durs,
+  probs_of_disease,
+  per_day_hazard,
+  N,
+  cost_mat,
+  dist = c("gamma", "lnorm"),
+  gamma_params,
+  return_scalar = FALSE
+)
 }
 \arguments{
 \item{durs}{a vector of AM durations to consider, in multiples of median incubation period values}
@@ -17,6 +25,8 @@ calc_monitoring_costs(durs, probs_of_disease, per_day_hazard, N, cost_mat,
 \item{N}{number of indiviuals for which to calculate the costs}
 
 \item{cost_mat}{4x2 matrix of costs where each named row corresponds to a cost, and the columns are the lower and upper bounds}
+
+\item{dist}{character string specifying the parametric distribution of the incubation period; defaults to "gamma"}
 
 \item{gamma_params}{the median, shape and scale parameters for the assumed-gamma incubation period distribution}
 

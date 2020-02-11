@@ -65,7 +65,9 @@ shinyUI(fluidPage(
         condition="input.tabs == 'cost.plot'",
         column(3,
                radioButtons("plot1_disease", "Pathogen",
-                            c("Ebola" = "Ebola", "MERS-CoV" = "Mers",
+                            c("2019-nCoV" = "nCoV",
+                              "Ebola" = "Ebola",
+                              "MERS-CoV" = "Mers",
                               "Smallpox" = "Smallpox"
                             ),
                             selected="Ebola"),
