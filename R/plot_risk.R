@@ -151,7 +151,7 @@ plot_risk_uncertainty <- function(pstr_data,
     return(out)
 }
 
-##' make posterior likelihood plot for gamma distribution
+##' make posterior likelihood plot of the median and 95th percentile of distribution
 ##'
 ##' @param mcmc_dfs the rbound outputs from inc_per_mcmc
 ##' @param kdes list of results from call to fit_kde
@@ -159,6 +159,11 @@ plot_risk_uncertainty <- function(pstr_data,
 ##' @param colors colors for each region
 ##' @param show.legend logical, passed to geom_point
 ##' @param base.size size for font, to be passed to theme_bw()
+##'
+##' @return a plot
+##' @export
+##'
+##' @examples plot_risk_uncertainty(ebola_gamma_pstr, kde_ebola, label_txt="Ebola", colors=c("#1b9e77", "#d95f02", "#7570b3"))
 plot_modified_credible_regions <- function(mcmc_dfs, kdes, label_txt, colors, show.legend=FALSE, base.size=12) {
     require(ggplot2)
     require(reshape2)

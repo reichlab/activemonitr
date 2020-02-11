@@ -103,5 +103,6 @@ NULL
 #' @name kde_smallpox
 #' @name kde_ebola
 #' @name kde_mers
+#' @name kde_ncov
 #' @usage data(kde_ebola)
 NULL
