@@ -1,9 +1,10 @@
 #######################################
 ## Title: active-monitoring global.R ##
 ## Author(s): Xuelian Li,            ##
+##            Stephen A Lauer        ##
 ##            Nicholas G Reich       ##
 ## Date Created:  01/04/2016         ##
-## Date Modified: 01/04/2016 XL      ##
+## Date Modified: 02/12/2020 XL      ##
 #######################################
 library(shiny)
 library(Cairo)
