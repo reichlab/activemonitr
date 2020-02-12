@@ -35,7 +35,7 @@ shinyServer(function(input, output, session) {
         durs <- seq(.1, 10, by=.1)
         phis <- as.numeric(input$plot1_prob_symptoms)
 
-                costs <- calc_monitoring_costs(durs = durs,
+        costs <- calc_monitoring_costs(durs = durs,
                                        probs_of_disease = phis,
                                        per_day_hazard = 1/input$plot1_per_day_hazard_denom,
                                        N = 100,
@@ -98,7 +98,7 @@ shinyServer(function(input, output, session) {
                                                  kde_mers,
                                                  kde_smallpox,
                                                  kde_ncov),
-                                       label_txt=c("Ebola", "MERS-CoV", "Smallpox", "2019-nCoV"),
+                                       label_txt=c("Ebola", "MERS-CoV", "Smallpox", "COVID-19"),
                                        colors=colors, show.legend=TRUE, base.size=18)
     })
 
@@ -139,8 +139,9 @@ shinyServer(function(input, output, session) {
         }
         p_min <- max(c(10^(min(p$data$p50) %>% log10() %>% floor()), 1e-6))
         p_max <- 10^(max(p$data$p50) %>% log10() %>% ceiling())
+        p$plot$data$phi_lab <- factor(as.character(MASS::fractions(p$plot$data$phi, max.denominator = 1e6)))
         p$plot +
-            # facet_grid() +
+            facet_grid(.~phi_lab) +
             scale_y_log10("Proportion of symptomatic infections that\ndevelop symptoms after active monitoring",
                           breaks=10^(log10(p_min):log10(p_max)),
                           labels=paste0("1/",
@@ -150,7 +151,8 @@ shinyServer(function(input, output, session) {
             scale_color_discrete(guide=FALSE) +
             scale_fill_discrete(guide=FALSE) +
             coord_cartesian(ylim=c(p_min, p_max)) +
-            theme(axis.text=element_text(color="black"))
+            theme(axis.text=element_text(color="black"),
+                  strip.background=element_rect(fill="white"))
         # ggplot(costs, aes(x=dur_median,
         #                   color=phi_lab, fill=phi_lab)) +
         #     geom_ribbon(aes(ymin=mincost, ymax=maxcost), alpha=.7) +

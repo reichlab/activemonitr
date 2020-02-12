@@ -65,7 +65,7 @@ shinyUI(fluidPage(
         condition="input.tabs == 'cost.plot'",
         column(3,
                radioButtons("plot1_disease", "Pathogen",
-                            c("2019-nCoV" = "nCoV",
+                            c("COVID-19" = "nCoV",
                               "Ebola" = "Ebola",
                               "MERS-CoV" = "Mers",
                               "Smallpox" = "Smallpox"
@@ -78,33 +78,17 @@ shinyUI(fluidPage(
                                     "1/100" = "0.01",
                                     "1/1,000" = "0.001",
                                     "1/10,000" ="0.0001"),
-                                  #"custom" = "custom"),
                                   selected=c("0.001", "0.0001"))
         ),
         column(4,
-               #h4("Cost model inputs"),
                sliderInput("plot1_secondary_cases", "Number of secondary cases",
                            min=0, max=25, value=4),
                sliderInput("plot1_cost_per_case", "Cost per case ($000,000s)",
                            min=0, max=20, value=c(3,5)),
                sliderInput("plot1_cost_per_day", "Cost per monitored person-day ($)",
-                           min=0, max=100, value=c(10,20))#,
-
-               # checkboxGroupInput("plot1_prob_symptoms",
-               #                    "Probability a monitored individual develops symptoms",
-               #                    c("1/10" = "0.1",
-               #                      "1/100" = "0.01",
-               #                      "1/1,000" = "0.001",
-               #                      "1/10,000" ="0.0001"),
-               #                      #"custom" = "custom"),
-               #                    selected=c("0.001", "0.0001"))#,
-               #conditionalPanel(
-                   #condition=" 'custom' %in% plot1_prob_symptoms",
-                   #numericInput("plot1_prob_symptoms_custom", "Custom probability",
-                #               min=0, max=1, value=0, step=.01)#)
+                           min=0, max=100, value=c(10,20))
         ),
         column(4,
-               #h4("Cost model inputs"),
                sliderInput("plot1_cost_false_pos", "Cost of a false positive ($000s)",
                            min=0, max=100, value=c(10,30)),
                sliderInput("plot1_per_day_hazard_denom", "Expected number of monitored-person-days needed to have 1 hospitalized false positive",
@@ -119,7 +103,7 @@ shinyUI(fluidPage(
             a("152 cases of Ebola in Guinea,", href="http://www.ncbi.nlm.nih.gov/pubmed/25619149"),
             a("170 laboratory-confirmed cases of MERS-CoV in South Korea,", href="http://datadryad.org/resource/doi:10.5061/dryad.v3546"),
             a("362 cases of smallpox,", href="http://www.ncbi.nlm.nih.gov/pubmed/18178524"), "and",
-            a("101 cases of 2019-nCoV", href="https://www.medrxiv.org/content/10.1101/2020.02.02.20020016v1"), ". We fitted the observed data for Ebola, MERS-CoV, and smallpox to gamma probability distributions using Markov Chain Monte Carlo (MCMC) methods with the Metropolis-Hastings algorithm. The gamma distribution is one of several 'heavy-tailed' distributions often used to describe incubation periods, and aligns with assumptions made by previous researchers. The 2019-nCoV data were bootstrapped and fit to log-normal distributions.")
+            a("101 cases of COVID-19", href="https://www.medrxiv.org/content/10.1101/2020.02.02.20020016v1"), ". We fitted the observed data for Ebola, MERS-CoV, and smallpox to gamma probability distributions using Markov Chain Monte Carlo (MCMC) methods with the Metropolis-Hastings algorithm. The gamma distribution is one of several 'heavy-tailed' distributions often used to describe incubation periods, and aligns with assumptions made by previous researchers. The COVID-19 data were bootstrapped and fit to log-normal distributions.")
       ),
 
       ## user inputs for undetected infections plot panel
@@ -127,7 +111,7 @@ shinyUI(fluidPage(
           condition="input.tabs == 'undinf.plot'",
           column(3,
                  radioButtons("plot3_disease", "Pathogen",
-                              c("2019-nCoV" = "nCoV",
+                              c("COVID-19" = "nCoV",
                                 "Ebola" = "Ebola",
                                 "MERS-CoV" = "Mers",
                                 "Smallpox" = "Smallpox"),
@@ -139,17 +123,16 @@ shinyUI(fluidPage(
                                       "1/100" = "0.01",
                                       "1/1,000" = "0.001",
                                       "1/10,000" ="0.0001"),
-                                    #"custom" = "custom"),
                                     selected=c("1", "0.1"))
           ),
           column(4,
-                 #h4("Cost model inputs"),
                  sliderInput("plot3_duration", "Length of active-monitoring program",
                              min=0, max=100, value=c(1,28)),
                  sliderInput("plot3_u", "Days since infectious exposure",
-                             min=0, max=30, value=c(1,5)),
+                             min=0, max=30, value=c(1,5))),
+          column(4,
                  sliderInput("plot3_ci", "Confidence interval width",
-                             min=0.5, max=1, value=c(0.95), round=-1)#,
+                             min=0.5, max=1, value=c(0.95), round=-1)
 
           )
       )
