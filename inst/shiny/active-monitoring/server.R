@@ -16,12 +16,12 @@ shinyServer(function(input, output, session) {
         cost_mat <- rbind(cost_m, cost_trt, cost_exp, cost_falsepos)
 
         pstr_params <- switch(input$plot1_disease,
-                              nCoV = boot_lnorm_params_ncov,
+                              COVID = boot_lnorm_params_covid,
                               Ebola = pstr_gamma_params_ebola,
                               Mers = pstr_gamma_params_mers,
                               Smallpox = pstr_gamma_params_smallpox)
 
-        if(input$plot1_disease=="nCoV"){
+        if(input$plot1_disease=="COVID"){
             inc_dist <- "lnorm"
             gamma_params <- c(median = mean(pstr_params$median),
                               meanlog = mean(pstr_params$meanlog),
@@ -93,11 +93,11 @@ shinyServer(function(input, output, session) {
         plot_modified_credible_regions(list(pstr_gamma_params_ebola,
                                             pstr_gamma_params_mers,
                                             pstr_gamma_params_smallpox,
-                                            boot_lnorm_params_ncov),
+                                            boot_lnorm_params_covid),
                                        kdes=list(kde_ebola,
                                                  kde_mers,
                                                  kde_smallpox,
-                                                 kde_ncov),
+                                                 kde_covid),
                                        label_txt=c("Ebola", "MERS-CoV", "Smallpox", "COVID-19"),
                                        colors=colors, show.legend=TRUE, base.size=18)
     })
@@ -107,7 +107,7 @@ shinyServer(function(input, output, session) {
     output$plot_risk_uncertainty <-renderPlot({
         # browser()
         pstr_params <- switch(input$plot3_disease,
-                              nCoV = boot_lnorm_params_ncov,
+                              COVID = boot_lnorm_params_covid,
                               Ebola = pstr_gamma_params_ebola,
                               Mers = pstr_gamma_params_mers,
                               Smallpox = pstr_gamma_params_smallpox)
@@ -115,7 +115,7 @@ shinyServer(function(input, output, session) {
         durs <- input$plot3_duration[1]:input$plot3_duration[2]
         phis <- as.numeric(input$plot3_prob_symptoms)
 
-        if(input$plot3_disease=="nCoV"){
+        if(input$plot3_disease=="COVID"){
             p <- plot_risk_uncertainty(pstr_data = pstr_params,
                                        dist = "lnorm",
                                        u=runif(1000, input$plot3_u[1],
