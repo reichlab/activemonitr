@@ -153,35 +153,53 @@ shinyServer(function(input, output, session) {
             coord_cartesian(ylim=c(p_min, p_max)) +
             theme(axis.text=element_text(color="black"),
                   strip.background=element_rect(fill="white"))
-        # ggplot(costs, aes(x=dur_median,
-        #                   color=phi_lab, fill=phi_lab)) +
-        #     geom_ribbon(aes(ymin=mincost, ymax=maxcost), alpha=.7) +
-        #     scale_y_log10(labels=dollar,
-        #                   name='Cost range of monitoring 100 individuals') +
-        #     scale_x_continuous(name='Duration of active monitoring (in days)', expand=c(0,0)) +
-        #     coord_cartesian(xlim=c(5, 43)) +
-        #     scale_fill_brewer(palette="Dark2") +
-        #     scale_color_brewer(palette="Dark2") +
-        #     ## horizontal dashed line segments
-        #     geom_segment(data=min_costs,
-        #                  aes(x=3, xend=min_cost_dur_days,
-        #                      y=min_cost, yend=min_cost, color=phi_lab),
-        #                  linetype=2) +
-        #     ## vertical dashed line segments
-        #     geom_segment(data=min_costs,
-        #                  aes(x=min_cost_dur_days, xend=min_cost_dur_days,
-        #                      y=0, yend=min_cost, color=phi_lab),
-        #                  linetype=2) +
-        #     ## labels for line segments
-        #     geom_text(data=min_costs, nudge_x = 1,
-        #               aes(x=min_cost_dur_days, y=1000,
-        #                   label=paste(round(min_cost_dur_days),"d"))) +
-        #     theme(legend.title=element_blank(), legend.position=c(1, 1), legend.justification=c(1, 1)) +
-        #     ggtitle("Model-based cost range for monitoring 100 individuals") +
-        #     annotate("text", x=12, y=2000,
-        #              label="dashed lines indicate an optimal \n duration of active monitoring")
 
     })
+
+    ## create table of undetected infections data
+    output$tbl_risk_uncertainty <- renderDataTable({
+        # browser()
+        pstr_params <- switch(input$plot3_disease,
+                              COVID = boot_lnorm_params_covid,
+                              Ebola = pstr_gamma_params_ebola,
+                              Mers = pstr_gamma_params_mers,
+                              Smallpox = pstr_gamma_params_smallpox)
+
+        durs <- input$plot3_duration[1]:input$plot3_duration[2]
+        phis <- as.numeric(input$plot3_prob_symptoms)
+
+        if(input$plot3_disease=="COVID"){
+            p <- plot_risk_uncertainty(pstr_data = pstr_params,
+                                       dist = "lnorm",
+                                       u=runif(1000, input$plot3_u[1],
+                                               input$plot3_u[2]),
+                                       durations = durs,
+                                       phi = phis,
+                                       ci_width = input$plot3_ci,
+                                       output_plot = FALSE,
+                                       return_data=T,
+                                       return_plot=T)
+        } else{
+            p <- plot_risk_uncertainty(pstr_data = pstr_params,
+                                       u=runif(1000, input$plot3_u[1],
+                                               input$plot3_u[2]),
+                                       durations = durs,
+                                       phi = phis,
+                                       ci_width = input$plot3_ci,
+                                       output_plot = FALSE,
+                                       return_data=T,
+                                       return_plot=T)
+        }
+    p$data %>%
+        # filter(d %in% c(min(durs), round(median(durs)), max(durs))) %>%
+        transmute(`Duration, in days` = d,
+                  `Lower bound` = round(1e4*ltp,2),
+                  `Median` = round(1e4*p50,2),
+                  `Upper bound` = round(1e4*utp,2))
+
+    }, options=list(searching=F, paginate=F,info=F,
+                    pageLength=input$plot3_duration[2],
+                    scroller=T, scrollY=300))
 
 
 })
