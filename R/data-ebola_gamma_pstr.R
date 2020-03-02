@@ -71,13 +71,13 @@ NULL
 
 
 #'
-#' Bootstrapped parameter estimates of 2019-nCoV incubation period
+#' Bootstrapped parameter estimates of COVID-19 incubation period
 #'
 #' A dataset containing samples from an estimated bootstrap distribution of the
-#' incubation period of 2019-nCoV was estimated from data
+#' incubation period of COVID-19 was estimated from data
 #' collected and stored at https://github.com/HopkinsIDD/ncov_incubation.
 #'
-#' @format A data frame with 1,000 rows and 2 variables:
+#' @format A data frame with 1,000 rows and 5 variables:
 #' \itemize{
 #'   \item \code{meanlog} meanlog parameter of log-normal distribution
 #'   \item \code{sdlog} sdlog parameter of log-normal distribution
@@ -88,10 +88,10 @@ NULL
 #' @docType data
 #' @references
 #' \itemize{
-#'   \item Lauer, S. A., Grantz, K. H., Bi, Q., Jones, F. K., Zheng, Q., Meredith, H., Azman, A. S., Reich, N. G., & Lessler, J. The incubation period of 2019-nCoV from publicly reported confirmed cases: estimation and application. medRxiv (2020).
+#'   \item Lauer, S. A., Grantz, K. H., Bi, Q., Jones, F. K., Zheng, Q., Meredith, H. R., Azman, A. S., Reich, N. G., & Lessler, J. The incubation period of 2019-nCoV from publicly reported confirmed cases: estimation and application. medRxiv (2020).
 #' }
-#' @name boot_lnorm_params_ncov
-#' @usage data(boot_lnorm_params_ncov)
+#' @name boot_lnorm_params_covid
+#' @usage data(boot_lnorm_params_covid)
 NULL
 
 
@@ -103,6 +103,6 @@ NULL
 #' @name kde_smallpox
 #' @name kde_ebola
 #' @name kde_mers
-#' @name kde_ncov
+#' @name kde_covid
 #' @usage data(kde_ebola)
 NULL

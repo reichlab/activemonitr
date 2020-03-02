@@ -19,11 +19,11 @@ theme_set(theme_bw(base_size = 18))
 data(pstr_gamma_params_ebola)
 data(pstr_gamma_params_mers)
 data(pstr_gamma_params_smallpox)
-data(boot_lnorm_params_ncov)
+data(boot_lnorm_params_covid)
 data(kde_smallpox)
 data(kde_ebola)
 data(kde_mers)
-data(kde_ncov)
+data(kde_covid)
 
 plot1_side_text <- conditionalPanel(
   condition="input.tabs == 'cost.plot'",
