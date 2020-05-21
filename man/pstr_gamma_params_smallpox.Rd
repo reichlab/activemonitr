@@ -4,7 +4,8 @@
 \name{pstr_gamma_params_smallpox}
 \alias{pstr_gamma_params_smallpox}
 \title{Posterior distribution of smallpox incubation period}
-\format{A data frame with 1,000,000 rows and 6 variables:
+\format{
+A data frame with 1,000,000 rows and 6 variables:
 \itemize{
   \item \code{shape} shape parameter of gamma distribution
   \item \code{scale} scale parameter of gamma distribution
@@ -12,12 +13,13 @@
   \item \code{median} the median correponding to this posterior sample
   \item \code{p95} the 95th percentile correponding to this posterior sample
   \item \code{chain} which chain the sample belongs to
-  }}
+  }
+}
 \usage{
 data(pstr_gamma_params_smallpox)
 }
 \description{
-A dataset containing samples from an estimated posterior distribution of the 
+A dataset containing samples from an estimated posterior distribution of the
 incubation period of smallpox. Distribution was estimated from de-identified
 data from several sources (see References).
 }

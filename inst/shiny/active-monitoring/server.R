@@ -16,16 +16,22 @@ shinyServer(function(input, output, session) {
         cost_mat <- rbind(cost_m, cost_trt, cost_exp, cost_falsepos)
 
         pstr_params <- switch(input$plot1_disease,
-                              COVID = boot_lnorm_params_covid,
+                              COVID1 = boot_lnorm_params_covid,
+                              COVID2 = bets_results_bootstrap,
                               Ebola = pstr_gamma_params_ebola,
                               Mers = pstr_gamma_params_mers,
                               Smallpox = pstr_gamma_params_smallpox)
 
-        if(input$plot1_disease=="COVID"){
+        if(input$plot1_disease=="COVID1"){
             inc_dist <- "lnorm"
             gamma_params <- c(median = mean(pstr_params$median),
                               meanlog = mean(pstr_params$meanlog),
                               sdlog = mean(pstr_params$sdlog))
+        } else if(input$plot1_disease=="COVID2"){
+            inc_dist <- "gamma"
+            gamma_params <- c(median = mean(pstr_params$median),
+                              shape = mean(pstr_params$shape),
+                              scale = mean(1/pstr_params$rate))
         } else{
             inc_dist <- "gamma"
             gamma_params <- c(median = mean(pstr_params$median),
@@ -88,18 +94,20 @@ shinyServer(function(input, output, session) {
 
     ## create the plot2 of incubation period data
     output$plot_inc_per <-renderPlot({
-        colors <- c("#1b9e77", "#d95f02", "#7570b3","#0072B2")
-        lighter_colors <- c("#8ecfbc", "#fdb174", "#b8b6d6", "#56B4E9")
         plot_modified_credible_regions(list(pstr_gamma_params_ebola,
                                             pstr_gamma_params_mers,
                                             pstr_gamma_params_smallpox,
-                                            boot_lnorm_params_covid),
+                                            boot_lnorm_params_covid,
+                                            bets_results_bootstrap),
                                        kdes=list(kde_ebola,
                                                  kde_mers,
                                                  kde_smallpox,
-                                                 kde_covid),
-                                       label_txt=c("Ebola", "MERS-CoV", "Smallpox", "COVID-19"),
-                                       colors=colors, show.legend=TRUE, base.size=18)
+                                                 kde_covid,
+                                                 kde_covid_bets),
+                                       label_txt=c("Ebola", "MERS-CoV", "Smallpox", "COVID-19 (Lauer, Grantz)", "COVID-19 (Zhao)"),
+                                       colors=cbbPalette,
+                                       show.legend=TRUE,
+                                       base.size=18)
     })
 
 
@@ -107,7 +115,8 @@ shinyServer(function(input, output, session) {
     output$plot_risk_uncertainty <-renderPlot({
         # browser()
         pstr_params <- switch(input$plot3_disease,
-                              COVID = boot_lnorm_params_covid,
+                              COVID1 = boot_lnorm_params_covid,
+                              COVID2 = bets_results_bootstrap,
                               Ebola = pstr_gamma_params_ebola,
                               Mers = pstr_gamma_params_mers,
                               Smallpox = pstr_gamma_params_smallpox)
@@ -115,27 +124,54 @@ shinyServer(function(input, output, session) {
         durs <- input$plot3_duration[1]:input$plot3_duration[2]
         phis <- as.numeric(input$plot3_prob_symptoms)
 
-        if(input$plot3_disease=="COVID"){
-            p <- plot_risk_uncertainty(pstr_data = pstr_params,
-                                       dist = "lnorm",
-                                       u=runif(1000, input$plot3_u[1],
-                                               input$plot3_u[2]),
-                                       durations = durs,
-                                       phi = phis,
-                                       ci_width = input$plot3_ci,
-                                       output_plot = FALSE,
-                                       return_data=T,
-                                       return_plot=T)
+        if(input$plot3_disease=="COVID1"){
+            p <- plot_risk_gdist(dist = "lnorm",
+                                 arg_list=list(meanlog=pstr_params$meanlog,
+                                               sdlog=pstr_params$sdlog),
+                                 u=runif(1000,
+                                         input$plot3_u[1],
+                                         input$plot3_u[2]),
+                                 durations = durs,
+                                 phi = phis,
+                                 ci_width = input$plot3_ci,
+                                 output_plot = FALSE,
+                                 return_data=T,
+                                 return_plot=T)
+            # p <- plot_risk_uncertainty(pstr_data = pstr_params,
+            #                            dist = "lnorm",
+            #                            u=runif(1000,
+            #                                    input$plot3_u[1],
+            #                                    input$plot3_u[2]),
+            #                            durations = durs,
+            #                            phi = phis,
+            #                            ci_width = input$plot3_ci,
+            #                            output_plot = FALSE,
+            #                            return_data=T,
+            #                            return_plot=T)
         } else{
-            p <- plot_risk_uncertainty(pstr_data = pstr_params,
-                                       u=runif(1000, input$plot3_u[1],
-                                               input$plot3_u[2]),
-                                       durations = durs,
-                                       phi = phis,
-                                       ci_width = input$plot3_ci,
-                                       output_plot = FALSE,
-                                       return_data=T,
-                                       return_plot=T)
+            p <- plot_risk_gdist(dist="gamma",
+                                 arg_list=pstr_params %>%
+                                     select(-idx, -median, -p95) %>%
+                                     as.list(),
+                                 u=runif(1000,
+                                         input$plot3_u[1],
+                                         input$plot3_u[2]),
+                                 durations = durs,
+                                 phi = phis,
+                                 ci_width = input$plot3_ci,
+                                 output_plot = FALSE,
+                                 return_data=T,
+                                 return_plot=T)
+            # p <- plot_risk_uncertainty(pstr_data = pstr_params,
+            #                            u=runif(1000,
+            #                                    input$plot3_u[1],
+            #                                    input$plot3_u[2]),
+            #                            durations = durs,
+            #                            phi = phis,
+            #                            ci_width = input$plot3_ci,
+            #                            output_plot = FALSE,
+            #                            return_data=T,
+            #                            return_plot=T)
         }
         p_min <- max(c(10^(min(p$data$p50) %>% log10() %>% floor()), 1e-6))
         p_max <- 10^(max(p$data$p50) %>% log10() %>% ceiling())
@@ -160,7 +196,8 @@ shinyServer(function(input, output, session) {
     output$tbl_risk_uncertainty <- renderDataTable({
         # browser()
         pstr_params <- switch(input$plot3_disease,
-                              COVID = boot_lnorm_params_covid,
+                              COVID1 = boot_lnorm_params_covid,
+                              COVID2 = bets_results_bootstrap,
                               Ebola = pstr_gamma_params_ebola,
                               Mers = pstr_gamma_params_mers,
                               Smallpox = pstr_gamma_params_smallpox)
@@ -168,27 +205,54 @@ shinyServer(function(input, output, session) {
         durs <- input$plot3_duration[1]:input$plot3_duration[2]
         phis <- as.numeric(input$plot3_prob_symptoms)
 
-        if(input$plot3_disease=="COVID"){
-            p <- plot_risk_uncertainty(pstr_data = pstr_params,
-                                       dist = "lnorm",
-                                       u=runif(1000, input$plot3_u[1],
-                                               input$plot3_u[2]),
-                                       durations = durs,
-                                       phi = phis,
-                                       ci_width = input$plot3_ci,
-                                       output_plot = FALSE,
-                                       return_data=T,
-                                       return_plot=T)
+        if(input$plot3_disease=="COVID1"){
+            p <- plot_risk_gdist(dist = "lnorm",
+                                 arg_list=list(meanlog=pstr_params$meanlog,
+                                               sdlog=pstr_params$sdlog),
+                                 u=runif(1000,
+                                         input$plot3_u[1],
+                                         input$plot3_u[2]),
+                                 durations = durs,
+                                 phi = phis,
+                                 ci_width = input$plot3_ci,
+                                 output_plot = FALSE,
+                                 return_data=T,
+                                 return_plot=T)
+            # p <- plot_risk_uncertainty(pstr_data = pstr_params,
+            #                            dist = "lnorm",
+            #                            u=runif(1000,
+            #                                    input$plot3_u[1],
+            #                                    input$plot3_u[2]),
+            #                            durations = durs,
+            #                            phi = phis,
+            #                            ci_width = input$plot3_ci,
+            #                            output_plot = FALSE,
+            #                            return_data=T,
+            #                            return_plot=T)
         } else{
-            p <- plot_risk_uncertainty(pstr_data = pstr_params,
-                                       u=runif(1000, input$plot3_u[1],
-                                               input$plot3_u[2]),
-                                       durations = durs,
-                                       phi = phis,
-                                       ci_width = input$plot3_ci,
-                                       output_plot = FALSE,
-                                       return_data=T,
-                                       return_plot=T)
+            p <- plot_risk_gdist(dist="gamma",
+                                 arg_list=pstr_params %>%
+                                     select(-idx, -median, -p95) %>%
+                                     as.list(),
+                                 u=runif(1000,
+                                         input$plot3_u[1],
+                                         input$plot3_u[2]),
+                                 durations = durs,
+                                 phi = phis,
+                                 ci_width = input$plot3_ci,
+                                 output_plot = FALSE,
+                                 return_data=T,
+                                 return_plot=T)
+            # p <- plot_risk_uncertainty(pstr_data = pstr_params,
+            #                            u=runif(1000,
+            #                                    input$plot3_u[1],
+            #                                    input$plot3_u[2]),
+            #                            durations = durs,
+            #                            phi = phis,
+            #                            ci_width = input$plot3_ci,
+            #                            output_plot = FALSE,
+            #                            return_data=T,
+            #                            return_plot=T)
         }
     p$data %>%
         # filter(d %in% c(min(durs), round(median(durs)), max(durs))) %>%

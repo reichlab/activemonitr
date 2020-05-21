@@ -4,7 +4,9 @@
 \name{kde_smallpox}
 \alias{kde_smallpox}
 \title{Kernel Density Estimates for posterior distributions}
-\format{Output from fit_kde() function in inst/analysis-code/inc-per-mcmc.R. Data used in plotting credible regions of posterior estimates.}
+\format{
+Output from fit_kde() function in inst/analysis-code/inc-per-mcmc.R. Data used in plotting credible regions of posterior estimates.
+}
 \usage{
 data(kde_ebola)
 }
