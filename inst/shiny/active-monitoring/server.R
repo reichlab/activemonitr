@@ -149,10 +149,15 @@ shinyServer(function(input, output, session) {
             #                            return_data=T,
             #                            return_plot=T)
         } else{
+            if("chain" %in% colnames(pstr_params))
+                arg_list <- pstr_params %>%
+                    select(-idx, -median, -p95, -chain) %>%
+                    as.list() else
+                        arg_list <- pstr_params %>%
+                            select(-idx, -median, -p95) %>%
+                            as.list()
             p <- plot_risk_gdist(dist="gamma",
-                                 arg_list=pstr_params %>%
-                                     select(-idx, -median, -p95) %>%
-                                     as.list(),
+                                 arg_list=arg_list,
                                  u=runif(1000,
                                          input$plot3_u[1],
                                          input$plot3_u[2]),
@@ -230,10 +235,15 @@ shinyServer(function(input, output, session) {
             #                            return_data=T,
             #                            return_plot=T)
         } else{
+            if("chain" %in% colnames(pstr_params))
+                arg_list <- pstr_params %>%
+                    select(-idx, -median, -p95, -chain) %>%
+                    as.list() else
+                        arg_list <- pstr_params %>%
+                            select(-idx, -median, -p95) %>%
+                            as.list()
             p <- plot_risk_gdist(dist="gamma",
-                                 arg_list=pstr_params %>%
-                                     select(-idx, -median, -p95) %>%
-                                     as.list(),
+                                 arg_list=arg_list,
                                  u=runif(1000,
                                          input$plot3_u[1],
                                          input$plot3_u[2]),
