@@ -88,10 +88,30 @@ NULL
 #' @docType data
 #' @references
 #' \itemize{
-#'   \item Lauer, S. A., Grantz, K. H., Bi, Q., Jones, F. K., Zheng, Q., Meredith, H. R., Azman, A. S., Reich, N. G., & Lessler, J. The incubation period of 2019-nCoV from publicly reported confirmed cases: estimation and application. medRxiv (2020).
+#'   \item Lauer, S. A., Grantz, K. H., Bi, Q., Jones, F. K., Zheng, Q., Meredith, H. R., Azman, A. S., Reich, N. G., & Lessler, J. The incubation period of coronavirus disease 2019 (COVID-19) from publicly reported confirmed cases: estimation and application. Annals of Internal Medicine 172 (9), 577-582 (2020).
 #' }
 #' @name boot_lnorm_params_covid
 #' @usage data(boot_lnorm_params_covid)
+NULL
+
+#'
+#' Alternative bootstrapped parameter estimates of COVID-19 incubation period from Zhao et al.
+#'
+#' @format A data frame with 1,000 rows and 6 variables:
+#' \itemize{
+#'   \item \code{shape} shape parameter of gamma distribution
+#'   \item \code{rate} rate parameter of gamma distribution
+#'   \item \code{idx} index of sample
+#'   \item \code{median} the median correponding to this bootstrapped sample
+#'   \item \code{p95} the 95th percentile correponding to this bootstrapped sample
+#'   }
+#' @docType data
+#' @references
+#' \itemize{
+#'   \item Zhao, Q., Ju N., Bacallado, S., & Shah, R. D. BETS: The dangers of selection bias in early analyses of the coronavirus disease (COVID-19) pandemic. arXiv (2020).
+#' }
+#' @name bets_results_bootstrap
+#' @usage data(bets_results_bootstrap)
 NULL
 
 
@@ -104,5 +124,6 @@ NULL
 #' @name kde_ebola
 #' @name kde_mers
 #' @name kde_covid
+#' @name kde_covid_bets
 #' @usage data(kde_ebola)
 NULL
