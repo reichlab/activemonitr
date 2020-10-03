@@ -198,19 +198,16 @@ plot_risk_gdist <- function(dist="gamma",
     ## generate a sample of the posterior distribution from which to calculate
     pstr_samp <- arg_list %>%
         as.data.frame() %>%
-        sample_n(nsamp) %>%
+        slice_sample(n = nsamp) %>%
         mutate(u = u) %>%
         crossing(d = durations,
                  phi = phi) %>%
-        as.list()
-    new_arg <- pstr_samp[which(names(pstr_samp) %in% names(arg_list))]
-    new_arg$lower.tail <- FALSE
+        mutate(q=d+u,
+               lower.tail=FALSE)
 
     dat_sim_pst_param <- pdist(dist,
-                               q=pstr_samp$d+pstr_samp$u,
-                               arg_list=new_arg)*pstr_samp$phi
+                               arg_list=pstr_samp)*pstr_samp$phi
     dat_sim_pst_param_sum <- pstr_samp %>%
-        as.data.frame() %>%
         mutate(p=dat_sim_pst_param) %>%
         group_by(d, phi) %>%
         summarize(ltp = quantile(p, prob=(1-ci_width)/2),

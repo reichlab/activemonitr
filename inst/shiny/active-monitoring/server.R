@@ -66,7 +66,7 @@ shinyServer(function(input, output, session) {
                           color=phi_lab, fill=phi_lab)) +
             geom_ribbon(aes(ymin=mincost, ymax=maxcost), alpha=.7) +
             scale_y_log10(labels=dollar,
-                               name='Cost range of monitoring 100 individuals') +
+                          name='Cost range of monitoring 100 individuals') +
             scale_x_continuous(name='Duration of active monitoring (in days)', expand=c(0,0)) +
             coord_cartesian(xlim=c(5, 43)) +
             scale_fill_brewer(palette="Dark2") +
@@ -156,27 +156,27 @@ shinyServer(function(input, output, session) {
                         arg_list <- pstr_params %>%
                             select(-idx, -median, -p95) %>%
                             as.list()
-            p <- plot_risk_gdist(dist="gamma",
-                                 arg_list=arg_list,
-                                 u=runif(1000,
-                                         input$plot3_u[1],
-                                         input$plot3_u[2]),
-                                 durations = durs,
-                                 phi = phis,
-                                 ci_width = input$plot3_ci,
-                                 output_plot = FALSE,
-                                 return_data=T,
-                                 return_plot=T)
-            # p <- plot_risk_uncertainty(pstr_data = pstr_params,
-            #                            u=runif(1000,
-            #                                    input$plot3_u[1],
-            #                                    input$plot3_u[2]),
-            #                            durations = durs,
-            #                            phi = phis,
-            #                            ci_width = input$plot3_ci,
-            #                            output_plot = FALSE,
-            #                            return_data=T,
-            #                            return_plot=T)
+                    p <- plot_risk_gdist(dist="gamma",
+                                         arg_list=arg_list,
+                                         u=runif(1000,
+                                                 input$plot3_u[1],
+                                                 input$plot3_u[2]),
+                                         durations = durs,
+                                         phi = phis,
+                                         ci_width = input$plot3_ci,
+                                         output_plot = FALSE,
+                                         return_data=T,
+                                         return_plot=T)
+                    # p <- plot_risk_uncertainty(pstr_data = pstr_params,
+                    #                            u=runif(1000,
+                    #                                    input$plot3_u[1],
+                    #                                    input$plot3_u[2]),
+                    #                            durations = durs,
+                    #                            phi = phis,
+                    #                            ci_width = input$plot3_ci,
+                    #                            output_plot = FALSE,
+                    #                            return_data=T,
+                    #                            return_plot=T)
         }
         p_min <- max(c(10^(min(p$data$p50) %>% log10() %>% floor()), 1e-6))
         p_max <- 10^(max(p$data$p50) %>% log10() %>% ceiling())
@@ -209,67 +209,26 @@ shinyServer(function(input, output, session) {
 
         durs <- input$plot3_duration[1]:input$plot3_duration[2]
         phis <- as.numeric(input$plot3_prob_symptoms)
+        plot_dist <- ifelse(input$plot3_disease=="COVID1", "lnorm", "gamma")
 
-        if(input$plot3_disease=="COVID1"){
-            p <- plot_risk_gdist(dist = "lnorm",
-                                 arg_list=list(meanlog=pstr_params$meanlog,
-                                               sdlog=pstr_params$sdlog),
-                                 u=runif(1000,
-                                         input$plot3_u[1],
-                                         input$plot3_u[2]),
-                                 durations = durs,
-                                 phi = phis,
-                                 ci_width = input$plot3_ci,
-                                 output_plot = FALSE,
-                                 return_data=T,
-                                 return_plot=T)
-            # p <- plot_risk_uncertainty(pstr_data = pstr_params,
-            #                            dist = "lnorm",
-            #                            u=runif(1000,
-            #                                    input$plot3_u[1],
-            #                                    input$plot3_u[2]),
-            #                            durations = durs,
-            #                            phi = phis,
-            #                            ci_width = input$plot3_ci,
-            #                            output_plot = FALSE,
-            #                            return_data=T,
-            #                            return_plot=T)
-        } else{
-            if("chain" %in% colnames(pstr_params))
-                arg_list <- pstr_params %>%
-                    select(-idx, -median, -p95, -chain) %>%
-                    as.list() else
-                        arg_list <- pstr_params %>%
-                            select(-idx, -median, -p95) %>%
-                            as.list()
-            p <- plot_risk_gdist(dist="gamma",
-                                 arg_list=arg_list,
-                                 u=runif(1000,
-                                         input$plot3_u[1],
-                                         input$plot3_u[2]),
-                                 durations = durs,
-                                 phi = phis,
-                                 ci_width = input$plot3_ci,
-                                 output_plot = FALSE,
-                                 return_data=T,
-                                 return_plot=T)
-            # p <- plot_risk_uncertainty(pstr_data = pstr_params,
-            #                            u=runif(1000,
-            #                                    input$plot3_u[1],
-            #                                    input$plot3_u[2]),
-            #                            durations = durs,
-            #                            phi = phis,
-            #                            ci_width = input$plot3_ci,
-            #                            output_plot = FALSE,
-            #                            return_data=T,
-            #                            return_plot=T)
-        }
-    p$data %>%
-        # filter(d %in% c(min(durs), round(median(durs)), max(durs))) %>%
-        transmute(`Duration, in days` = d,
-                  `Lower bound` = round(1e4*ltp,2),
-                  `Median` = round(1e4*p50,2),
-                  `Upper bound` = round(1e4*utp,2))
+        p <- plot_risk_gdist(dist = plot_dist,
+                             arg_list=pstr_params,
+                             u=runif(1000,
+                                     input$plot3_u[1],
+                                     input$plot3_u[2]),
+                             durations = durs,
+                             phi = phis,
+                             ci_width = input$plot3_ci,
+                             output_plot = FALSE,
+                             return_data=T,
+                             return_plot=T)
+
+        p$data %>%
+            # filter(d %in% c(min(durs), round(median(durs)), max(durs))) %>%
+            transmute(`Duration, in days` = d,
+                      `Lower bound` = round(1e4*ltp,2),
+                      `Median` = round(1e4*p50,2),
+                      `Upper bound` = round(1e4*utp,2))
 
     }, options=list(searching=F, paginate=F,info=F,
                     pageLength=input$plot3_duration[2],
@@ -279,25 +238,25 @@ shinyServer(function(input, output, session) {
 })
 
 compute_data <- function(updateProgress = NULL) {
-  # Create 0-row data frame which will be used to store data
-  dat <- data.frame(x = numeric(0), y = numeric(0))
+    # Create 0-row data frame which will be used to store data
+    dat <- data.frame(x = numeric(0), y = numeric(0))
 
-  for (i in 1:10) {
-    Sys.sleep(0.25)
+    for (i in 1:10) {
+        Sys.sleep(0.25)
 
-    # Compute new row of data
-    new_row <- data.frame(x = rnorm(1), y = rnorm(1))
+        # Compute new row of data
+        new_row <- data.frame(x = rnorm(1), y = rnorm(1))
 
-    # If we were passed a progress update function, call it
-    if (is.function(updateProgress)) {
-      text <- paste0("Computing data: ", round((i-1)*10,1), "%")
-      updateProgress(detail = text)
+        # If we were passed a progress update function, call it
+        if (is.function(updateProgress)) {
+            text <- paste0("Computing data: ", round((i-1)*10,1), "%")
+            updateProgress(detail = text)
+        }
+
+        # Add the new row of data
+        dat <- rbind(dat, new_row)
     }
 
-    # Add the new row of data
-    dat <- rbind(dat, new_row)
-  }
-
-  dat
+    dat
 }
 

@@ -17,6 +17,8 @@ Depends:
     R (>= 3.5)
 Imports:
     gdist
+Remotes:
+    github::salauer/gdist
 License: GPLv3
 LazyData: true
 RoxygenNote: 7.1.0
