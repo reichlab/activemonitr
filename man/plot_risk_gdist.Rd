@@ -8,7 +8,9 @@ plot_risk_gdist(
   dist = "gamma",
   arg_list = list(shape = 5.807, scale = 0.948),
   nsamp = 1000,
-  u = runif(1000, 1, 14),
+  u,
+  udist = "unif",
+  uargs = list(min = 1, max = 14),
   phi = c(1e-04, 0.001, 0.01),
   durations = 5:25,
   ci_width = 0.9,
@@ -21,13 +23,17 @@ plot_risk_gdist(
 )
 }
 \arguments{
-\item{dist}{character string specifying the parametric distribution (as in \code{\link[stats]{distributions}}), defaults to gamma}
+\item{dist}{character string specifying the parametric distribution (as in \code{\link[stats]{distributions}}), defaults to \code{"gamma"}}
 
 \item{arg_list}{list of named numeric vectors to be plugged into distribution in \code{dist}}
 
 \item{nsamp}{number of samples from posterior distribution upon which to base calculations}
 
 \item{u}{numeric value or vector of assumed duration(s) of time between exposure and monitoring}
+
+\item{udist}{character string specifying the parameteric distribution of assumed durations of time between exposure and monitoring (if missing \code{u}), defaults to \code{"unif"} (Uniform distribution)}
+
+\item{uargs}{list of named numeric vectors to be plugged into distribution in \code{udist}, defaults to \code{list(min=1, max=14)}}
 
 \item{phi}{probability a case becomes symptomatic}
 

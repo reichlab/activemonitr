@@ -120,64 +120,23 @@ shinyServer(function(input, output, session) {
                               Ebola = pstr_gamma_params_ebola,
                               Mers = pstr_gamma_params_mers,
                               Smallpox = pstr_gamma_params_smallpox)
-
+        ## set plot distribution parameters
         durs <- input$plot3_duration[1]:input$plot3_duration[2]
         phis <- as.numeric(input$plot3_prob_symptoms)
-
-        if(input$plot3_disease=="COVID1"){
-            p <- plot_risk_gdist(dist = "lnorm",
-                                 arg_list=list(meanlog=pstr_params$meanlog,
-                                               sdlog=pstr_params$sdlog),
-                                 u=runif(1000,
-                                         input$plot3_u[1],
-                                         input$plot3_u[2]),
-                                 durations = durs,
-                                 phi = phis,
-                                 ci_width = input$plot3_ci,
-                                 output_plot = FALSE,
-                                 return_data=T,
-                                 return_plot=T)
-            # p <- plot_risk_uncertainty(pstr_data = pstr_params,
-            #                            dist = "lnorm",
-            #                            u=runif(1000,
-            #                                    input$plot3_u[1],
-            #                                    input$plot3_u[2]),
-            #                            durations = durs,
-            #                            phi = phis,
-            #                            ci_width = input$plot3_ci,
-            #                            output_plot = FALSE,
-            #                            return_data=T,
-            #                            return_plot=T)
-        } else{
-            if("chain" %in% colnames(pstr_params))
-                arg_list <- pstr_params %>%
-                    select(-idx, -median, -p95, -chain) %>%
-                    as.list() else
-                        arg_list <- pstr_params %>%
-                            select(-idx, -median, -p95) %>%
-                            as.list()
-                    p <- plot_risk_gdist(dist="gamma",
-                                         arg_list=arg_list,
-                                         u=runif(1000,
-                                                 input$plot3_u[1],
-                                                 input$plot3_u[2]),
-                                         durations = durs,
-                                         phi = phis,
-                                         ci_width = input$plot3_ci,
-                                         output_plot = FALSE,
-                                         return_data=T,
-                                         return_plot=T)
-                    # p <- plot_risk_uncertainty(pstr_data = pstr_params,
-                    #                            u=runif(1000,
-                    #                                    input$plot3_u[1],
-                    #                                    input$plot3_u[2]),
-                    #                            durations = durs,
-                    #                            phi = phis,
-                    #                            ci_width = input$plot3_ci,
-                    #                            output_plot = FALSE,
-                    #                            return_data=T,
-                    #                            return_plot=T)
-        }
+        plot_dist <- ifelse(input$plot3_disease=="COVID1", "lnorm", "gamma")
+        ## make risk plot
+        p <- plot_risk_gdist(dist=plot_dist,
+                             arg_list=pstr_params,
+                             nsamp=1000,
+                             udist="unif",
+                             uargs=list(min=input$plot3_u[1],
+                                        max=input$plot3_u[2]),
+                             durations=durs,
+                             phi=phis,
+                             ci_width=input$plot3_ci,
+                             output_plot=FALSE,
+                             return_data=T,
+                             return_plot=T)
         p_min <- max(c(10^(min(p$data$p50) %>% log10() %>% floor()), 1e-6))
         p_max <- 10^(max(p$data$p50) %>% log10() %>% ceiling())
         p$plot$data$phi_lab <- factor(as.character(MASS::fractions(p$plot$data$phi, max.denominator = 1e6)))
@@ -211,15 +170,16 @@ shinyServer(function(input, output, session) {
         phis <- as.numeric(input$plot3_prob_symptoms)
         plot_dist <- ifelse(input$plot3_disease=="COVID1", "lnorm", "gamma")
 
-        p <- plot_risk_gdist(dist = plot_dist,
+        p <- plot_risk_gdist(dist=plot_dist,
                              arg_list=pstr_params,
-                             u=runif(1000,
-                                     input$plot3_u[1],
-                                     input$plot3_u[2]),
-                             durations = durs,
-                             phi = phis,
-                             ci_width = input$plot3_ci,
-                             output_plot = FALSE,
+                             nsamp=1000,
+                             udist="unif",
+                             uargs=list(min=input$plot3_u[1],
+                                        max=input$plot3_u[2]),
+                             durations=durs,
+                             phi=phis,
+                             ci_width=input$plot3_ci,
+                             output_plot=FALSE,
                              return_data=T,
                              return_plot=T)
 

@@ -153,10 +153,12 @@ plot_risk_uncertainty <- function(pstr_data,
 
 #' Function for plotting risk and uncertainty of case escaping active monitoring
 #'
-#' @param dist character string specifying the parametric distribution (as in \code{\link[stats]{distributions}}), defaults to gamma
+#' @param dist character string specifying the parametric distribution (as in \code{\link[stats]{distributions}}), defaults to \code{"gamma"}
 #' @param arg_list list of named numeric vectors to be plugged into distribution in \code{dist}
 #' @param nsamp number of samples from posterior distribution upon which to base calculations
 #' @param u numeric value or vector of assumed duration(s) of time between exposure and monitoring
+#' @param udist character string specifying the parameteric distribution of assumed durations of time between exposure and monitoring (if missing \code{u}), defaults to \code{"unif"} (Uniform distribution)
+#' @param uargs list of named numeric vectors to be plugged into distribution in \code{udist}, defaults to \code{list(min=1, max=14)}
 #' @param phi probability a case becomes symptomatic
 #' @param durations durations of active monitoring to plot
 #' @param ci_width numeric value between 0 and 1 indicating the nominal value for the eventually computed and displayed CI
@@ -184,7 +186,9 @@ plot_risk_gdist <- function(dist="gamma",
                             arg_list=list(shape=5.807,
                                           scale=0.948),
                             nsamp=1000,
-                            u=runif(1000, 1, 14),
+                            u,
+                            udist="unif",
+                            uargs=list(min=1, max=14),
                             phi=c(.0001, .001, .01),
                             durations=5:25,
                             ci_width=0.90,
@@ -194,7 +198,10 @@ plot_risk_gdist <- function(dist="gamma",
                             output_plot=TRUE,
                             return_data=FALSE,
                             return_plot=FALSE) {
-
+    ## sample u's if missing
+    if(missing(u)){
+        u <- rdist(dist = udist, n = nsamp, arg_list = uargs)
+    }
     ## generate a sample of the posterior distribution from which to calculate
     pstr_samp <- arg_list %>%
         as.data.frame() %>%
@@ -202,11 +209,10 @@ plot_risk_gdist <- function(dist="gamma",
         mutate(u = u) %>%
         crossing(d = durations,
                  phi = phi) %>%
-        mutate(q=d+u,
-               lower.tail=FALSE)
+        mutate(q = d+u,
+               lower.tail = FALSE)
 
-    dat_sim_pst_param <- pdist(dist,
-                               arg_list=pstr_samp)*pstr_samp$phi
+    dat_sim_pst_param <- pdist(dist, arg_list=pstr_samp) * pstr_samp$phi
     dat_sim_pst_param_sum <- pstr_samp %>%
         mutate(p=dat_sim_pst_param) %>%
         group_by(d, phi) %>%
@@ -219,7 +225,8 @@ plot_risk_gdist <- function(dist="gamma",
     if(identical(unique(dat_sim_pst_param_sum$phi), c(1e-04, 2e-03))) {
         dat_sim_pst_param_sum$phi_lab <- factor(dat_sim_pst_param_sum$phi,
                                                 levels=c(1e-04, 2e-03),
-                                                labels=c("phi==1/10000", "phi==1/500"))
+                                                labels=c("phi==1/10000",
+                                                         "phi==1/500"))
     } else {
         ## for now, leaving out fancy formatting
         dat_sim_pst_param_sum$phi_lab <- factor(dat_sim_pst_param_sum$phi)
