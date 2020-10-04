@@ -18,11 +18,12 @@ shinyServer(function(input, output, session) {
         pstr_params <- switch(input$plot1_disease,
                               COVID1 = boot_lnorm_params_covid,
                               COVID2 = bets_results_bootstrap,
+                              COVID3 = boot_lnorm_params_covid_ucd,
                               Ebola = pstr_gamma_params_ebola,
                               Mers = pstr_gamma_params_mers,
                               Smallpox = pstr_gamma_params_smallpox)
 
-        if(input$plot1_disease=="COVID1"){
+        if(input$plot1_disease %in% c("COVID1", "COVID3")){
             inc_dist <- "lnorm"
             gamma_params <- c(median = mean(pstr_params$median),
                               meanlog = mean(pstr_params$meanlog),
@@ -98,13 +99,15 @@ shinyServer(function(input, output, session) {
                                             pstr_gamma_params_mers,
                                             pstr_gamma_params_smallpox,
                                             boot_lnorm_params_covid,
-                                            bets_results_bootstrap),
+                                            bets_results_bootstrap,
+                                            boot_lnorm_params_covid_ucd),
                                        kdes=list(kde_ebola,
                                                  kde_mers,
                                                  kde_smallpox,
                                                  kde_covid,
-                                                 kde_covid_bets),
-                                       label_txt=c("Ebola", "MERS-CoV", "Smallpox", "COVID-19 (Lauer, Grantz)", "COVID-19 (Zhao)"),
+                                                 kde_covid_bets,
+                                                 kde_covid_ucd),
+                                       label_txt=c("Ebola", "MERS-CoV", "Smallpox", "COVID-19 (Lauer, Grantz)", "COVID-19 (Zhao)", "COVID-19 (McAloon)"),
                                        colors=cbbPalette,
                                        show.legend=TRUE,
                                        base.size=18)
@@ -117,13 +120,15 @@ shinyServer(function(input, output, session) {
         pstr_params <- switch(input$plot3_disease,
                               COVID1 = boot_lnorm_params_covid,
                               COVID2 = bets_results_bootstrap,
+                              COVID3 = boot_lnorm_params_covid_ucd,
                               Ebola = pstr_gamma_params_ebola,
                               Mers = pstr_gamma_params_mers,
                               Smallpox = pstr_gamma_params_smallpox)
         ## set plot distribution parameters
         durs <- input$plot3_duration[1]:input$plot3_duration[2]
         phis <- as.numeric(input$plot3_prob_symptoms)
-        plot_dist <- ifelse(input$plot3_disease=="COVID1", "lnorm", "gamma")
+        plot_dist <- ifelse(input$plot3_disease %in% c("COVID1", "COVID3"),
+                            "lnorm", "gamma")
         ## make risk plot
         p <- plot_risk_gdist(dist=plot_dist,
                              arg_list=pstr_params,
@@ -162,13 +167,15 @@ shinyServer(function(input, output, session) {
         pstr_params <- switch(input$plot3_disease,
                               COVID1 = boot_lnorm_params_covid,
                               COVID2 = bets_results_bootstrap,
+                              COVID3 = boot_lnorm_params_covid_ucd,
                               Ebola = pstr_gamma_params_ebola,
                               Mers = pstr_gamma_params_mers,
                               Smallpox = pstr_gamma_params_smallpox)
 
         durs <- input$plot3_duration[1]:input$plot3_duration[2]
         phis <- as.numeric(input$plot3_prob_symptoms)
-        plot_dist <- ifelse(input$plot3_disease=="COVID1", "lnorm", "gamma")
+        plot_dist <- ifelse(input$plot3_disease %in% c("COVID1", "COVID3"),
+                            "lnorm", "gamma")
 
         p <- plot_risk_gdist(dist=plot_dist,
                              arg_list=pstr_params,

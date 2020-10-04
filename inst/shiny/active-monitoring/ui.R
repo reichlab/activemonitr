@@ -91,6 +91,7 @@ shinyUI(fluidPage(
                radioButtons("plot1_disease", "Pathogen",
                             c("COVID-19 (Lauer, Grantz)" = "COVID1",
                               "COVID-19 (Zhao)" = "COVID2",
+                              "COVID-19 (McAloon)" = "COVID3",
                               "Ebola" = "Ebola",
                               "MERS-CoV" = "Mers",
                               "Smallpox" = "Smallpox"
@@ -140,6 +141,7 @@ shinyUI(fluidPage(
                  radioButtons("plot3_disease", "Pathogen",
                               c("COVID-19 (Lauer, Grantz)" = "COVID1",
                                 "COVID-19 (Zhao)" = "COVID2",
+                                "COVID-19 (McAloon)" = "COVID3",
                                 "Ebola" = "Ebola",
                                 "MERS-CoV" = "Mers",
                                 "Smallpox" = "Smallpox"),
