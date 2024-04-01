@@ -15,7 +15,11 @@ Depends:
     reshape2,
     tidyr,
     R (>= 3.5)
+Imports:
+    gdist
+Remotes:
+    github::salauer/gdist
 License: GPLv3
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Encoding: UTF-8

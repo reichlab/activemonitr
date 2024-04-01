@@ -4,19 +4,21 @@
 \name{pstr_gamma_params_ebola}
 \alias{pstr_gamma_params_ebola}
 \title{Posterior distribution of Ebola incubation period}
-\format{A data frame with 3,000,000 rows and 5 variables:
+\format{
+A data frame with 3,000,000 rows and 5 variables:
 \itemize{
   \item \code{shape} shape parameter of gamma distribution
   \item \code{scale} scale parameter of gamma distribution
   \item \code{idx} index of sample
   \item \code{median} the median correponding to this posterior sample
   \item \code{p95} the 95th percentile correponding to this posterior sample
-}}
+}
+}
 \usage{
 data(pstr_gamma_params_ebola)
 }
 \description{
-A dataset containing samples from an estimated posterior distribution of the 
+A dataset containing samples from an estimated posterior distribution of the
 incubation period of Ebola. Distribution was estimated from de-identified
 data from Faye et al. (2015).
 }

@@ -16,16 +16,23 @@ shinyServer(function(input, output, session) {
         cost_mat <- rbind(cost_m, cost_trt, cost_exp, cost_falsepos)
 
         pstr_params <- switch(input$plot1_disease,
-                              COVID = boot_lnorm_params_covid,
+                              COVID1 = boot_lnorm_params_covid,
+                              COVID2 = bets_results_bootstrap,
+                              COVID3 = boot_lnorm_params_covid_ucd,
                               Ebola = pstr_gamma_params_ebola,
                               Mers = pstr_gamma_params_mers,
                               Smallpox = pstr_gamma_params_smallpox)
 
-        if(input$plot1_disease=="COVID"){
+        if(input$plot1_disease %in% c("COVID1", "COVID3")){
             inc_dist <- "lnorm"
             gamma_params <- c(median = mean(pstr_params$median),
                               meanlog = mean(pstr_params$meanlog),
                               sdlog = mean(pstr_params$sdlog))
+        } else if(input$plot1_disease=="COVID2"){
+            inc_dist <- "gamma"
+            gamma_params <- c(median = mean(pstr_params$median),
+                              shape = mean(pstr_params$shape),
+                              scale = mean(1/pstr_params$rate))
         } else{
             inc_dist <- "gamma"
             gamma_params <- c(median = mean(pstr_params$median),
@@ -60,7 +67,7 @@ shinyServer(function(input, output, session) {
                           color=phi_lab, fill=phi_lab)) +
             geom_ribbon(aes(ymin=mincost, ymax=maxcost), alpha=.7) +
             scale_y_log10(labels=dollar,
-                               name='Cost range of monitoring 100 individuals') +
+                          name='Cost range of monitoring 100 individuals') +
             scale_x_continuous(name='Duration of active monitoring (in days)', expand=c(0,0)) +
             coord_cartesian(xlim=c(5, 43)) +
             scale_fill_brewer(palette="Dark2") +
@@ -88,18 +95,22 @@ shinyServer(function(input, output, session) {
 
     ## create the plot2 of incubation period data
     output$plot_inc_per <-renderPlot({
-        colors <- c("#1b9e77", "#d95f02", "#7570b3","#0072B2")
-        lighter_colors <- c("#8ecfbc", "#fdb174", "#b8b6d6", "#56B4E9")
         plot_modified_credible_regions(list(pstr_gamma_params_ebola,
                                             pstr_gamma_params_mers,
                                             pstr_gamma_params_smallpox,
-                                            boot_lnorm_params_covid),
+                                            boot_lnorm_params_covid,
+                                            bets_results_bootstrap,
+                                            boot_lnorm_params_covid_ucd),
                                        kdes=list(kde_ebola,
                                                  kde_mers,
                                                  kde_smallpox,
-                                                 kde_covid),
-                                       label_txt=c("Ebola", "MERS-CoV", "Smallpox", "COVID-19"),
-                                       colors=colors, show.legend=TRUE, base.size=18)
+                                                 kde_covid,
+                                                 kde_covid_bets,
+                                                 kde_covid_ucd),
+                                       label_txt=c("Ebola", "MERS-CoV", "Smallpox", "COVID-19 (Lauer, Grantz)", "COVID-19 (Zhao)", "COVID-19 (McAloon)"),
+                                       colors=cbbPalette,
+                                       show.legend=TRUE,
+                                       base.size=18)
     })
 
 
@@ -107,36 +118,30 @@ shinyServer(function(input, output, session) {
     output$plot_risk_uncertainty <-renderPlot({
         # browser()
         pstr_params <- switch(input$plot3_disease,
-                              COVID = boot_lnorm_params_covid,
+                              COVID1 = boot_lnorm_params_covid,
+                              COVID2 = bets_results_bootstrap,
+                              COVID3 = boot_lnorm_params_covid_ucd,
                               Ebola = pstr_gamma_params_ebola,
                               Mers = pstr_gamma_params_mers,
                               Smallpox = pstr_gamma_params_smallpox)
-
+        ## set plot distribution parameters
         durs <- input$plot3_duration[1]:input$plot3_duration[2]
         phis <- as.numeric(input$plot3_prob_symptoms)
-
-        if(input$plot3_disease=="COVID"){
-            p <- plot_risk_uncertainty(pstr_data = pstr_params,
-                                       dist = "lnorm",
-                                       u=runif(1000, input$plot3_u[1],
-                                               input$plot3_u[2]),
-                                       durations = durs,
-                                       phi = phis,
-                                       ci_width = input$plot3_ci,
-                                       output_plot = FALSE,
-                                       return_data=T,
-                                       return_plot=T)
-        } else{
-            p <- plot_risk_uncertainty(pstr_data = pstr_params,
-                                       u=runif(1000, input$plot3_u[1],
-                                               input$plot3_u[2]),
-                                       durations = durs,
-                                       phi = phis,
-                                       ci_width = input$plot3_ci,
-                                       output_plot = FALSE,
-                                       return_data=T,
-                                       return_plot=T)
-        }
+        plot_dist <- ifelse(input$plot3_disease %in% c("COVID1", "COVID3"),
+                            "lnorm", "gamma")
+        ## make risk plot
+        p <- plot_risk_gdist(dist=plot_dist,
+                             arg_list=pstr_params,
+                             nsamp=1000,
+                             udist="unif",
+                             uargs=list(min=input$plot3_u[1],
+                                        max=input$plot3_u[2]),
+                             durations=durs,
+                             phi=phis,
+                             ci_width=input$plot3_ci,
+                             output_plot=FALSE,
+                             return_data=T,
+                             return_plot=T)
         p_min <- max(c(10^(min(p$data$p50) %>% log10() %>% floor()), 1e-6))
         p_max <- 10^(max(p$data$p50) %>% log10() %>% ceiling())
         p$plot$data$phi_lab <- factor(as.character(MASS::fractions(p$plot$data$phi, max.denominator = 1e6)))
@@ -160,42 +165,37 @@ shinyServer(function(input, output, session) {
     output$tbl_risk_uncertainty <- renderDataTable({
         # browser()
         pstr_params <- switch(input$plot3_disease,
-                              COVID = boot_lnorm_params_covid,
+                              COVID1 = boot_lnorm_params_covid,
+                              COVID2 = bets_results_bootstrap,
+                              COVID3 = boot_lnorm_params_covid_ucd,
                               Ebola = pstr_gamma_params_ebola,
                               Mers = pstr_gamma_params_mers,
                               Smallpox = pstr_gamma_params_smallpox)
 
         durs <- input$plot3_duration[1]:input$plot3_duration[2]
         phis <- as.numeric(input$plot3_prob_symptoms)
+        plot_dist <- ifelse(input$plot3_disease %in% c("COVID1", "COVID3"),
+                            "lnorm", "gamma")
 
-        if(input$plot3_disease=="COVID"){
-            p <- plot_risk_uncertainty(pstr_data = pstr_params,
-                                       dist = "lnorm",
-                                       u=runif(1000, input$plot3_u[1],
-                                               input$plot3_u[2]),
-                                       durations = durs,
-                                       phi = phis,
-                                       ci_width = input$plot3_ci,
-                                       output_plot = FALSE,
-                                       return_data=T,
-                                       return_plot=T)
-        } else{
-            p <- plot_risk_uncertainty(pstr_data = pstr_params,
-                                       u=runif(1000, input$plot3_u[1],
-                                               input$plot3_u[2]),
-                                       durations = durs,
-                                       phi = phis,
-                                       ci_width = input$plot3_ci,
-                                       output_plot = FALSE,
-                                       return_data=T,
-                                       return_plot=T)
-        }
-    p$data %>%
-        # filter(d %in% c(min(durs), round(median(durs)), max(durs))) %>%
-        transmute(`Duration, in days` = d,
-                  `Lower bound` = round(1e4*ltp,2),
-                  `Median` = round(1e4*p50,2),
-                  `Upper bound` = round(1e4*utp,2))
+        p <- plot_risk_gdist(dist=plot_dist,
+                             arg_list=pstr_params,
+                             nsamp=1000,
+                             udist="unif",
+                             uargs=list(min=input$plot3_u[1],
+                                        max=input$plot3_u[2]),
+                             durations=durs,
+                             phi=phis,
+                             ci_width=input$plot3_ci,
+                             output_plot=FALSE,
+                             return_data=T,
+                             return_plot=T)
+
+        p$data %>%
+            # filter(d %in% c(min(durs), round(median(durs)), max(durs))) %>%
+            transmute(`Duration, in days` = d,
+                      `Lower bound` = round(1e4*ltp,2),
+                      `Median` = round(1e4*p50,2),
+                      `Upper bound` = round(1e4*utp,2))
 
     }, options=list(searching=F, paginate=F,info=F,
                     pageLength=input$plot3_duration[2],
@@ -205,25 +205,25 @@ shinyServer(function(input, output, session) {
 })
 
 compute_data <- function(updateProgress = NULL) {
-  # Create 0-row data frame which will be used to store data
-  dat <- data.frame(x = numeric(0), y = numeric(0))
+    # Create 0-row data frame which will be used to store data
+    dat <- data.frame(x = numeric(0), y = numeric(0))
 
-  for (i in 1:10) {
-    Sys.sleep(0.25)
+    for (i in 1:10) {
+        Sys.sleep(0.25)
 
-    # Compute new row of data
-    new_row <- data.frame(x = rnorm(1), y = rnorm(1))
+        # Compute new row of data
+        new_row <- data.frame(x = rnorm(1), y = rnorm(1))
 
-    # If we were passed a progress update function, call it
-    if (is.function(updateProgress)) {
-      text <- paste0("Computing data: ", round((i-1)*10,1), "%")
-      updateProgress(detail = text)
+        # If we were passed a progress update function, call it
+        if (is.function(updateProgress)) {
+            text <- paste0("Computing data: ", round((i-1)*10,1), "%")
+            updateProgress(detail = text)
+        }
+
+        # Add the new row of data
+        dat <- rbind(dat, new_row)
     }
 
-    # Add the new row of data
-    dat <- rbind(dat, new_row)
-  }
-
-  dat
+    dat
 }
 
