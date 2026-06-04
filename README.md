@@ -18,7 +18,10 @@ The manuscript itself is dynamically generated, reproducible, and can be found i
 [activemonitr/inst/manuscript/](https://github.com/reichlab/activemonitr/blob/master/inst/manuscript/active-monitoring.Rmd)
 
 ## Web app
-The code for the Shiny app that accompanies the publication can be found in:
+The Shiny app that accompanies the publication is hosted at
+**[reichlab.shinyapps.io/active-monitoring](https://reichlab.shinyapps.io/active-monitoring/)**.
+
+The code for the app can be found in:
 [activemonitr/inst/shiny/](https://github.com/reichlab/activemonitr/tree/master/inst/shiny)
 
 To run the app locally (after installing the package, above):
