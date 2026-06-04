@@ -18,3 +18,6 @@ vignettes/*.pdf
 
 # Batch-mode plotting artifact
 Rplots.pdf
+
+# Claude Code local files
+.claude/
