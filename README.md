@@ -1,6 +1,6 @@
 # Modeling of costs and risks of active monitoring
 
-[![DOI](https://zenodo.org/badge/48653754.svg)](https://zenodo.org/badge/latestdoi/48653754)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.260135.svg)](https://doi.org/10.5281/zenodo.260135)
 
 This repository houses code and data for the preprint manuscript "Reducing the threat of imported infectious disease outbreaks with active monitoring" by Nicholas Reich, Justin Lessler, Jay Varma, and Neil Vora. The manuscript is currently under review.
 

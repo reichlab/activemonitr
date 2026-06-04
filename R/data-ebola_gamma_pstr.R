@@ -88,7 +88,7 @@ NULL
 #' @docType data
 #' @references
 #' \itemize{
-#'   \item Lauer, S. A., Grantz, K. H., Bi, Q., Jones, F. K., Zheng, Q., Meredith, H. R., Azman, A. S., Reich, N. G., & Lessler, J. The incubation period of 2019-nCoV from publicly reported confirmed cases: estimation and application. medRxiv (2020).
+#'   \item Lauer, S. A., Grantz, K. H., Bi, Q., Jones, F. K., Zheng, Q., Meredith, H. R., Azman, A. S., Reich, N. G., & Lessler, J. The incubation period of coronavirus disease 2019 (COVID-19) from publicly reported confirmed cases: estimation and application. Annals of Internal Medicine 172 (9), 577-582 (2020).
 #' }
 #' @name boot_lnorm_params_covid
 #' @usage data(boot_lnorm_params_covid)

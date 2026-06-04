@@ -44,7 +44,7 @@ shinyUI(fluidPage(
             condition="input.tabs == 'overview'",
             h4("Overview"),
             p("Active monitoring has shown promise as a tool in preventing and responding to outbreaks of pathogens that pose a grave threat to public health, such as",
-              a("the 2019 novel coronavirus outbreak", href="https://www.medrxiv.org/content/10.1101/2020.02.02.20020016v1"),
+              a("the 2019 novel coronavirus outbreak", href="https://www.acpjournals.org/doi/10.7326/M20-0504"),
               "and",
               a("the 2014 west Africa Ebola outbreak", href="http://www.cdc.gov/vhf/ebola/exposure/monitoring-and-movement-of-persons-with-exposure.html"),
               ". It could play an important role in containing outbreaks of rapidly spreading emerging pathogens, occurring either naturally or via a bioterrorist attack.
@@ -63,7 +63,7 @@ shinyUI(fluidPage(
             hr(),
             h4("Publications:"),
             p("Reich NG, Lessler J, Varma JK, and Vora NM. Quantifying the risk and cost of active monitoring for infectious diseases. Sci Rep. 2018;8(1):1093. doi:10.1038/s41598-018-19406-x."),
-            p("Lauer SA, Grantz KH, Bi Q, Jones FK, Zheng Q, Meredith HR, Azman AS, Reich NG, and Lessler J. The incubation period of 2019-nCoV from publicly reported confirmed cases: estimation and application. medRxiv. 2020. doi:10.1101/2020.02.02.20020016."),
+            p("Lauer SA, Grantz KH, Bi Q, Jones FK, Zheng Q, Meredith HR, Azman AS, Reich NG, and Lessler J. The incubation period of coronavirus disease 2019 (COVID-19) from publicly reported confirmed cases: estimation and application. Annals of Internal Medicine 172 (9), 577-582 (2020). doi:10.7326/M20-0504."),
             h4("Development"),
             p("This app was developed by",
               a("Nicholas G Reich", href='https://reichlab.github.io/'),
@@ -126,7 +126,7 @@ shinyUI(fluidPage(
             a("152 cases of Ebola in Guinea,", href="http://www.ncbi.nlm.nih.gov/pubmed/25619149"),
             a("170 laboratory-confirmed cases of MERS-CoV in South Korea,", href="http://datadryad.org/resource/doi:10.5061/dryad.v3546"),
             a("362 cases of smallpox,", href="http://www.ncbi.nlm.nih.gov/pubmed/18178524"), "and",
-            a("181 cases of COVID-19", href="https://www.medrxiv.org/content/10.1101/2020.02.02.20020016v1"), ". We fitted the observed data for Ebola, MERS-CoV, and smallpox to gamma probability distributions using Markov Chain Monte Carlo (MCMC) methods with the Metropolis-Hastings algorithm. The gamma distribution is one of several 'heavy-tailed' distributions often used to describe incubation periods, and aligns with assumptions made by previous researchers. The COVID-19 data were bootstrapped and fit to log-normal distributions.")
+            a("181 cases of COVID-19", href="https://www.acpjournals.org/doi/10.7326/M20-0504"), ". We fitted the observed data for Ebola, MERS-CoV, and smallpox to gamma probability distributions using Markov Chain Monte Carlo (MCMC) methods with the Metropolis-Hastings algorithm. The gamma distribution is one of several 'heavy-tailed' distributions often used to describe incubation periods, and aligns with assumptions made by previous researchers. The COVID-19 data were bootstrapped and fit to log-normal distributions.")
       ),
 
       ## user inputs for undetected infections plot panel
