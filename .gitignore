@@ -15,3 +15,6 @@ vignettes/*.pdf
 *.Rproj
 
 *.DS_Store
+
+# Batch-mode plotting artifact
+Rplots.pdf

@@ -1,21 +1,31 @@
 Package: activeMonitr
 Title: Evaluating public health active monitoring
-Version: 0.0.2
+Version: 0.0.3
 Authors@R: c(
     person(c("Nicholas", "G."), "Reich", , "nick@umass.edu", role = c("aut", "cre")), 
     person(c("Stephen", "A."), "Lauer", , "slauer5@jh.edu", role = c("ctb")),
     person("Xuelian", "Li", , , role = c("aut"))
     )
 Description: Data and code for evaluating public health active monitoring and
-    estimating incubation periods
+    estimating incubation periods. Provides functions to estimate the risk and
+    cost of active monitoring programs for infectious diseases, along with an
+    accompanying Shiny application.
 Depends:
-    ggplot2,
-    grid,
-    dplyr,
-    reshape2,
-    tidyr,
     R (>= 3.5)
-License: GPLv3
+Imports:
+    ggplot2,
+    dplyr,
+    tidyr,
+    grid,
+    stats,
+    utils
+Suggests:
+    shiny,
+    DT,
+    scales,
+    MASS
+License: GPL-3
 LazyData: true
-RoxygenNote: 7.0.2
+LazyDataCompression: xz
+RoxygenNote: 7.3.2
 Encoding: UTF-8

@@ -27,7 +27,7 @@ shinyUI(fluidPage(
                    value="incper.plot"),
           tabPanel("Undetected Infections",
                    fluidRow(column(width=6,plotOutput("plot_risk_uncertainty")),
-                            column(width=6,h5("Number of undetected symptomatic infections per 10,000 monitored"),dataTableOutput("tbl_risk_uncertainty"))),
+                            column(width=6,h5("Number of undetected symptomatic infections per 10,000 monitored"),DT::DTOutput("tbl_risk_uncertainty"))),
                             value="undinf.plot"),
           tabPanel("Costs of Active Monitoring Programs",
                    plotOutput("plot_costs"),

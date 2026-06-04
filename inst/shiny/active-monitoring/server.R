@@ -17,9 +17,9 @@ shinyServer(function(input, output, session) {
 
         pstr_params <- switch(input$plot1_disease,
                               COVID = boot_lnorm_params_covid,
-                              Ebola = pstr_gamma_params_ebola,
-                              Mers = pstr_gamma_params_mers,
-                              Smallpox = pstr_gamma_params_smallpox)
+                              Ebola = pstr_gamma_params_ebola_small,
+                              Mers = pstr_gamma_params_mers_small,
+                              Smallpox = pstr_gamma_params_smallpox_small)
 
         if(input$plot1_disease=="COVID"){
             inc_dist <- "lnorm"
@@ -79,7 +79,9 @@ shinyServer(function(input, output, session) {
             geom_text(data=min_costs, nudge_x = 1,
                       aes(x=min_cost_dur_days, y=1000,
                           label=paste(round(min_cost_dur_days),"d"))) +
-            theme(legend.title=element_blank(), legend.position=c(1, 1), legend.justification=c(1, 1)) +
+            theme(legend.title=element_blank(),
+                  legend.position="inside", legend.position.inside=c(1, 1),
+                  legend.justification=c(1, 1)) +
             ggtitle("Model-based cost range for monitoring 100 individuals") +
             annotate("text", x=12, y=2000,
                      label="dashed lines indicate an optimal \n duration of active monitoring")
@@ -90,9 +92,9 @@ shinyServer(function(input, output, session) {
     output$plot_inc_per <-renderPlot({
         colors <- c("#1b9e77", "#d95f02", "#7570b3","#0072B2")
         lighter_colors <- c("#8ecfbc", "#fdb174", "#b8b6d6", "#56B4E9")
-        plot_modified_credible_regions(list(pstr_gamma_params_ebola,
-                                            pstr_gamma_params_mers,
-                                            pstr_gamma_params_smallpox,
+        plot_modified_credible_regions(list(pstr_gamma_params_ebola_small,
+                                            pstr_gamma_params_mers_small,
+                                            pstr_gamma_params_smallpox_small,
                                             boot_lnorm_params_covid),
                                        kdes=list(kde_ebola,
                                                  kde_mers,
@@ -108,9 +110,9 @@ shinyServer(function(input, output, session) {
         # browser()
         pstr_params <- switch(input$plot3_disease,
                               COVID = boot_lnorm_params_covid,
-                              Ebola = pstr_gamma_params_ebola,
-                              Mers = pstr_gamma_params_mers,
-                              Smallpox = pstr_gamma_params_smallpox)
+                              Ebola = pstr_gamma_params_ebola_small,
+                              Mers = pstr_gamma_params_mers_small,
+                              Smallpox = pstr_gamma_params_smallpox_small)
 
         durs <- input$plot3_duration[1]:input$plot3_duration[2]
         phis <- as.numeric(input$plot3_prob_symptoms)
@@ -148,8 +150,8 @@ shinyServer(function(input, output, session) {
                                         formatC(10^(abs(log10(p_min):log10(p_max))),
                                                 format="d",big.mark=","))) +
             scale_x_continuous("Duration of active monitoring, in days") +
-            scale_color_discrete(guide=FALSE) +
-            scale_fill_discrete(guide=FALSE) +
+            scale_color_discrete(guide="none") +
+            scale_fill_discrete(guide="none") +
             coord_cartesian(ylim=c(p_min, p_max)) +
             theme(axis.text=element_text(color="black"),
                   strip.background=element_rect(fill="white"))
@@ -157,13 +159,13 @@ shinyServer(function(input, output, session) {
     })
 
     ## create table of undetected infections data
-    output$tbl_risk_uncertainty <- renderDataTable({
+    output$tbl_risk_uncertainty <- DT::renderDT({
         # browser()
         pstr_params <- switch(input$plot3_disease,
                               COVID = boot_lnorm_params_covid,
-                              Ebola = pstr_gamma_params_ebola,
-                              Mers = pstr_gamma_params_mers,
-                              Smallpox = pstr_gamma_params_smallpox)
+                              Ebola = pstr_gamma_params_ebola_small,
+                              Mers = pstr_gamma_params_mers_small,
+                              Smallpox = pstr_gamma_params_smallpox_small)
 
         durs <- input$plot3_duration[1]:input$plot3_duration[2]
         phis <- as.numeric(input$plot3_prob_symptoms)
@@ -197,33 +199,9 @@ shinyServer(function(input, output, session) {
                   `Median` = round(1e4*p50,2),
                   `Upper bound` = round(1e4*utp,2))
 
-    }, options=list(searching=F, paginate=F,info=F,
-                    pageLength=input$plot3_duration[2],
-                    scroller=T, scrollY=300))
+    }, options=list(searching=FALSE, paging=FALSE, info=FALSE, scrollY=300),
+       rownames=FALSE)
 
 
 })
-
-compute_data <- function(updateProgress = NULL) {
-  # Create 0-row data frame which will be used to store data
-  dat <- data.frame(x = numeric(0), y = numeric(0))
-
-  for (i in 1:10) {
-    Sys.sleep(0.25)
-
-    # Compute new row of data
-    new_row <- data.frame(x = rnorm(1), y = rnorm(1))
-
-    # If we were passed a progress update function, call it
-    if (is.function(updateProgress)) {
-      text <- paste0("Computing data: ", round((i-1)*10,1), "%")
-      updateProgress(detail = text)
-    }
-
-    # Add the new row of data
-    dat <- rbind(dat, new_row)
-  }
-
-  dat
-}
 

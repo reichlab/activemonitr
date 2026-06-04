@@ -33,7 +33,9 @@ calc_monitoring_costs(
 \item{return_scalar}{logical, whether to return the scalar max cost value using the first value of durs and probs_of_disease}
 }
 \value{
-a length(probs_of_disease)xlength(durs) matrix of costs, one row per subgroup, one column per duration
+a data.frame with one row per (probs_of_disease, durs) combination and
+  columns \code{phi}, \code{dur}, \code{mincost}, \code{maxcost} (or, if
+  \code{return_scalar=TRUE}, the scalar maxcost for the first combination)
 }
 \description{
 Cost calculations for active monitoring scenarios

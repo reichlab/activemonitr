@@ -4,14 +4,16 @@
 \name{boot_lnorm_params_covid}
 \alias{boot_lnorm_params_covid}
 \title{Bootstrapped parameter estimates of COVID-19 incubation period}
-\format{A data frame with 1,000 rows and 5 variables:
+\format{
+A data frame with 1,000 rows and 5 variables:
 \itemize{
   \item \code{meanlog} meanlog parameter of log-normal distribution
   \item \code{sdlog} sdlog parameter of log-normal distribution
   \item \code{idx} index of sample
   \item \code{median} the median correponding to this bootstrapped sample
   \item \code{p95} the 95th percentile correponding to this bootstrapped sample
-  }}
+  }
+}
 \usage{
 data(boot_lnorm_params_covid)
 }
