@@ -7,12 +7,14 @@
 #' @param dist character string specifying the parametric distribution of the incubation period; defaults to "gamma"
 #' @param gamma_params the median, shape and scale parameters for the assumed-gamma incubation period distribution
 #' @param return_scalar logical, whether to return the scalar max cost value using the first value of durs and probs_of_disease
-#' @return a length(probs_of_disease)xlength(durs) matrix of costs, one row per subgroup, one column per duration
+#' @return a data.frame with one row per (probs_of_disease, durs) combination and
+#'   columns \code{phi}, \code{dur}, \code{mincost}, \code{maxcost} (or, if
+#'   \code{return_scalar=TRUE}, the scalar maxcost for the first combination)
 #'
+#' @importFrom stats pgamma plnorm
 #' @export
 calc_monitoring_costs <- function(durs, probs_of_disease, per_day_hazard, N, cost_mat, dist=c("gamma", "lnorm"), gamma_params, return_scalar=FALSE) {
-    match.arg(dist)
-    require(dplyr)
+    dist <- match.arg(dist)
     ## checks
     if(any(probs_of_disease>1) | any(probs_of_disease<0)) stop("all probs_of_disease must be between 0 and 1")
 
@@ -33,17 +35,15 @@ calc_monitoring_costs <- function(durs, probs_of_disease, per_day_hazard, N, cos
         slog <- gamma_params["sdlog"]
     }
   phis <- probs_of_disease
-  # out <- matrix(NA, nrow=length(phis), ncol=length(durs))
-  # colnames(out) <- durs
-  # rownames(out) <- phis
-  num_out <- data_frame(phi=rep(NA, length(phis)*length(durs)),
-                        dur=rep(NA, length(phis)*length(durs)),
-                        mincost=rep(NA, length(phis)*length(durs)),
-                        maxcost=rep(NA, length(phis)*length(durs)))
+  n_out <- length(phis)*length(durs)
+  phi_out <- numeric(n_out)
+  dur_out <- numeric(n_out)
+  mincost_out <- numeric(n_out)
+  maxcost_out <- numeric(n_out)
   k <- 0
-  for(i in 1:length(phis)) {
+  for(i in seq_along(phis)) {
     phi <- phis[i]
-    for(j in 1:length(durs)) {
+    for(j in seq_along(durs)) {
       k <- k+1
       dur <- durs[j]
       theta <- 1-(1-per_day_hazard)^dur ## prob of symptoms from other disease
@@ -62,12 +62,15 @@ calc_monitoring_costs <- function(durs, probs_of_disease, per_day_hazard, N, cos
                   (1-phi)*theta,
                   phi*ip_prob,
                   phi*(1-ip_prob))
-      num_costs <- t(costs %*% pi_vec * N)
-#      out[i,j] <- paste0("$", formatC(round(num_costs[1], -3)/1000, big.mark=",", format="d"),
-#                         "-$", formatC(round(num_costs[2], -3)/1000, big.mark=",", format="d"))
-      num_out[k,] <- c(phi, dur, num_costs)
+      num_costs <- t(costs %*% pi_vec * N) ## length-2: lower (min) and upper (max) cost
+      phi_out[k] <- phi
+      dur_out[k] <- dur
+      mincost_out[k] <- num_costs[1]
+      maxcost_out[k] <- num_costs[2]
     }
   }
-  if(return_scalar) num_out <- as.numeric(num_out[1,"maxcost"])
+  num_out <- data.frame(phi=phi_out, dur=dur_out,
+                        mincost=mincost_out, maxcost=maxcost_out)
+  if(return_scalar) num_out <- as.numeric(num_out[1, "maxcost"])
   return(num_out)
 }

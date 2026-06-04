@@ -33,5 +33,11 @@ a plot
 make posterior likelihood plot of the median and 95th percentile of distribution
 }
 \examples{
-plot_risk_uncertainty(ebola_gamma_pstr, kde_ebola, label_txt="Ebola", colors=c("#1b9e77", "#d95f02", "#7570b3"))
+data(pstr_gamma_params_ebola_small)
+data(kde_ebola)
+plot_modified_credible_regions(
+  list(pstr_gamma_params_ebola_small),
+  kdes = list(kde_ebola),
+  label_txt = "Ebola",
+  colors = "#1b9e77")
 }

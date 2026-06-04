@@ -1,0 +1,10 @@
+name: active-monitoring
+title: Determining Durations for Active Monitoring
+username: reichlab
+account: reichlab
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 17468150
+bundleId: 12083844
+url: https://reichlab.shinyapps.io/active-monitoring/
+version: 1

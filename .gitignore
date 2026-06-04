@@ -15,3 +15,9 @@ vignettes/*.pdf
 *.Rproj
 
 *.DS_Store
+
+# Batch-mode plotting artifact
+Rplots.pdf
+
+# Claude Code local files
+.claude/

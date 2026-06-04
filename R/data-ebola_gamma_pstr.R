@@ -88,7 +88,7 @@ NULL
 #' @docType data
 #' @references
 #' \itemize{
-#'   \item Lauer, S. A., Grantz, K. H., Bi, Q., Jones, F. K., Zheng, Q., Meredith, H. R., Azman, A. S., Reich, N. G., & Lessler, J. The incubation period of 2019-nCoV from publicly reported confirmed cases: estimation and application. medRxiv (2020).
+#'   \item Lauer, S. A., Grantz, K. H., Bi, Q., Jones, F. K., Zheng, Q., Meredith, H. R., Azman, A. S., Reich, N. G., & Lessler, J. The incubation period of coronavirus disease 2019 (COVID-19) from publicly reported confirmed cases: estimation and application. Annals of Internal Medicine 172 (9), 577-582 (2020).
 #' }
 #' @name boot_lnorm_params_covid
 #' @usage data(boot_lnorm_params_covid)
@@ -101,8 +101,26 @@ NULL
 #' @format Output from fit_kde() function in inst/analysis-code/inc-per-mcmc.R. Data used in plotting credible regions of posterior estimates.
 #' @docType data
 #' @name kde_smallpox
-#' @name kde_ebola
-#' @name kde_mers
-#' @name kde_covid
+#' @aliases kde_ebola kde_mers kde_covid
 #' @usage data(kde_ebola)
+NULL
+
+
+#'
+#' Thinned (app-only) views of the incubation-period posteriors
+#'
+#' Small 5,000-row random subsamples of the full posterior objects
+#' (\code{\link{pstr_gamma_params_ebola}}, \code{\link{pstr_gamma_params_mers}},
+#' \code{\link{pstr_gamma_params_smallpox}}), created so the Shiny app can run
+#' with a tiny memory footprint without loading the full multi-million-row
+#' chains. Column means and medians match the full objects to within a fraction
+#' of a percent. These are app convenience views only; the full objects remain
+#' the canonical data. Regenerate with \code{inst/analysis-code/make-app-data.R}.
+#'
+#' @format Data frames with 5,000 rows and the same columns as the corresponding
+#'   full posterior object.
+#' @docType data
+#' @name pstr_gamma_params_ebola_small
+#' @aliases pstr_gamma_params_mers_small pstr_gamma_params_smallpox_small
+#' @usage data(pstr_gamma_params_ebola_small)
 NULL

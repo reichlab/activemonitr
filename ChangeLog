@@ -1,5 +1,17 @@
 ChangeLog file for activeMonitr
 
+v0.0.3 - (2026-06-04) Modernized for current R (4.4+), ggplot2 4.x, dplyr 1.x.
+    Fixed calc_monitoring_costs() (broke under current tibble row-assignment).
+    Updated deprecated ggplot2/dplyr calls (panel.spacing, guide="none",
+    legend.position="inside", slice_sample, summarize(.groups), tibble).
+    Moved package dependencies from Depends to Imports/Suggests; dropped unused
+    reshape2 and Cairo; declared MASS/scales/DT/shiny; added @importFrom and
+    regenerated NAMESPACE/man. Added small (5,000-row) thinned posterior views
+    (pstr_gamma_params_*_small) so the Shiny app runs low-memory; the full
+    posteriors remain canonical and are regenerable via
+    inst/analysis-code/make-app-data.R. Switched the app's data table to DT and
+    prepared shinyapps.io deployment.
+
 v0.0.2 - (2020-02-05) Updated plotting function to include smoother integration over posterior distribution and unknown exposure time, with contributions from Stephen Lauer.
 
 v0.0.1 - Initial release of package

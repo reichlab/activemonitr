@@ -4,20 +4,23 @@
 #' @param u numeric value or vector of assumed duration(s) of time between exposure and monitoring
 #' @param phi probability a case becomes symptomatic
 #' @param durations durations of active monitoring to plot
-#' @param return_data logical, whether or not to return the data used for plotting
+#' @param return_plot logical, whether or not to return the plotted grob
 #'
 #' @return if return_plot is specified, it returns the grob
+#' @import ggplot2
+#' @importFrom tidyr crossing
+#' @importFrom stats median
+#' @importFrom grid unit
 #' @export
 #'
-#' @examples plot_risk(ebola_gamma_pstr, u=c(5, 10))
+#' @examples
+#' data(pstr_gamma_params_ebola_small)
+#' plot_risk(pstr_gamma_params_ebola_small, u=c(5, 10))
 plot_risk <- function(pstr_data,
                       u=7,
                       phi=c(.0001, .001, .01),
                       durations=5:25,
                       return_plot=FALSE) {
-    require(ggplot2)
-    require(tidyr)
-    require(dplyr)
     dat <- crossing(shape=median(pstr_data$shape),
                     scale=median(pstr_data$scale),
                     u=u,
@@ -33,7 +36,7 @@ plot_risk <- function(pstr_data,
         scale_color_discrete(name=expression(phi),
                              breaks=c("0.01", "0.001", "1e-04"),
                              labels=c("1/100", "1/1,000", "1/10,000")) +
-        theme(panel.margin = unit(.7, "lines")) + ggtitle("stratified by days since exposure")
+        theme(panel.spacing = unit(.7, "lines")) + ggtitle("stratified by days since exposure")
     print(p)
     if(return_plot) return(p)
 }
@@ -55,9 +58,15 @@ plot_risk <- function(pstr_data,
 #' @param return_plot logical, whether or not to return the plotted grob
 #'
 #' @return if return_plot is specified, it returns the grob
+#' @import ggplot2
+#' @importFrom tidyr crossing
+#' @importFrom dplyr slice_sample mutate group_by summarize ungroup %>%
+#' @importFrom stats runif quantile
 #' @export
 #'
-#' @examples plot_risk_uncertainty(ebola_gamma_pstr)
+#' @examples
+#' data(pstr_gamma_params_ebola_small)
+#' plot_risk_uncertainty(pstr_gamma_params_ebola_small, output_plot=FALSE, return_data=TRUE)
 plot_risk_uncertainty <- function(pstr_data,
                                   dist=c("gamma", "lnorm", "weibull"),
                                   nsamp=1000,
@@ -71,9 +80,6 @@ plot_risk_uncertainty <- function(pstr_data,
                                   output_plot=TRUE,
                                   return_data=FALSE,
                                   return_plot=FALSE) {
-    require(ggplot2)
-    require(tidyr)
-
     dist <- match.arg(dist)
     if(!(dist %in% c("gamma", "lnorm", "weibull")))
         stop('the only distributions supported at this time are "gamma", "lnorm", and "weibull"')
@@ -92,7 +98,7 @@ plot_risk_uncertainty <- function(pstr_data,
 
     ## generate a sample of the posterior distribution from which to calculate
     pstr_samp <- pstr_data %>%
-        sample_n(nsamp) %>%
+        slice_sample(n = nsamp) %>%
         mutate(u = u) %>%
         crossing(d = durations,
                  phi = phi)
@@ -101,8 +107,8 @@ plot_risk_uncertainty <- function(pstr_data,
     dat_sim_pst_param_sum <- group_by(dat_sim_pst_param, d, phi) %>%
         summarize(ltp = quantile(p, prob=(1-ci_width)/2),
                   p50 = quantile(p, prob=.50),
-                  utp = quantile(p, prob=1-(1-ci_width)/2)) %>%
-        ungroup()
+                  utp = quantile(p, prob=1-(1-ci_width)/2),
+                  .groups = "drop")
 
     ## something like this will make labels appear right
     if(identical(unique(dat_sim_pst_param_sum$phi), c(1e-04, 2e-03))) {
@@ -119,7 +125,8 @@ plot_risk_uncertainty <- function(pstr_data,
         geom_ribbon(aes(ymin=ltp, ymax=utp), alpha=.2, color=NA) +
         scale_y_log10() +
         ylab("Pr(symptoms after AM)") +
-        theme(legend.justification=c(0,0), legend.position=c(0,0))
+        theme(legend.justification=c(0,0),
+              legend.position="inside", legend.position.inside=c(0,0))
 
     ## formatting options for xlab
     if(include_xlab) {
@@ -130,7 +137,7 @@ plot_risk_uncertainty <- function(pstr_data,
 
     ## remove legend if specified
     if(!include_legend) {
-        p <- p + guides(color=FALSE, fill=FALSE)
+        p <- p + guides(color="none", fill="none")
     }
 
     ## zoom on y axis if desired
@@ -161,14 +168,19 @@ plot_risk_uncertainty <- function(pstr_data,
 ##' @param base.size size for font, to be passed to theme_bw()
 ##'
 ##' @return a plot
+##' @import ggplot2
+##' @importFrom stats median
 ##' @export
 ##'
-##' @examples plot_risk_uncertainty(ebola_gamma_pstr, kde_ebola, label_txt="Ebola", colors=c("#1b9e77", "#d95f02", "#7570b3"))
+##' @examples
+##' data(pstr_gamma_params_ebola_small)
+##' data(kde_ebola)
+##' plot_modified_credible_regions(
+##'   list(pstr_gamma_params_ebola_small),
+##'   kdes = list(kde_ebola),
+##'   label_txt = "Ebola",
+##'   colors = "#1b9e77")
 plot_modified_credible_regions <- function(mcmc_dfs, kdes, label_txt, colors, show.legend=FALSE, base.size=12) {
-    require(ggplot2)
-    require(reshape2)
-    require(dplyr)
-
     ## set credible region data for KDE percentiles
     pstr_median <- data.frame(median=rep(NA, length(mcmc_dfs)),
                               p95=rep(NA, length(mcmc_dfs)),
@@ -190,7 +202,8 @@ plot_modified_credible_regions <- function(mcmc_dfs, kdes, label_txt, colors, sh
                         show.legend = show.legend) +
         theme_bw(base_size = base.size) +
         theme(legend.title=element_blank(),
-              legend.position=c(1,1), legend.justification=c(1,1)) +
+              legend.position="inside", legend.position.inside=c(1,1),
+              legend.justification=c(1,1)) +
         scale_color_manual(values=colors)
     print(p)
     return(p)

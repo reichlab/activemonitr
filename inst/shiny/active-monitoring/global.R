@@ -7,18 +7,20 @@
 ## Date Modified: 02/12/2020 XL      ##
 #######################################
 library(shiny)
-library(Cairo)
 library(dplyr)
 library(ggplot2)
 library(scales)
+library(DT)
 library(activeMonitr)
 
-# source("plot_risk.R")
 theme_set(theme_bw(base_size = 18))
 
-data(pstr_gamma_params_ebola)
-data(pstr_gamma_params_mers)
-data(pstr_gamma_params_smallpox)
+## Use the thinned (5,000-row) posterior views so the app stays low-memory.
+## The full posterior objects are never loaded. COVID (1,000 rows) and the
+## kde_* objects are already small and used directly. See make-app-data.R.
+data(pstr_gamma_params_ebola_small)
+data(pstr_gamma_params_mers_small)
+data(pstr_gamma_params_smallpox_small)
 data(boot_lnorm_params_covid)
 data(kde_smallpox)
 data(kde_ebola)

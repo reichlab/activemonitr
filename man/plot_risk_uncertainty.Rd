@@ -54,5 +54,6 @@ if return_plot is specified, it returns the grob
 Function for plotting risk and uncertainty of case escaping active monitoring
 }
 \examples{
-plot_risk_uncertainty(ebola_gamma_pstr)
+data(pstr_gamma_params_ebola_small)
+plot_risk_uncertainty(pstr_gamma_params_ebola_small, output_plot=FALSE, return_data=TRUE)
 }
